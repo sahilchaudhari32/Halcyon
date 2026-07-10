@@ -108,7 +108,8 @@ log analysis and incident root-cause diagnosis.
 Analyze the provided log content and return a structured JSON response with:
 - root_cause: A precise, technical explanation of what went wrong (2-4 sentences).
 - severity: One of LOW | MEDIUM | HIGH | CRITICAL based on service impact.
-- fix_suggestion: Actionable step-by-step remediation guide. Be specific.
+- fix_suggestion: Actionable step-by-step remediation guide. Be specific and operational.
+- Include immediate containment, verification, rollback or repair steps, and one prevention action.
 - summary: A single sentence non-technical summary of the incident.
 - affected_components: A list of service/component names mentioned in the logs.
 - confidence_score: Your confidence in the analysis (0.0 - 1.0).
@@ -181,13 +182,15 @@ def _mock_analysis(log_content: str) -> AIAnalysisResult:
     return AIAnalysisResult(
         root_cause=(
             "Mock analysis: The log contains indicators of a system issue. "
-            "Set GROQ_API_KEY in your .env file for real AI-powered analysis."
+            "Set GROQ_API_KEY in your .env file for real AI-powered analysis and richer remediation guidance."
         ),
         severity=severity,
         fix_suggestion=(
-            "1. Add your Groq API key to the .env file.\n"
-            "2. Restart the backend server.\n"
-            "3. Re-submit the log for real AI analysis."
+            "1. Confirm the failing service and isolate the blast radius.\n"
+            "2. Apply the known remediation or rollback the last risky change.\n"
+            "3. Validate healthchecks, error rate, and latency after the change.\n"
+            "4. Add a guardrail so the same signature is caught earlier next time.\n"
+            "5. Add your Groq API key to the .env file and re-submit the log for deeper analysis."
         ),
         summary="Mock incident — AI analysis disabled (no API key configured).",
         affected_components=["unknown-service"],
@@ -205,9 +208,11 @@ def _match_known_incidents(log_content: str) -> Optional[AIAnalysisResult]:
             root_cause="Database connection pool exhausted",
             severity="CRITICAL",
             fix_suggestion=(
-                "1. Increase max_connections\n"
-                "2. Optimize long-running queries\n"
-                "3. Restart PostgreSQL"
+                "1. Freeze new traffic if the queue is backing up and confirm which app nodes are saturating the pool.\n"
+                "2. Increase max_connections and the application-side pool limit in tandem.\n"
+                "3. Restart PostgreSQL only after the config change is in place.\n"
+                "4. Re-run the top slow queries and verify the timeout curve normalizes.\n"
+                "5. Add query-level observability so this cannot silently recur."
             ),
             summary="Database Connection Timeout",
             affected_components=["postgresql", "payment-service"],
@@ -220,9 +225,10 @@ def _match_known_incidents(log_content: str) -> Optional[AIAnalysisResult]:
             root_cause="MongoDB WiredTiger cache reaches maximum memory capacity",
             severity="HIGH",
             fix_suggestion=(
-                "1. Increase wiredTigerCacheSizeGB\n"
-                "2. Configure collection eviction policy\n"
-                "3. Restart MongoDB"
+                "1. Confirm the working set size and identify the collection causing cache churn.\n"
+                "2. Increase wiredTigerCacheSizeGB within node memory limits.\n"
+                "3. Tune eviction and index access patterns for the hottest collection.\n"
+                "4. Restart MongoDB during a controlled window and verify cache residency after recovery."
             ),
             summary="MongoDB Memory Exhaustion",
             affected_components=["mongodb", "database"],
@@ -235,9 +241,10 @@ def _match_known_incidents(log_content: str) -> Optional[AIAnalysisResult]:
             root_cause="CPU utilization exceeded threshold",
             severity="HIGH",
             fix_suggestion=(
-                "1. Scale application\n"
-                "2. Optimize expensive processes\n"
-                "3. Add worker instances"
+                "1. Check whether the spike is caused by a single hot endpoint or a broad traffic surge.\n"
+                "2. Scale the affected service vertically or horizontally while the queue is draining.\n"
+                "3. Profile the expensive code path and remove the tight loop or repeated serialization.\n"
+                "4. Add worker instances or autoscaling once the hot path is confirmed stable."
             ),
             summary="CPU Overload",
             affected_components=["cpu", "worker-queue", "api"],
@@ -250,9 +257,10 @@ def _match_known_incidents(log_content: str) -> Optional[AIAnalysisResult]:
             root_cause="Disk storage exhausted",
             severity="HIGH",
             fix_suggestion=(
-                "1. Clean old logs\n"
-                "2. Increase storage\n"
-                "3. Rotate log files"
+                "1. Move the service into maintenance mode if writes are still failing.\n"
+                "2. Clean old logs and temporary artifacts immediately.\n"
+                "3. Increase storage or expand the attached volume before re-enabling writes.\n"
+                "4. Rotate logs and add a retention policy so the disk does not fill again."
             ),
             summary="Disk Full",
             affected_components=["disk", "file-system"],
@@ -265,9 +273,10 @@ def _match_known_incidents(log_content: str) -> Optional[AIAnalysisResult]:
             root_cause="Container repeatedly crashing",
             severity="CRITICAL",
             fix_suggestion=(
-                "1. Check application startup logs\n"
-                "2. Increase memory limits\n"
-                "3. Verify liveness probe configuration"
+                "1. Inspect the startup logs and identify the exact line that fails before readiness.\n"
+                "2. Increase memory or CPU limits if the process is dying from resource pressure.\n"
+                "3. Temporarily disable the liveness probe until the service passes startup consistently.\n"
+                "4. Redeploy only after the crash signature is removed and the pod stays ready."
             ),
             summary="Kubernetes Pod CrashLoopBackOff",
             affected_components=["kubernetes", "payment-service"],
@@ -415,6 +424,16 @@ async def _analyze_with_compliance_model(log_content: str) -> tuple[AIAnalysisRe
 async def format_fast_path_resolution(memory_resolution: str) -> tuple[AIAnalysisResult, RoutingMetadata]:
     """Format a known Hindsight memory resolution into structured JSON using the cheap model."""
     logger.info("Fast path triggered: formatting memory resolution with cheap model.")
+    if _groq_client is None:
+        metadata = RoutingMetadata(
+            model_used="mock",
+            model_tier="fast-path",
+            cost=0.0,
+            latency_ms=0.0,
+            decision_trace={"source": "mock_fast_path_no_api_key"},
+        )
+        return _mock_analysis(memory_resolution), metadata
+
     prompt = f"Format the following incident resolution into the required JSON schema:\n\n{memory_resolution}"
     return await _analyze_with_groq(
         prompt, 

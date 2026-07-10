@@ -58,6 +58,8 @@ export default function IncidentDetail({ id }) {
   const primaryAudit = auditLogs[0] || {};
   const isMemoryMatch = primaryAudit.memory_hit || (incident.similar_incidents?.length > 0);
   const confidence = Math.round((incident.confidence_score || 0) * 100);
+  const actualCost = primaryAudit.cost || 0;
+  const actualLatency = primaryAudit.latency_ms || 0;
 
   return (
     <div className="max-w-5xl mx-auto py-2 sm:py-4">
@@ -278,7 +280,7 @@ export default function IncidentDetail({ id }) {
                   {incident.is_solved ? 'Applied Solution' : 'Suggested Resolution'}
                 </p>
                 {incident.is_solved ? (
-                  <div className="bg-accent-warm/5 border border-accent-warm/15 p-5 rounded-2xl text-text-primary font-mono text-sm leading-relaxed shadow-sm">
+                  <div className="bg-accent-warm/5 border border-accent-warm/15 p-5 rounded-2xl text-text-primary font-mono text-sm leading-relaxed shadow-sm whitespace-pre-line">
                     {incident.solution}
                   </div>
                 ) : (

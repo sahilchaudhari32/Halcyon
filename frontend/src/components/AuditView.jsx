@@ -332,7 +332,7 @@ export default function AuditView() {
                                         <Zap className="w-3.5 h-3.5 text-accent-warm" />
                                         <span>AI Suggested Fix</span>
                                       </span>
-                                      <div className="text-sm font-sans text-text-primary bg-background border border-border-light/60 p-4 rounded-xl leading-relaxed max-h-48 overflow-y-auto font-light shadow-inner">
+                                      <div className="text-sm font-sans text-text-primary bg-background border border-border-light/60 p-4 rounded-xl leading-relaxed max-h-48 overflow-y-auto font-light shadow-inner whitespace-pre-line">
                                         {log.resolution_suggested || 'No suggestion recorded.'}
                                       </div>
                                     </div>

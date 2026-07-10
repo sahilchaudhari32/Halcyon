@@ -11,6 +11,7 @@ from fastapi.responses import JSONResponse
 
 from config import settings
 from database import init_db
+from demo_seed import seed_demo_data
 from memory import init_memory
 from routes import router
 
@@ -32,6 +33,9 @@ async def lifespan(app: FastAPI):
     logger.info("🚀 Halcyon backend starting up…")
     await init_db()
     logger.info("✅ Database initialized.")
+    seeded = await seed_demo_data()
+    if seeded:
+        logger.info("✅ Seeded %d demo incidents and audit logs.", seeded)
     await init_memory()
     logger.info("✅ Memory system initialized.")
     yield
