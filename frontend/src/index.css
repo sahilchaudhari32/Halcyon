@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-halcyon-bg text-halcyon-text font-body selection:bg-halcyon-teal/20 selection:text-halcyon-teal;
+  }
+}
+
+:root {
+  --halcyon-bg: #F9FAFB;
+  --halcyon-surface: #FFFFFF;
+  --halcyon-surface-raised: #F3F4F6;
+  --halcyon-teal: #0D9488;
+  --halcyon-amber: #EA580C;
+  --halcyon-text: #111827;
+  --halcyon-text-muted: #6B7280;
+  --halcyon-border: #E5E7EB;
+}
