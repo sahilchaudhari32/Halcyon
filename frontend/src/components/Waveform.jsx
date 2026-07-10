@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const DEFAULT_AMBER = '#E8935B'; // kingfisher-amber
 const DEFAULT_TEAL = '#2EC4B6';  // kingfisher-teal
@@ -13,10 +13,25 @@ function hexToRgba(hex, alpha) {
 
 export default function Waveform({ state = 'calm', size = 'small', color }) {
   const canvasRef = useRef(null);
+  const containerRef = useRef(null);
   
   // Size mapping
-  const width = size === 'large' ? 800 : size === 'medium' ? 140 : 70;
+  const staticWidth = size === 'large' ? 800 : size === 'medium' ? 140 : 70;
   const height = size === 'large' ? 160 : size === 'medium' ? 48 : 24;
+  
+  const [width, setWidth] = useState(staticWidth);
+
+  useEffect(() => {
+    if (size !== 'large') return;
+    const handleResize = () => {
+      if (containerRef.current) {
+        setWidth(containerRef.current.clientWidth);
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [size]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -133,7 +148,11 @@ export default function Waveform({ state = 'calm', size = 'small', color }) {
   }, [state, size, width, height, color]);
   
   return (
-    <div style={{ width, height, overflow: 'hidden' }} className="flex items-center justify-center relative">
+    <div 
+      ref={containerRef}
+      style={{ width: size === 'large' ? '100%' : width, height, overflow: 'hidden' }} 
+      className="flex items-center justify-center relative w-full"
+    >
       {/* Soft background glow (Afterlife style) */}
       {size === 'large' && (
         <div 

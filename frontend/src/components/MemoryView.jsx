@@ -25,9 +25,9 @@ export default function MemoryView() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto py-4">
-      <div className="mb-12 border-b border-border-light pb-6">
-        <h1 className="text-4xl font-serif text-text-primary tracking-wide mb-2">Institutional Memory</h1>
+    <div className="max-w-4xl mx-auto py-2 sm:py-4">
+      <div className="mb-8 sm:mb-12 border-b border-border-light pb-6">
+        <h1 className="text-3xl sm:text-4xl font-serif text-text-primary tracking-wide mb-2">Institutional Memory</h1>
         <p className="text-text-muted font-light text-sm">A map of past incident resolutions actively used by the agent.</p>
       </div>
 
@@ -36,21 +36,21 @@ export default function MemoryView() {
           <p className="text-text-muted font-light text-lg">No memories stored yet.</p>
         </Card>
       ) : (
-        <div className="relative border-l-2 border-border-light/60 ml-6 pl-10 space-y-12 pb-12">
+        <div className="relative border-l-2 border-border-light/60 ml-3 pl-6 md:ml-6 md:pl-10 space-y-12 pb-12">
           {memories.map((mem) => (
             <div key={mem.id} className="relative group">
               {/* Node connecting dot */}
-              <div className="absolute -left-[51px] top-6 w-5 h-5 bg-background border-[4px] border-accent-warm rounded-full shadow-sm group-hover:scale-110 transition-transform" />
+              <div className="absolute -left-[33px] md:-left-[51px] top-6 w-5 h-5 bg-background border-[4px] border-accent-warm rounded-full shadow-sm group-hover:scale-110 transition-transform" />
               
-              <Card className="border-accent-warm/10" animateHover={true}>
-                <div className="flex justify-between items-start mb-5">
+              <Card className="border-accent-warm/10 p-4 sm:p-6" animateHover={true}>
+                <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-5">
                   <div>
-                    <h3 className="font-serif text-2xl text-text-primary tracking-wide mb-1">{mem.title}</h3>
+                    <h3 className="font-serif text-xl sm:text-2xl text-text-primary tracking-wide mb-1">{mem.title}</h3>
                     <p className="text-xs font-mono text-text-muted font-semibold">
                       ID: INC-{mem.id.toString().padStart(4, '0')} • Stored {new Date(mem.created_at).toLocaleDateString()}
                     </p>
                   </div>
-                  <span className="bg-accent-warm/10 border border-accent-warm/20 text-accent-warm px-3.5 py-1.5 rounded-full text-xs font-mono font-bold uppercase tracking-wider shadow-sm">
+                  <span className="bg-accent-warm/10 border border-accent-warm/20 text-accent-warm px-3.5 py-1.5 rounded-full text-xs font-mono font-bold uppercase tracking-wider shadow-sm self-start sm:self-auto">
                     Stored Memory
                   </span>
                 </div>

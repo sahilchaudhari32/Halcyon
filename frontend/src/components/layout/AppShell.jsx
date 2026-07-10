@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Sun, Moon } from 'lucide-react';
+import { Sun, Moon, Activity } from 'lucide-react';
 import { Sidebar } from './Sidebar';
+import { FloatingDock } from './FloatingDock';
 import Waveform from '../Waveform';
 
 export default function AppShell({ children, systemState }) {
@@ -32,7 +33,7 @@ export default function AppShell({ children, systemState }) {
   };
 
   return (
-    <div className="relative min-h-screen w-full bg-background text-text-muted overflow-hidden flex font-sans antialiased transition-colors duration-300">
+    <div className="relative h-screen w-full bg-background text-text-muted overflow-hidden flex font-sans antialiased transition-colors duration-300">
       
       {/* NOC Control Room Ambient Gradients */}
       <div className="fixed inset-0 z-0 pointer-events-none" aria-hidden="true">
@@ -60,22 +61,31 @@ export default function AppShell({ children, systemState }) {
       <Sidebar />
 
       {/* Main Panel Content Wrapper */}
-      <div className="flex-1 flex flex-col min-h-screen overflow-x-hidden relative z-10">
+      <div className="flex-1 flex flex-col h-screen overflow-y-auto overflow-x-hidden relative z-10">
         
         {/* Top Control Bar Header */}
-        <header className="flex items-center justify-between w-full h-20 px-8 border-b border-border-light bg-surface/30 backdrop-blur-md select-none">
-          <div>
+        <header className="flex items-center justify-between w-full h-20 px-4 md:px-8 border-b border-border-light bg-surface/30 backdrop-blur-md select-none sticky top-0 z-30">
+          {/* Desktop Title */}
+          <div className="hidden md:block">
             <h2 className="text-xs font-mono font-bold tracking-widest text-text-primary uppercase">NOC OPERATIONAL TELEMETRY</h2>
           </div>
 
-          <div className="flex items-center gap-6">
+          {/* Mobile Title / Logo */}
+          <div className="flex items-center gap-2 md:hidden">
+            <div className="w-7 h-7 rounded-lg bg-primary/10 text-primary flex items-center justify-center border border-primary/20">
+              <Activity className="w-3.5 h-3.5 text-primary animate-pulse" />
+            </div>
+            <span className="font-serif text-lg font-bold tracking-tight text-text-primary">Halcyon</span>
+          </div>
+
+          <div className="flex items-center gap-3 md:gap-6">
             {/* Saturated Telemetry Status Pill */}
-            <div className="flex items-center gap-3 bg-surface/80 border border-border-light px-4 py-2 rounded-xl shadow-sm">
-              <span className="font-mono text-[9px] tracking-widest font-bold text-text-muted">SYSTEM STATUS:</span>
-              <div className="w-16 h-5 overflow-hidden flex items-center justify-center border-x border-border-light/40 px-2 mx-1">
+            <div className="flex items-center gap-2 md:gap-3 bg-surface/80 border border-border-light px-3 md:px-4 py-1.5 md:py-2 rounded-xl shadow-sm">
+              <span className="font-mono text-[8px] md:text-[9px] tracking-widest font-bold text-text-muted">SYSTEM:</span>
+              <div className="w-12 md:w-16 h-5 overflow-hidden flex items-center justify-center border-x border-border-light/40 px-1 md:px-2 mx-0.5 md:mx-1">
                 <Waveform state={systemState} size="small" />
               </div>
-              <span className={`font-mono text-[10px] font-bold uppercase tracking-wider ${systemState === 'chaotic' ? 'text-primary animate-pulse' : 'text-accent-warm'}`}>
+              <span className={`font-mono text-[9px] md:text-[10px] font-bold uppercase tracking-wider ${systemState === 'chaotic' ? 'text-primary animate-pulse' : 'text-accent-warm'}`}>
                 {systemState === 'chaotic' ? 'UNSTABLE' : 'STABLE'}
               </span>
             </div>
@@ -96,10 +106,13 @@ export default function AppShell({ children, systemState }) {
         </header>
 
         {/* Dynamic page content */}
-        <main className="flex-1 p-8 max-w-5xl w-full mx-auto pb-24">
+        <main className="flex-1 p-4 md:p-8 max-w-5xl w-full mx-auto pb-28 md:pb-24">
           {children}
         </main>
       </div>
+
+      {/* Floating navigation dock for mobile viewports */}
+      <FloatingDock />
     </div>
   );
 }

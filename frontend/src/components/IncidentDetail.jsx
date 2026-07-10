@@ -57,22 +57,25 @@ export default function IncidentDetail({ id }) {
   const confidence = Math.round((incident.confidence_score || 0) * 100);
 
   return (
-    <div className="max-w-5xl mx-auto py-4">
-      <div className="mb-8 border-b border-border-light pb-6">
+    <div className="max-w-5xl mx-auto py-2 sm:py-4">
+      <div className="mb-6 sm:mb-8 border-b border-border-light pb-6">
         <Link href="/">
-          <a className="text-text-muted hover:text-text-primary text-xs font-semibold uppercase tracking-widest mb-6 inline-flex items-center transition-colors">
+          <a className="text-text-muted hover:text-text-primary text-xs font-semibold uppercase tracking-widest mb-4 sm:mb-6 inline-flex items-center transition-colors">
             &larr; <span className="ml-1">Back to Feed</span>
           </a>
         </Link>
-        <div className="flex justify-between items-start mt-2">
+        <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mt-2">
           <div>
-            <h1 className="text-4xl font-serif text-text-primary tracking-wide mb-2">{incident.title}</h1>
-            <div className="flex items-center gap-4 text-xs font-mono text-text-muted font-medium">
+            <h1 className="text-3xl sm:text-4xl font-serif text-text-primary tracking-wide mb-2">{incident.title}</h1>
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs font-mono text-text-muted font-medium">
               <span>ID: INC-{id.toString().padStart(4, '0')}</span>
+              <span>•</span>
               <span>{new Date(incident.created_at).toLocaleString()}</span>
             </div>
           </div>
-          <StatusPill status={isMemoryMatch ? 'memory-match' : 'escalated'} confidence={confidence} />
+          <div className="self-start sm:self-auto">
+            <StatusPill status={isMemoryMatch ? 'memory-match' : 'escalated'} confidence={confidence} />
+          </div>
         </div>
       </div>
 
@@ -92,7 +95,7 @@ export default function IncidentDetail({ id }) {
 
         {/* Agent Reasoning */}
         <Card className="flex flex-col" animateHover={false}>
-          <h3 className="font-serif text-3xl text-text-primary border-b border-border-light pb-4 mb-6">Agent Reasoning</h3>
+          <h3 className="font-serif text-2xl sm:text-3xl text-text-primary border-b border-border-light pb-4 mb-6">Agent Reasoning</h3>
           
           <div className="space-y-8 flex-1">
             {/* Path Taken */}
@@ -159,9 +162,9 @@ export default function IncidentDetail({ id }) {
           </div>
           
           {/* Metrics Footer */}
-          <div className="pt-6 mt-8 border-t border-border-light grid grid-cols-2 text-xs font-mono text-text-muted font-semibold">
+          <div className="pt-6 mt-8 border-t border-border-light grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono text-text-muted font-semibold">
              <div>COST: <span className="text-text-primary bg-background px-2.5 py-1 rounded-full ml-1 border border-border-light">${primaryAudit.cost?.toFixed(5) || '0.00000'}</span></div>
-             <div className="text-right">LATENCY: <span className="text-text-primary bg-background px-2.5 py-1 rounded-full ml-1 border border-border-light">{primaryAudit.latency_ms?.toFixed(0) || '0'}ms</span></div>
+             <div className="sm:text-right">LATENCY: <span className="text-text-primary bg-background px-2.5 py-1 rounded-full ml-1 border border-border-light">{primaryAudit.latency_ms?.toFixed(0) || '0'}ms</span></div>
           </div>
         </Card>
       </div>

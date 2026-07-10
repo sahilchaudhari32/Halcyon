@@ -11,7 +11,7 @@ export const Sidebar = () => {
   ];
 
   return (
-    <aside className="w-64 h-screen bg-surface border-r border-border-light flex flex-col justify-between select-none sticky top-0 z-40">
+    <aside className="w-64 h-screen bg-surface border-r border-border-light hidden md:flex flex-col justify-between select-none sticky top-0 z-40">
       <div className="flex-1 flex flex-col">
         {/* Sidebar Logo Branding */}
         <div className="h-20 px-6 border-b border-border-light flex items-center gap-3">

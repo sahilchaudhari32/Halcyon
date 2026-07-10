@@ -73,12 +73,12 @@ export default function LandingPage({ onEnterApp }) {
       </div>
 
       {/* Top Navigation */}
-      <header className="fixed top-0 left-0 right-0 h-20 bg-background/80 backdrop-blur-md z-40 border-b border-border-light/40 px-6 lg:px-12 flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20">
+      <header className="fixed top-0 left-0 right-0 h-20 bg-background/80 backdrop-blur-md z-40 border-b border-border-light/40 px-4 sm:px-6 lg:px-12 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20">
             <Activity className="w-4 h-4 text-primary" />
           </div>
-          <span className="font-serif text-2xl font-semibold tracking-tight text-text-primary">Halcyon</span>
+          <span className="font-serif text-xl sm:text-2xl font-semibold tracking-tight text-text-primary">Halcyon</span>
         </div>
 
         <nav className="hidden md:flex items-center gap-8 text-xs font-semibold uppercase tracking-wider text-text-muted">
@@ -90,35 +90,36 @@ export default function LandingPage({ onEnterApp }) {
         <Button 
           onClick={onEnterApp}
           variant="primary"
+          className="px-3 py-1.5 sm:px-5 sm:py-2 text-[10px] sm:text-xs"
         >
           Enter Dashboard &rarr;
         </Button>
       </header>
 
       {/* Hero Section */}
-      <main className="relative z-10 pt-40 pb-20 px-6 max-w-5xl mx-auto flex flex-col items-center text-center">
+      <main className="relative z-10 pt-32 sm:pt-40 pb-20 px-4 sm:px-6 max-w-5xl mx-auto flex flex-col items-center text-center">
         
         {/* Dynamic Title */}
-        <h1 className="text-6xl md:text-8xl font-serif text-text-primary tracking-wide mb-8 leading-tight max-w-4xl">
-          Incident memory, <br className="hidden md:block" />
+        <h1 className="text-4xl sm:text-6xl md:text-8xl font-serif text-text-primary tracking-wide mb-6 sm:mb-8 leading-tight max-w-4xl">
+          Incident memory, <br className="hidden sm:block" />
           <span className="italic font-normal text-primary">calmed.</span>
         </h1>
         
-        <p className="text-lg md:text-xl text-text-muted max-w-2xl font-light mb-16 leading-relaxed">
+        <p className="text-base sm:text-lg md:text-xl text-text-muted max-w-2xl font-light mb-12 sm:mb-16 leading-relaxed">
           Instantly resolve system alerts by tapping into an active, self-learning institutional memory of past fixes.
         </p>
 
         {/* Premium Waveform Console Interface */}
-        <div className="w-full max-w-4xl bg-surface border border-border-light rounded-3xl p-6 shadow-antigravity mb-24 relative overflow-hidden group">
+        <div className="w-full max-w-4xl bg-surface border border-border-light rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-antigravity mb-16 sm:mb-24 relative overflow-hidden group">
           <div className="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-primary via-accent-warm to-secondary" />
           
           {/* Console Header Bar */}
-          <div className="flex justify-between items-center text-xs font-mono border-b border-border-light pb-4 mb-6">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-xs font-mono border-b border-border-light pb-4 mb-6">
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-primary animate-pulse" />
-              <span className="font-semibold text-text-primary">HALCYON CORE REAL-TIME OSCILLOSCOPE</span>
+              <span className="font-semibold text-text-primary">HALCYON CORE OSCILLOSCOPE</span>
             </div>
-            <div className="flex items-center gap-4 text-text-muted">
+            <div className="flex items-center gap-4 text-text-muted self-end sm:self-auto text-[10px] sm:text-xs">
               <span>SPAN: 1200ms</span>
               <span>SAMPLING: 44.1kHz</span>
             </div>
@@ -154,8 +155,8 @@ export default function LandingPage({ onEnterApp }) {
         </div>
 
         {/* Comparative Section */}
-        <section id="before-after" className="w-full mb-32 text-left scroll-mt-24">
-          <h2 className="text-4xl font-serif text-text-primary mb-4 tracking-wide text-center">
+        <section id="before-after" className="w-full mb-20 sm:mb-32 text-left scroll-mt-24">
+          <h2 className="text-3xl sm:text-4xl font-serif text-text-primary mb-4 tracking-wide text-center">
             How it works in practice
           </h2>
           <p className="text-center text-text-muted font-light mb-16 max-w-xl mx-auto">
@@ -165,7 +166,7 @@ export default function LandingPage({ onEnterApp }) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
             
             {/* Before: Raw Terminal logs */}
-            <div className="bg-[#0D0F11] border border-border-light/20 rounded-3xl p-8 shadow-antigravity relative overflow-hidden flex flex-col h-full">
+            <div className="bg-[#0D0F11] border border-border-light/20 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-antigravity relative overflow-hidden flex flex-col h-full">
               <div className="absolute top-0 left-0 w-full h-[3px] bg-red-400/80" />
               <div className="flex items-center justify-between border-b border-border-light/10 pb-4 mb-6">
                 <span className="font-mono text-xs text-slate-400 font-medium">TERMINAL: stdin_log_pipeline</span>
@@ -202,8 +203,8 @@ export default function LandingPage({ onEnterApp }) {
         </section>
 
         {/* Feature Cards Grid */}
-        <section id="features" className="w-full mb-32 scroll-mt-24">
-          <h2 className="text-4xl font-serif text-text-primary mb-12 tracking-wide">
+        <section id="features" className="w-full mb-20 sm:mb-32 scroll-mt-24">
+          <h2 className="text-3xl sm:text-4xl font-serif text-text-primary mb-8 sm:mb-12 tracking-wide">
             Cognitive Infrastructure Architecture
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -221,7 +222,7 @@ export default function LandingPage({ onEnterApp }) {
 
         {/* FAQ Accordion */}
         <section id="faq" className="w-full max-w-3xl mb-16 scroll-mt-24 text-left">
-          <h2 className="text-4xl font-serif text-text-primary mb-12 tracking-wide text-center">Frequently Answered</h2>
+          <h2 className="text-3xl sm:text-4xl font-serif text-text-primary mb-8 sm:mb-12 tracking-wide text-center">Frequently Answered</h2>
           <div className="space-y-4">
             {faqs.map((faq, index) => {
               const isOpen = activeFaq === index;
@@ -232,7 +233,7 @@ export default function LandingPage({ onEnterApp }) {
                 >
                   <button 
                     onClick={() => setActiveFaq(isOpen ? null : index)}
-                    className="w-full p-6 flex justify-between items-center text-left font-serif text-xl font-medium text-text-primary focus:outline-none"
+                    className="w-full p-5 sm:p-6 flex justify-between items-center text-left font-serif text-lg sm:text-xl font-medium text-text-primary focus:outline-none"
                   >
                     <span>{faq.q}</span>
                     <span className="text-text-muted text-sm font-semibold">{isOpen ? '−' : '+'}</span>
@@ -261,8 +262,8 @@ export default function LandingPage({ onEnterApp }) {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-border-light bg-surface/50 py-16 relative z-10 text-center">
-        <div className="max-w-5xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 mb-12 divide-x divide-border-light">
+      <footer className="border-t border-border-light bg-surface/50 py-12 sm:py-16 relative z-10 text-center">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 grid grid-cols-2 md:grid-cols-4 gap-8 mb-12 md:divide-x divide-border-light">
           <div>
             <div className="text-4xl font-serif text-text-primary mb-1">98%</div>
             <div className="text-xs font-mono text-text-muted uppercase tracking-wider font-semibold">Faster Resolution</div>

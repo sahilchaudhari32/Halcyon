@@ -1,18 +1,18 @@
 import React from 'react';
 import { Link, useRoute } from 'wouter';
 import { motion } from 'framer-motion';
-import { Home, FolderHeart, ListTodo, FileText } from 'lucide-react';
+import { Activity, Cpu, FileText } from 'lucide-react';
 
 export const FloatingDock = () => {
   const navItems = [
-    { path: '/', label: 'Dashboard', icon: Home },
-    { path: '/memory', label: 'Memory', icon: FolderHeart },
-    { path: '/audit', label: 'Audit Log', icon: FileText }
+    { path: '/', label: 'Incident Feed', icon: Activity },
+    { path: '/memory', label: 'Hindsight Memory', icon: Cpu },
+    { path: '/audit', label: 'Audit Trail', icon: FileText }
   ];
 
   return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
-      <div className="flex items-center gap-6 px-6 py-3 rounded-full bg-surface/50 backdrop-blur-2xl border border-white/60 dark:border-white/10 shadow-antigravity">
+    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 md:hidden">
+      <div className="flex items-center gap-6 px-6 py-3 rounded-full bg-surface/80 backdrop-blur-2xl border border-white/60 dark:border-white/10 shadow-antigravity">
         {navItems.map((item) => {
           const Icon = item.icon;
           const [isActive] = useRoute(item.path);
