@@ -1,17 +1,21 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'wouter';
+import { Link, useLocation } from 'wouter';
 import { api } from '../api';
 import Card from './ui/Card';
 import StatusPill from './ui/StatusPill';
 import Waveform from './Waveform';
 import { Button } from './ui/Button';
+import { useApp } from '../context/AppContext';
 
 export default function Dashboard({ setGlobalState }) {
+  const { t, hasLimitReached, incrementLimit } = useApp();
+  const [, setLocation] = useLocation();
   const [incidents, setIncidents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [simulating, setSimulating] = useState(false);
   const [samples, setSamples] = useState([]);
   const [showSimModal, setShowSimModal] = useState(false);
+  const [sensitive, setSensitive] = useState(false);
 
   const fetchIncidents = async () => {
     try {
@@ -43,12 +47,19 @@ export default function Dashboard({ setGlobalState }) {
   }, []);
 
   const handleSimulate = async (scenarioName) => {
+    if (hasLimitReached()) {
+      setShowSimModal(false);
+      setLocation('/billing');
+      return;
+    }
+
     setShowSimModal(false);
     setSimulating(true);
     setGlobalState('chaotic');
     
     try {
       await api.loadSample(scenarioName);
+      incrementLimit();
       await fetchIncidents();
     } catch (err) {
       console.error(err);
@@ -59,6 +70,12 @@ export default function Dashboard({ setGlobalState }) {
   };
 
   const handleFileUpload = async (e) => {
+    if (hasLimitReached()) {
+      setShowSimModal(false);
+      setLocation('/billing');
+      return;
+    }
+
     const file = e.target.files[0];
     if (!file) return;
     
@@ -75,8 +92,9 @@ export default function Dashboard({ setGlobalState }) {
         await api.submitIncident({
           alert_title: alertTitle,
           log_content: logContent,
-          sensitive: false
+          sensitive: sensitive
         });
+        incrementLimit();
         await fetchIncidents();
       } catch (err) {
         console.error("Failed to submit custom log:", err);
@@ -97,16 +115,16 @@ export default function Dashboard({ setGlobalState }) {
     <div className="max-w-5xl mx-auto py-2 sm:py-4">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 mb-8 sm:mb-10 border-b border-border-light pb-6">
         <div>
-          <h1 className="text-3xl sm:text-4xl font-serif text-text-primary tracking-wide mb-2">Incident Feed</h1>
-          <p className="text-text-muted font-light text-sm">Live view of incoming alerts and resolutions.</p>
+          <h1 className="text-3xl sm:text-4xl font-serif text-text-primary tracking-wide mb-2">{t('dashboard.feedTitle')}</h1>
+          <p className="text-text-muted font-light text-sm">{t('dashboard.feedSub')}</p>
         </div>
         <Button
           onClick={() => setShowSimModal(true)}
           disabled={simulating}
           variant="primary"
-          className="w-full sm:w-auto"
+          className="w-full sm:w-auto font-mono text-xs uppercase tracking-wider font-bold"
         >
-          {simulating ? 'Simulating...' : 'Simulate Incident'}
+          {simulating ? t('dashboard.runningAnalysis') : t('dashboard.simulateBtn')}
         </Button>
       </div>
 
@@ -114,14 +132,14 @@ export default function Dashboard({ setGlobalState }) {
         <div className="fixed inset-0 bg-[#0A0E1A]/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
           <Card className="w-full max-w-lg border-none shadow-antigravity relative overflow-hidden bg-surface animate-in fade-in zoom-in-95 duration-200" animateHover={false}>
              <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary to-accent-warm" />
-             <h3 className="font-serif text-3xl font-medium tracking-wide mb-3 text-text-primary">Simulate Active Incident</h3>
-             <p className="text-sm text-text-muted font-light mb-6 leading-relaxed">Select a sample log scenario or upload a custom log file to inject into the system. Halcyon will analyze and resolve it in real-time.</p>
+             <h3 className="font-serif text-3xl font-medium tracking-wide mb-3 text-text-primary">{t('dashboard.simModalTitle')}</h3>
+             <p className="text-sm text-text-muted font-light mb-6 leading-relaxed">{t('dashboard.simModalSub')}</p>
              <div className="space-y-3 max-h-56 overflow-y-auto pr-1">
                 {samples.map(s => (
                   <button 
                     key={s.name}
                     onClick={() => handleSimulate(s.name)}
-                    className="w-full text-left p-3.5 rounded-2xl bg-background border border-border-light hover:border-primary/40 hover:shadow-sm transition-all font-mono text-sm font-medium text-text-primary group"
+                    className="w-full text-left p-3.5 rounded-2xl bg-background border border-border-light hover:border-primary/40 hover:shadow-sm transition-all font-mono text-sm font-medium text-text-primary group cursor-pointer"
                   >
                     <span className="group-hover:text-primary transition-colors">{s.name}.log</span>
                   </button>
@@ -135,8 +153,22 @@ export default function Dashboard({ setGlobalState }) {
                    <div className="w-full border-t border-border-light/60" />
                 </div>
                 <div className="relative flex justify-center text-[10px] uppercase font-mono tracking-wider">
-                   <span className="bg-surface px-3 text-text-muted">Or upload custom log</span>
+                   <span className="bg-surface px-3 text-text-muted">{t('dashboard.uploadBtn')}</span>
                 </div>
+             </div>
+
+             {/* PII Proxy Toggle */}
+             <div className="flex items-center gap-3.5 mb-4 px-1">
+               <input
+                 type="checkbox"
+                 id="sensitive-toggle"
+                 checked={sensitive}
+                 onChange={(e) => setSensitive(e.target.checked)}
+                 className="w-4 h-4 text-accent-warm bg-background border-border-light rounded focus:ring-accent-warm/40 focus:ring-offset-background cursor-pointer"
+               />
+               <label htmlFor="sensitive-toggle" className="font-mono text-xs text-text-muted cursor-pointer hover:text-text-primary select-none">
+                 {t('dashboard.sensitiveToggle')}
+               </label>
              </div>
 
              {/* File Upload Button / Input */}
@@ -157,7 +189,7 @@ export default function Dashboard({ setGlobalState }) {
              </div>
 
              <div className="mt-6 text-right">
-                <button onClick={() => setShowSimModal(false)} className="text-sm font-semibold text-text-muted hover:text-text-primary transition-colors">Cancel</button>
+                <button onClick={() => setShowSimModal(false)} className="text-sm font-semibold text-text-muted hover:text-text-primary transition-colors cursor-pointer">{t('dashboard.close')}</button>
              </div>
           </Card>
         </div>
@@ -172,7 +204,7 @@ export default function Dashboard({ setGlobalState }) {
           </div>
         ) : incidents.length === 0 ? (
           <Card className="text-center py-24 bg-surface/50 border-dashed" animateHover={false}>
-            <p className="text-text-muted font-light text-lg">No incidents recorded yet.</p>
+            <p className="text-text-muted font-light text-lg">{t('dashboard.emptyState')}</p>
           </Card>
         ) : (
           incidents.map((inc) => (

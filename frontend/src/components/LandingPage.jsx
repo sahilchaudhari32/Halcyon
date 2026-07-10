@@ -5,16 +5,25 @@ import { Activity, ShieldCheck, Cpu, ArrowRight, Zap } from 'lucide-react';
 import { Button } from './ui/Button';
 import Card from './ui/Card';
 import logo from '../assets/logo.png';
+import { useApp } from '../context/AppContext';
 
 export default function LandingPage({ onEnterApp }) {
+  const { t, language, setLanguage } = useApp();
   const [heroState, setHeroState] = useState('chaotic');
-  const [statusText, setStatusText] = useState('CHAOTIC OUTAGE');
+  const [statusText, setStatusText] = useState('');
   const [activeFaq, setActiveFaq] = useState(null);
+
+  useEffect(() => {
+    if (heroState === 'chaotic') {
+      setStatusText(t('landing.stateChaotic'));
+    } else {
+      setStatusText(t('landing.stateResolved'));
+    }
+  }, [heroState, language]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setHeroState('calm');
-      setStatusText('RESOLVED (98% MATCH)');
     }, 2000);
     return () => clearTimeout(timer);
   }, []);
@@ -22,29 +31,29 @@ export default function LandingPage({ onEnterApp }) {
   const features = [
     {
       icon: <Activity className="w-5 h-5 text-primary" />,
-      title: "Hindsight Memory Match",
-      desc: "Instantly maps incoming trace dumps to known past incident signatures, eliminating redundant on-call root-cause analysis."
+      title: t('sidebar.hindsight'),
+      desc: t('landing.faq1A')
     },
     {
       icon: <Cpu className="w-5 h-5 text-accent-warm" />,
       title: "cascadeflow Routing",
-      desc: "Routes novel incidents through a dynamic drafter-verifier LLM pipeline, optimizing API cost by up to 80% while retaining logic quality."
+      desc: t('landing.faq2A')
     },
     {
       icon: <ShieldCheck className="w-5 h-5 text-secondary" />,
-      title: "Compliance-Gated Proxy",
-      desc: "Automatically detects PII or sensitive keys in raw log dumps and routes the payload to locally-gated models to avoid compliance leaks."
+      title: t('incident.complianceHeader'),
+      desc: t('billing.featuresPro.2')
     }
   ];
 
   const faqs = [
     {
-      q: "How does the memory recall mechanism work?",
-      a: "Halcyon indexes resolutions in Hindsight, a specialized local memory bank. When a new crash happens, we run a semantic vector query to fetch past solutions."
+      q: t('landing.faq1Q'),
+      a: t('landing.faq1A')
     },
     {
-      q: "What is cascadeflow?",
-      a: "cascadeflow is our model routing framework. It feeds logs to a fast, cheap model first. If it passes verification, we resolve it. If not, it escalates to a reasoning model."
+      q: t('landing.faq2Q'),
+      a: t('landing.faq2A')
     }
   ];
 
@@ -81,18 +90,35 @@ export default function LandingPage({ onEnterApp }) {
         </div>
 
         <nav className="hidden md:flex items-center gap-8 text-xs font-semibold uppercase tracking-wider text-text-muted">
-          <a href="#features" className="hover:text-primary transition-colors">Architecture</a>
-          <a href="#before-after" className="hover:text-primary transition-colors">Before/After</a>
-          <a href="#faq" className="hover:text-primary transition-colors">FAQ</a>
+          <a href="#features" className="hover:text-primary transition-colors">{t('nav.architecture')}</a>
+          <a href="#before-after" className="hover:text-primary transition-colors">{t('nav.beforeAfter')}</a>
+          <a href="#faq" className="hover:text-primary transition-colors">{t('nav.faq')}</a>
         </nav>
 
-        <Button 
-          onClick={onEnterApp}
-          variant="primary"
-          className="px-3 py-1.5 sm:px-5 sm:py-2 text-[10px] sm:text-xs"
-        >
-          Enter Dashboard &rarr;
-        </Button>
+        <div className="flex items-center gap-3">
+          {/* Language Selector */}
+          <div className="relative">
+            <select
+              value={language}
+              onChange={(e) => setLanguage(e.target.value)}
+              className="appearance-none bg-surface border border-border-light hover:border-primary/20 px-3.5 py-2 pr-8 rounded-xl font-mono text-[10px] font-bold text-text-muted hover:text-text-primary focus:outline-none focus:ring-1 focus:ring-primary/20 transition-all cursor-pointer shadow-sm"
+              aria-label="Select language"
+            >
+              <option value="en">EN</option>
+              <option value="hi">HI</option>
+              <option value="gu">GU</option>
+            </select>
+            <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-text-muted/60 font-bold text-[8px] font-mono">&darr;</div>
+          </div>
+
+          <Button 
+            onClick={onEnterApp}
+            variant="primary"
+            className="px-3 py-1.5 sm:px-5 sm:py-2 text-[10px] sm:text-xs"
+          >
+            {t('nav.enterDashboard')} &rarr;
+          </Button>
+        </div>
       </header>
 
       {/* Hero Section */}
@@ -100,12 +126,12 @@ export default function LandingPage({ onEnterApp }) {
         
         {/* Dynamic Title */}
         <h1 className="text-4xl sm:text-6xl md:text-8xl font-serif text-text-primary tracking-wide mb-6 sm:mb-8 leading-tight max-w-4xl">
-          Incident memory, <br className="hidden sm:block" />
-          <span className="italic font-normal text-primary">calmed.</span>
+          {t('landing.titlePrefix')} <br className="hidden sm:block" />
+          <span className="italic font-normal text-primary">{t('landing.titleSuffix')}</span>
         </h1>
         
         <p className="text-base sm:text-lg md:text-xl text-text-muted max-w-2xl font-light mb-12 sm:mb-16 leading-relaxed">
-          Instantly resolve system alerts by tapping into an active, self-learning institutional memory of past fixes.
+          {t('landing.subtitle')}
         </p>
 
         {/* Premium Waveform Console Interface */}
@@ -116,11 +142,11 @@ export default function LandingPage({ onEnterApp }) {
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-xs font-mono border-b border-border-light pb-4 mb-6">
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-primary animate-pulse" />
-              <span className="font-semibold text-text-primary">HALCYON CORE OSCILLOSCOPE</span>
+              <span className="font-semibold text-text-primary">{t('landing.coreOscilloscope')}</span>
             </div>
             <div className="flex items-center gap-4 text-text-muted self-end sm:self-auto text-[10px] sm:text-xs">
-              <span>SPAN: 1200ms</span>
-              <span>SAMPLING: 44.1kHz</span>
+              <span>{t('landing.span')}</span>
+              <span>{t('landing.sampling')}</span>
             </div>
           </div>
 
@@ -146,7 +172,7 @@ export default function LandingPage({ onEnterApp }) {
                       : 'bg-accent-warm/10 border-accent-warm/20 text-accent-warm'
                   }`}
                 >
-                  SYSTEM_STATE: {statusText}
+                  {statusText}
                 </motion.div>
               </AnimatePresence>
             </div>
@@ -156,10 +182,10 @@ export default function LandingPage({ onEnterApp }) {
         {/* Comparative Section */}
         <section id="before-after" className="w-full mb-20 sm:mb-32 text-left scroll-mt-24">
           <h2 className="text-3xl sm:text-4xl font-serif text-text-primary mb-4 tracking-wide text-center">
-            How it works in practice
+            {t('landing.howItWorksTitle')}
           </h2>
           <p className="text-center text-text-muted font-light mb-16 max-w-xl mx-auto">
-            Witness the comparison between raw CLI chaos and Halcyon's memory-matching resolution.
+            {t('landing.howItWorksSub')}
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
@@ -168,14 +194,14 @@ export default function LandingPage({ onEnterApp }) {
             <div className="bg-[#0D0F11] border border-border-light/20 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-antigravity relative overflow-hidden flex flex-col h-full">
               <div className="absolute top-0 left-0 w-full h-[3px] bg-red-400/80" />
               <div className="flex items-center justify-between border-b border-border-light/10 pb-4 mb-6">
-                <span className="font-mono text-xs text-slate-400 font-medium">TERMINAL: stdin_log_pipeline</span>
-                <span className="font-mono text-xs text-red-400 font-bold uppercase tracking-wider">Outage Triggered</span>
+                <span className="font-mono text-xs text-slate-400 font-medium">{t('landing.terminalTitle')}</span>
+                <span className="font-mono text-xs text-red-400 font-bold uppercase tracking-wider">{t('landing.outageTriggered')}</span>
               </div>
               <pre className="font-mono text-sm leading-relaxed text-red-300/80 overflow-x-auto whitespace-pre-wrap flex-1">
                 <span className="text-red-500 font-bold">[CRITICAL]</span> OutOfMemoryError in api-worker-91<br/>
                 Memory cgroup limit reached: 2.0GB<br/>
                 Process 89412 killed by OOM-killer<br/>
-                <span className="text-slate-500 italic mt-4 block">Waiting on-call escalation to level-2 engineer...</span>
+                <span className="text-slate-500 italic mt-4 block">{t('landing.waitingEscalation')}</span>
               </pre>
             </div>
 
@@ -183,19 +209,19 @@ export default function LandingPage({ onEnterApp }) {
             <Card className="border border-accent-warm/20 relative overflow-hidden flex flex-col h-full animateHover" animateHover={true}>
               <div className="absolute top-0 left-0 w-full h-[3px] bg-accent-warm" />
               <div className="flex items-center justify-between border-b border-border-light pb-4 mb-6">
-                <span className="font-mono text-xs text-text-primary font-bold">HALCYON COGNITIVE RETRIEVAL</span>
-                <span className="font-mono text-xs text-accent-warm font-bold uppercase tracking-wider">Auto Resolved</span>
+                <span className="font-mono text-xs text-text-primary font-bold">{t('landing.halcyonRetrieval')}</span>
+                <span className="font-mono text-xs text-accent-warm font-bold uppercase tracking-wider">{t('landing.autoResolved')}</span>
               </div>
               
               <div className="space-y-6 flex-1">
                 <div className="bg-background border border-border-light p-4 rounded-2xl flex items-center gap-3">
                   <div className="w-2 h-2 rounded-full bg-accent-warm animate-ping" />
-                  <span className="font-mono text-sm text-text-primary font-bold">100% MEMORY MATCH : INC-0042</span>
+                  <span className="font-mono text-sm text-text-primary font-bold">{t('landing.memoryMatch')}</span>
                 </div>
                 <p className="text-sm font-mono text-text-primary leading-relaxed bg-accent-warm/5 border border-accent-warm/15 p-4 rounded-2xl">
-                  <strong>Suggested Fix:</strong> Heap size was insufficient. Increase pod limit to 4.0GB and adjust JVM heap flags.
+                  <strong>Suggested Fix:</strong> {t('landing.suggestedFix')}
                 </p>
-                <div className="text-xs font-mono font-bold text-accent-warm">DOWNTIME SAVED: 18 minutes (Escalation bypassed)</div>
+                <div className="text-xs font-mono font-bold text-accent-warm">{t('landing.downtimeSaved')}</div>
               </div>
             </Card>
           </div>
@@ -204,7 +230,7 @@ export default function LandingPage({ onEnterApp }) {
         {/* Feature Cards Grid */}
         <section id="features" className="w-full mb-20 sm:mb-32 scroll-mt-24">
           <h2 className="text-3xl sm:text-4xl font-serif text-text-primary mb-8 sm:mb-12 tracking-wide">
-            Cognitive Infrastructure Architecture
+            {t('landing.archTitle')}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {features.map((f, i) => (
@@ -221,7 +247,7 @@ export default function LandingPage({ onEnterApp }) {
 
         {/* FAQ Accordion */}
         <section id="faq" className="w-full max-w-3xl mb-16 scroll-mt-24 text-left">
-          <h2 className="text-3xl sm:text-4xl font-serif text-text-primary mb-8 sm:mb-12 tracking-wide text-center">Frequently Answered</h2>
+          <h2 className="text-3xl sm:text-4xl font-serif text-text-primary mb-8 sm:mb-12 tracking-wide text-center">{t('landing.faqTitle')}</h2>
           <div className="space-y-4">
             {faqs.map((faq, index) => {
               const isOpen = activeFaq === index;
@@ -265,22 +291,22 @@ export default function LandingPage({ onEnterApp }) {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 grid grid-cols-2 md:grid-cols-4 gap-8 mb-12 md:divide-x divide-border-light">
           <div>
             <div className="text-4xl font-serif text-text-primary mb-1">98%</div>
-            <div className="text-xs font-mono text-text-muted uppercase tracking-wider font-semibold">Faster Resolution</div>
+            <div className="text-xs font-mono text-text-muted uppercase tracking-wider font-semibold">{t('landing.fasterResolution')}</div>
           </div>
           <div>
             <div className="text-4xl font-serif text-text-primary mb-1">100x</div>
-            <div className="text-xs font-mono text-text-muted uppercase tracking-wider font-semibold">Cheaper Inference</div>
+            <div className="text-xs font-mono text-text-muted uppercase tracking-wider font-semibold">{t('landing.cheaperInference')}</div>
           </div>
           <div>
             <div className="text-4xl font-serif text-text-primary mb-1">Zero</div>
-            <div className="text-xs font-mono text-text-muted uppercase tracking-wider font-semibold">Compliance Risks</div>
+            <div className="text-xs font-mono text-text-muted uppercase tracking-wider font-semibold">{t('landing.complianceRisks')}</div>
           </div>
           <div>
             <div className="text-4xl font-serif text-accent-warm mb-1">Infinite</div>
-            <div className="text-xs font-mono text-text-muted uppercase tracking-wider font-semibold">Institutional Memory</div>
+            <div className="text-xs font-mono text-text-muted uppercase tracking-wider font-semibold">{t('landing.instMemory')}</div>
           </div>
         </div>
-        <p className="text-xs text-text-muted font-light">&copy; 2026 Halcyon. Built for the Hackathon.</p>
+        <p className="text-xs text-text-muted font-light">&copy; 2026 Halcyon. {t('landing.builtForHackathon')}</p>
       </footer>
     </div>
   );

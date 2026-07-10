@@ -5,8 +5,10 @@ import { Sidebar } from './Sidebar';
 import { FloatingDock } from './FloatingDock';
 import Waveform from '../Waveform';
 import logo from '../../assets/logo.png';
+import { useApp } from '../../context/AppContext';
 
 export default function AppShell({ children, systemState }) {
+  const { t, language, setLanguage } = useApp();
   const [isDark, setIsDark] = useState(false);
 
   // Initialize theme from saved preference or default to light (as per request)
@@ -68,7 +70,9 @@ export default function AppShell({ children, systemState }) {
         <header className="flex items-center justify-between w-full h-20 px-4 md:px-8 border-b border-border-light bg-surface/30 backdrop-blur-md select-none sticky top-0 z-30">
           {/* Desktop Title */}
           <div className="hidden md:block">
-            <h2 className="text-xs font-mono font-bold tracking-widest text-text-primary uppercase">NOC OPERATIONAL TELEMETRY</h2>
+            <h2 className="text-xs font-mono font-bold tracking-widest text-text-primary uppercase">
+              {t('dashboard.feedTitle')} - {t('dashboard.tableTitle')}
+            </h2>
           </div>
 
           {/* Mobile Title / Logo */}
@@ -87,6 +91,21 @@ export default function AppShell({ children, systemState }) {
               <span className={`font-mono text-[9px] md:text-[10px] font-bold uppercase tracking-wider ${systemState === 'chaotic' ? 'text-primary animate-pulse' : 'text-accent-warm'}`}>
                 {systemState === 'chaotic' ? 'UNSTABLE' : 'STABLE'}
               </span>
+            </div>
+
+            {/* Language Selector */}
+            <div className="relative">
+              <select
+                value={language}
+                onChange={(e) => setLanguage(e.target.value)}
+                className="appearance-none bg-surface border border-border-light hover:border-primary/20 px-3.5 py-2 pr-8 rounded-xl font-mono text-[10px] font-bold text-text-muted hover:text-text-primary focus:outline-none focus:ring-1 focus:ring-primary/20 transition-all cursor-pointer shadow-sm"
+                aria-label="Select language"
+              >
+                <option value="en">EN</option>
+                <option value="hi">HI</option>
+                <option value="gu">GU</option>
+              </select>
+              <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-text-muted/60 font-bold text-[8px] font-mono">&darr;</div>
             </div>
 
             {/* Config button (styled like a NOC terminal toggle) */}

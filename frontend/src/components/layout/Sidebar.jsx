@@ -3,12 +3,15 @@ import { Link, useRoute } from 'wouter';
 import { motion } from 'framer-motion';
 import { Activity, Cpu, FileText, Shield } from 'lucide-react';
 import logo from '../../assets/logo.png';
+import { useApp } from '../../context/AppContext';
 
 export const Sidebar = () => {
+  const { t, subscription, limitCount, maxLogs } = useApp();
+  
   const navItems = [
-    { path: '/', label: 'Incident Feed', icon: Activity },
-    { path: '/memory', label: 'Hindsight Memory', icon: Cpu },
-    { path: '/audit', label: 'Audit Trail', icon: FileText }
+    { path: '/', label: t('sidebar.incFeed'), icon: Activity },
+    { path: '/memory', label: t('sidebar.hindsight'), icon: Cpu },
+    { path: '/audit', label: t('sidebar.audit'), icon: FileText }
   ];
 
   return (
@@ -56,16 +59,42 @@ export const Sidebar = () => {
         </nav>
       </div>
 
+      {/* Sidebar Subscription Tier Widget */}
+      <div className="mx-4 p-3 rounded-xl border border-border-light bg-surface/50 font-mono text-[10px] space-y-2 mb-2">
+        <div className="flex justify-between items-center">
+          <span className="text-text-muted font-bold uppercase tracking-wider">{t('sidebar.subscription')}:</span>
+          <span className={`font-bold tracking-widest px-1.5 py-0.5 rounded text-[8px] border uppercase ${
+            subscription === 'pro' 
+              ? 'bg-accent-warm/15 text-accent-warm border-accent-warm/30' 
+              : 'bg-primary/10 text-primary border-primary/20'
+          }`}>
+            {subscription === 'pro' ? t('sidebar.proTier') : t('sidebar.freeTier')}
+          </span>
+        </div>
+        
+        {subscription === 'free' && (
+          <div className="text-text-muted/80 leading-relaxed text-[9px]">
+            {t('sidebar.limitText', { count: limitCount, max: maxLogs })}
+          </div>
+        )}
+        
+        <Link href="/billing">
+          <a className="block w-full text-center py-1.5 rounded-lg bg-background border border-border-light hover:border-primary/20 hover:text-text-primary transition-all text-[9px] font-bold uppercase tracking-wider mt-1 focus:outline-none cursor-pointer">
+            {subscription === 'pro' ? t('sidebar.billing') : t('sidebar.upgradeBtn')}
+          </a>
+        </Link>
+      </div>
+
       {/* Sidebar Footer */}
       <div className="p-4 border-t border-border-light bg-background/20 font-mono text-[10px] space-y-3">
         <div className="flex items-center gap-2 text-text-muted">
           <Shield className="w-3.5 h-3.5 text-accent-warm" />
-          <span className="font-bold">COMPLIANCE ENGINE:</span>
-          <span className="text-accent-warm font-bold">ONLINE</span>
+          <span className="font-bold">{t('sidebar.complianceEngine')}</span>
+          <span className="text-accent-warm font-bold">{t('sidebar.online')}</span>
         </div>
         <div className="text-text-muted/50 text-[9px] tracking-wider leading-relaxed">
-          SECURE SANDBOX NODE #8491<br/>
-          API VERSION: v1.0.4-PROD
+          {t('sidebar.sandboxNode')}<br/>
+          {t('sidebar.apiVersion')}
         </div>
       </div>
     </aside>
