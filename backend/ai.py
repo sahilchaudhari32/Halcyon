@@ -52,7 +52,6 @@ _groq_client: Optional[Groq] = _configure_groq_client()
 
 _cascade_agent = None
 
-
 def _configure_cascade():
     """Configure the cascadeflow CascadeAgent if enabled and available."""
     global _cascade_agent
