@@ -1,14 +1,10 @@
 # Halcyon — Intelligent Log Analytics & Resolution Gateway
 
-<p align="center">
-  <img src="banner.svg" alt="Halcyon Banner" width="100%" style="max-width: 800px; border-radius: 16px;" />
-</p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Frontend-React%20%2B%20Vite-2EC4B6?style=for-the-badge&logo=react&logoColor=white" alt="React-Vite" />
   <img src="https://img.shields.io/badge/Backend-FastAPI-8CA596?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI" />
   <img src="https://img.shields.io/badge/Database-SQLite-E8935B?style=for-the-badge&logo=sqlite&logoColor=white" alt="SQLite" />
-  <img src="https://img.shields.io/badge/Motion--Graphics-Framer--Motion%20%2B%20Canvas-EE4D2D?style=for-the-badge&logo=html5&logoColor=white" alt="Motion Graphics" />
 </p>
 
 ---
