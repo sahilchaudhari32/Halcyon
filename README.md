@@ -1,70 +1,7 @@
 # Halcyon — Intelligent Log Analytics & Resolution Gateway
 
 <p align="center">
-  <svg xmlns="http://www.w3.org/2005/svg" viewBox="0 0 800 240" width="100%" style="border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); max-width: 800px;">
-    <!-- Dark Space/Atmospheric Background -->
-    <rect width="800" height="240" rx="16" fill="#0b0e11"/>
-    
-    <!-- Fine Grid Lines representing diagnostic system -->
-    <defs>
-      <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
-        <path d="M 32 0 L 0 0 0 32" fill="none" stroke="rgba(255, 255, 255, 0.03)" stroke-width="1"/>
-      </pattern>
-      
-      <!-- Linear Gradients for Waves -->
-      <linearGradient id="waveTeal" x1="0%" y1="0%" x2="100%" y2="0%">
-        <stop offset="0%" stop-color="#2EC4B6" stop-opacity="0.0"/>
-        <stop offset="25%" stop-color="#2EC4B6" stop-opacity="0.9"/>
-        <stop offset="75%" stop-color="#8CA596" stop-opacity="0.9"/>
-        <stop offset="100%" stop-color="#2EC4B6" stop-opacity="0.0"/>
-      </linearGradient>
-      
-      <linearGradient id="waveAmber" x1="0%" y1="0%" x2="100%" y2="0%">
-        <stop offset="0%" stop-color="#E8935B" stop-opacity="0.0"/>
-        <stop offset="50%" stop-color="#E29A76" stop-opacity="0.85"/>
-        <stop offset="100%" stop-color="#E8935B" stop-opacity="0.0"/>
-      </linearGradient>
-      
-      <filter id="glow">
-        <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
-        <feMerge>
-          <feMergeNode in="coloredBlur"/>
-          <feMergeNode in="SourceGraphic"/>
-        </feMerge>
-      </filter>
-    </defs>
-    
-    <!-- Apply Grid -->
-    <rect width="800" height="240" rx="16" fill="url(#grid)"/>
-    
-    <!-- Ambient Radial Light Glows -->
-    <circle cx="150" cy="120" r="140" fill="#2EC4B6" opacity="0.06" filter="url(#glow)"/>
-    <circle cx="650" cy="120" r="120" fill="#E8935B" opacity="0.06" filter="url(#glow)"/>
-    
-    <!-- Oscilloscope Waves (Motion graphic static frames) -->
-    <!-- Calm Wave 1 -->
-    <path d="M 0 120 C 100 80, 200 80, 300 120 C 400 160, 500 160, 600 120 C 700 80, 800 120" fill="none" stroke="url(#waveTeal)" stroke-width="4.5" filter="url(#glow)" opacity="0.9"/>
-    
-    <!-- Calm Wave 2 (Subtle shift) -->
-    <path d="M 0 120 C 80 140, 180 140, 280 120 C 380 100, 480 100, 580 120 C 680 140, 800 120" fill="none" stroke="#2EC4B6" stroke-width="1.5" opacity="0.45"/>
-    
-    <!-- Chaotic Wave (Faded overlay showing anomaly) -->
-    <path d="M 50 120 Q 120 40, 200 200 T 350 70 T 500 170 T 650 90 T 750 120" fill="none" stroke="url(#waveAmber)" stroke-width="2.5" filter="url(#glow)" opacity="0.7"/>
-    
-    <!-- Glowing Status Dots -->
-    <circle cx="45" cy="45" r="5" fill="#2EC4B6" filter="url(#glow)"/>
-    <text x="60" y="49" font-family="'Courier New', monospace" font-size="12" fill="#8CA596" font-weight="bold">SYSTEM: LOG_STREAMING_STABLE</text>
-    
-    <circle cx="755" cy="45" r="5" fill="#E8935B" filter="url(#glow)"/>
-    <text x="740" y="49" font-family="'Courier New', monospace" font-size="12" fill="#E29A76" font-weight="bold" text-anchor="end">ANOMALY_DETECTION: ONLINE</text>
-    
-    <!-- Logo & Title text -->
-    <text x="50%" y="125" dominant-baseline="middle" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="44" font-weight="800" fill="#ffffff" letter-spacing="8" filter="url(#glow)">H A L C Y O N</text>
-    <text x="50%" y="165" dominant-baseline="middle" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="500" fill="#a0aec0" letter-spacing="3">AI-POWERED LOG ORCHESTRATION &amp; ANALYSIS</text>
-    
-    <!-- Accent line at bottom -->
-    <line x1="0" y1="238" x2="800" y2="238" stroke="url(#waveTeal)" stroke-width="4"/>
-  </svg>
+  <img src="banner.svg" alt="Halcyon Banner" width="100%" style="max-width: 800px; border-radius: 16px;" />
 </p>
 
 <p align="center">

@@ -14,6 +14,7 @@ function hexToRgba(hex, alpha) {
 export default function Waveform({ state = 'calm', size = 'small', color }) {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
+  const currentRef = useRef(null);
   
   // Size mapping
   const staticWidth = size === 'large' ? 800 : size === 'medium' ? 140 : 70;
@@ -68,7 +69,10 @@ export default function Waveform({ state = 'calm', size = 'small', color }) {
       };
     };
 
-    let current = getTargets(state);
+    if (!currentRef.current) {
+      currentRef.current = getTargets(state);
+    }
+    const current = currentRef.current;
     
     const render = () => {
       const target = getTargets(state);
