@@ -7,6 +7,7 @@ import Waveform from './Waveform';
 import { Button } from './ui/Button';
 import { useApp } from '../context/AppContext';
 import TrustMeter from './ui/TrustMeter';
+import { Cpu, DollarSign, AlertTriangle, ShieldCheck } from 'lucide-react';
 
 export default function Dashboard({ setGlobalState }) {
   const { t, hasLimitReached, incrementLimit } = useApp();
@@ -142,37 +143,68 @@ export default function Dashboard({ setGlobalState }) {
         </Button>
       </div>
 
-      {/* Dynamic Saving Rollup Banner */}
-      {stats && stats.ai_decisions?.memory_hits > 0 && (
-        <div className="mb-8 bg-gradient-to-r from-accent-warm/15 via-[#2EC4B6]/10 to-transparent border border-border-light p-4 sm:p-5 rounded-3xl shadow-sm flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-left">
-          <div className="flex items-center gap-3">
-            <span className="flex h-3 w-3 relative">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#2EC4B6] opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-[#2EC4B6]"></span>
+      {/* NOC Telemetry Grid */}
+      {stats && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+          {/* Card 1: Active Incidents */}
+          <Card className="flex flex-col p-5 relative overflow-hidden" animateHover={true}>
+            <div className="absolute top-0 left-0 w-full h-[3px] bg-primary" />
+            <div className="flex justify-between items-start mb-3">
+              <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-text-muted">Active Incidents</span>
+              <AlertTriangle className={`w-4 h-4 ${stats.open_incidents > 0 ? 'text-primary animate-pulse' : 'text-text-muted'}`} />
+            </div>
+            <h2 className="text-3xl font-serif text-text-primary font-bold tracking-tight mb-1">
+              {stats.open_incidents}
+            </h2>
+            <span className="text-[10px] font-mono text-text-muted uppercase">
+              {stats.solved_incidents} of {stats.total_incidents} resolved
             </span>
-            <div>
-              <h4 className="font-serif text-base text-text-primary font-bold">Halcyon Cognitive Performance</h4>
-              <p className="text-[11px] text-text-muted mt-0.5">
-                Cognitive auto-routing and Hindsight memory matching bypasses manual resolution stages.
-              </p>
+          </Card>
+
+          {/* Card 2: Resolution Rate */}
+          <Card className="flex flex-col p-5 relative overflow-hidden" animateHover={true}>
+            <div className="absolute top-0 left-0 w-full h-[3px] bg-accent-warm" />
+            <div className="flex justify-between items-start mb-3">
+              <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-text-muted">Auto-Mitigation Rate</span>
+              <ShieldCheck className="w-4 h-4 text-accent-warm" />
             </div>
-          </div>
-          <div className="flex gap-4 sm:gap-6 font-mono shrink-0">
-            <div className="text-center sm:text-right border-r border-border-light pr-4 sm:pr-6">
-              <span className="text-[9px] uppercase tracking-wider text-text-muted block">Total Saved</span>
-              <span className="text-lg font-bold text-[#2EC4B6]">
-                ${(stats.ai_decisions.memory_hits * 0.045).toFixed(2)}
-              </span>
+            <h2 className="text-3xl font-serif text-text-primary font-bold tracking-tight mb-1">
+              {stats.resolution_rate}%
+            </h2>
+            <span className="text-[10px] font-mono text-text-muted uppercase">Cognitive auto-resolved</span>
+          </Card>
+
+          {/* Card 3: Memory Hit Rate */}
+          <Card className="flex flex-col p-5 relative overflow-hidden" animateHover={true}>
+            <div className="absolute top-0 left-0 w-full h-[3px] bg-secondary" />
+            <div className="flex justify-between items-start mb-3">
+              <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-text-muted">Hindsight Cache Hit</span>
+              <Cpu className="w-4 h-4 text-secondary" />
             </div>
-            <div className="text-center sm:text-right">
-              <span className="text-[9px] uppercase tracking-wider text-text-muted block">MTTR Bypassed</span>
-              <span className="text-lg font-bold text-[#2EC4B6]">
-                {stats.ai_decisions.memory_hits * 18 >= 60
-                  ? `${((stats.ai_decisions.memory_hits * 18) / 60).toFixed(1)} hours`
-                  : `${stats.ai_decisions.memory_hits * 18} mins`}
-              </span>
+            <h2 className="text-3xl font-serif text-text-primary font-bold tracking-tight mb-1">
+              {stats.ai_decisions?.memory_hit_rate || '0.0'}%
+            </h2>
+            <span className="text-[10px] font-mono text-text-muted uppercase">
+              {stats.ai_decisions?.memory_hits || 0} vector memory matches
+            </span>
+          </Card>
+
+          {/* Card 4: Compute Savings */}
+          <Card className="flex flex-col p-5 relative overflow-hidden animateHover" animateHover={true}>
+            <div className="absolute top-0 left-0 w-full h-[3px] bg-indigo-400" />
+            <div className="flex justify-between items-start mb-3">
+              <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-text-muted">Compute Savings</span>
+              <DollarSign className="w-4 h-4 text-indigo-400" />
             </div>
-          </div>
+            <h2 className="text-3xl font-serif text-text-primary font-bold tracking-tight mb-1 text-indigo-400">
+              ${((stats.ai_decisions?.memory_hits || 0) * 0.045).toFixed(2)}
+            </h2>
+            <span className="text-[10px] font-mono text-text-muted uppercase">
+              {stats.ai_decisions?.memory_hits * 18 >= 60
+                ? `${((stats.ai_decisions.memory_hits * 18) / 60).toFixed(1)} hours MTTR saved`
+                : `${(stats.ai_decisions?.memory_hits || 0) * 18} mins MTTR saved`}
+            </span>
+          </Card>
         </div>
       )}
 

@@ -49,6 +49,17 @@ export default function AppShell({ children, systemState }) {
     }
   }, []);
 
+  // Global mouse coordinates listener for neon cursor spotlight
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      const { clientX, clientY } = e;
+      document.documentElement.style.setProperty('--mouse-x', `${clientX}px`);
+      document.documentElement.style.setProperty('--mouse-y', `${clientY}px`);
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
   const toggleTheme = () => {
     if (document.documentElement.classList.contains('dark')) {
       document.documentElement.classList.remove('dark');
@@ -66,6 +77,14 @@ export default function AppShell({ children, systemState }) {
       
       {/* NOC Control Room Ambient Gradients */}
       <div className="fixed inset-0 z-0 pointer-events-none" aria-hidden="true">
+        {/* Dynamic radial mouse-following spotlight */}
+        <div 
+          className="absolute inset-0 opacity-[0.06] dark:opacity-[0.12] mix-blend-screen transition-opacity duration-700 pointer-events-none"
+          style={{
+            background: `radial-gradient(650px circle at var(--mouse-x, 50vw) var(--mouse-y, 40vh), rgba(46, 196, 182, 0.2), rgba(232, 147, 91, 0.05), transparent 70%)`
+          }}
+        />
+
         <motion.div 
           animate={{
             x: [0, 30, -20, 0],
@@ -73,7 +92,7 @@ export default function AppShell({ children, systemState }) {
             scale: [1, 1.05, 0.95, 1],
           }}
           transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -top-[10%] -left-[10%] w-[50vw] h-[50vw] rounded-full blur-[140px] opacity-[0.06] bg-[#2EC4B6]"
+          className="absolute -top-[10%] -left-[10%] w-[50vw] h-[50vw] rounded-full blur-[140px] opacity-[0.04] bg-[#2EC4B6]"
         />
         <motion.div 
           animate={{
@@ -82,7 +101,7 @@ export default function AppShell({ children, systemState }) {
             scale: [1, 0.93, 1.07, 1],
           }}
           transition={{ duration: 32, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[20%] -right-[15%] w-[45vw] h-[45vw] rounded-full blur-[160px] opacity-[0.08] bg-[#E8935B]"
+          className="absolute top-[20%] -right-[15%] w-[45vw] h-[45vw] rounded-full blur-[160px] opacity-[0.05] bg-[#E8935B]"
         />
       </div>
 
