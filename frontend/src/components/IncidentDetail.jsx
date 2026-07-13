@@ -96,10 +96,8 @@ export default function IncidentDetail({ id }) {
   return (
     <div className="max-w-5xl mx-auto py-2 sm:py-4">
       <div className="mb-6 sm:mb-8 border-b border-border-light pb-6">
-        <Link href="/">
-          <a className="text-text-muted hover:text-text-primary text-xs font-semibold uppercase tracking-widest mb-4 sm:mb-6 inline-flex items-center transition-colors cursor-pointer">
-            &larr; <span className="ml-1">Back to Feed</span>
-          </a>
+        <Link href="/" className="text-text-muted hover:text-text-primary text-xs font-semibold uppercase tracking-widest mb-4 sm:mb-6 inline-flex items-center transition-colors cursor-pointer">
+          &larr; <span className="ml-1">Back to Feed</span>
         </Link>
         <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mt-2">
           <div>

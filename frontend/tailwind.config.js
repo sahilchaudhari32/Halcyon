@@ -27,10 +27,10 @@ export default {
         'border-light': 'var(--border-light)'
       },
       fontFamily: {
-        serif: ["Space Grotesk", "sans-serif"], // Map font-serif to Space Grotesk for headings
-        sans: ["Inter", "Geist", "sans-serif"],
+        serif: ["Instrument Serif", "Georgia", "serif"],
+        sans: ["Plus Jakarta Sans", "Inter", "sans-serif"],
         mono: ["JetBrains Mono", "monospace"],
-        display: ["Space Grotesk", "sans-serif"]
+        display: ["Outfit", "sans-serif"]
       },
       boxShadow: {
         antigravity: 'var(--shadow-val-antigravity)',

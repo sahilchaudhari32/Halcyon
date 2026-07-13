@@ -256,38 +256,36 @@ export default function Dashboard({ setGlobalState }) {
           </Card>
         ) : (
           incidents.map((inc) => (
-            <Link key={inc.id} href={`/incident/${inc.id}`}>
-              <a className="block group">
-                <Card className="flex flex-col sm:flex-row sm:items-center sm:justify-between cursor-pointer border border-border-light hover:border-accent-warm/30 transition-all p-4 sm:p-6 gap-4 sm:gap-6" animateHover={true}>
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8 w-full sm:w-auto">
-                    {/* Saturated and larger medium size waveform per card */}
-                    <div className="flex items-center justify-center bg-background border border-border-light/60 p-2.5 rounded-2xl w-full sm:w-44 h-16 shadow-inner relative overflow-hidden flex-shrink-0">
-                      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:10px_10px]" />
-                      <Waveform state={inc.is_solved ? 'calm' : 'chaotic'} size="medium" />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <h3 className="font-serif text-xl sm:text-2xl text-text-primary mb-1.5 tracking-wide truncate">{inc.title}</h3>
-                      <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs font-mono text-text-muted font-medium">
-                        <span>ID: INC-{(inc.id).toString().padStart(4, '0')}</span>
-                        <span>•</span>
-                        <span>{new Date(inc.created_at).toLocaleString()}</span>
-                      </div>
+            <Link key={inc.id} href={`/incident/${inc.id}`} className="block group">
+              <Card className="flex flex-col sm:flex-row sm:items-center sm:justify-between cursor-pointer border border-border-light hover:border-accent-warm/30 transition-all p-4 sm:p-6 gap-4 sm:gap-6" animateHover={true}>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8 w-full sm:w-auto">
+                  {/* Saturated and larger medium size waveform per card */}
+                  <div className="flex items-center justify-center bg-background border border-border-light/60 p-2.5 rounded-2xl w-full sm:w-44 h-16 shadow-inner relative overflow-hidden flex-shrink-0">
+                    <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:10px_10px]" />
+                    <Waveform state={inc.is_solved ? 'calm' : 'chaotic'} size="medium" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <h3 className="font-serif text-xl sm:text-2xl text-text-primary mb-1.5 tracking-wide truncate">{inc.title}</h3>
+                    <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs font-mono text-text-muted font-medium">
+                      <span>ID: INC-{(inc.id).toString().padStart(4, '0')}</span>
+                      <span>•</span>
+                      <span>{new Date(inc.created_at).toLocaleString()}</span>
                     </div>
                   </div>
-                  <div className="self-end sm:self-auto flex-shrink-0 flex flex-col items-end gap-2.5">
-                    {inc.is_solved ? (
-                      <StatusPill status="memory-match" confidence={Math.round((inc.confidence_score || 0) * 100)} />
-                    ) : (
-                      <StatusPill status="escalated" />
-                    )}
-                    <TrustMeter
-                      confidence={Math.round((inc.confidence_score || 0) * 100)}
-                      matchCount={inc.similar_incidents?.length || 0}
-                      state={(inc.similar_incidents?.length > 0) ? 'memory-match' : 'escalated'}
-                    />
-                  </div>
-                </Card>
-              </a>
+                </div>
+                <div className="self-end sm:self-auto flex-shrink-0 flex flex-col items-end gap-2.5">
+                  {inc.is_solved ? (
+                    <StatusPill status="memory-match" confidence={Math.round((inc.confidence_score || 0) * 100)} />
+                  ) : (
+                    <StatusPill status="escalated" />
+                  )}
+                  <TrustMeter
+                    confidence={Math.round((inc.confidence_score || 0) * 100)}
+                    matchCount={inc.similar_incidents?.length || 0}
+                    state={(inc.similar_incidents?.length > 0) ? 'memory-match' : 'escalated'}
+                  />
+                </div>
+              </Card>
             </Link>
           ))
         )}

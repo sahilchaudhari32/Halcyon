@@ -34,26 +34,26 @@ export const Sidebar = () => {
             const [isActive] = useRoute(item.path);
 
             return (
-              <Link key={item.path} href={item.path}>
-                <a
-                  className={`relative flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer text-xs font-mono font-semibold tracking-wide transition-all group focus:outline-none focus:ring-1 focus:ring-primary/20 ${
-                    isActive 
-                      ? 'bg-accent-warm/10 border-l-2 border-accent-warm text-accent-warm shadow-sm' 
-                      : 'text-text-muted hover:text-text-primary hover:bg-background/50 border-l-2 border-transparent'
-                  }`}
-                  aria-label={item.label}
-                >
-                  <Icon className={`w-4.5 h-4.5 transition-transform duration-200 group-hover:scale-105 ${isActive ? 'text-accent-warm' : 'text-text-muted group-hover:text-text-primary'}`} />
-                  <span>{item.label}</span>
+              <Link 
+                key={item.path} 
+                href={item.path}
+                className={`relative flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer text-xs font-mono font-semibold tracking-wide transition-all group focus:outline-none focus:ring-1 focus:ring-primary/20 ${
+                  isActive 
+                    ? 'bg-accent-warm/10 border-l-2 border-accent-warm text-accent-warm shadow-sm' 
+                    : 'text-text-muted hover:text-text-primary hover:bg-background/50 border-l-2 border-transparent'
+                }`}
+                aria-label={item.label}
+              >
+                <Icon className={`w-4.5 h-4.5 transition-transform duration-200 group-hover:scale-105 ${isActive ? 'text-accent-warm' : 'text-text-muted group-hover:text-text-primary'}`} />
+                <span>{item.label}</span>
 
-                  {isActive && (
-                    <motion.div
-                      layoutId="sidebarActiveIndicator"
-                      className="absolute right-3 w-1.5 h-1.5 rounded-full bg-accent-warm"
-                      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                    />
-                  )}
-                </a>
+                {isActive && (
+                  <motion.div
+                    layoutId="sidebarActiveIndicator"
+                    className="absolute right-3 w-1.5 h-1.5 rounded-full bg-accent-warm"
+                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                  />
+                )}
               </Link>
             );
           })}
@@ -79,10 +79,11 @@ export const Sidebar = () => {
           </div>
         )}
         
-        <Link href="/billing">
-          <a className="block w-full text-center py-1.5 rounded-lg bg-background border border-border-light hover:border-primary/20 hover:text-text-primary transition-all text-[9px] font-bold uppercase tracking-wider mt-1 focus:outline-none cursor-pointer">
-            {subscription === 'pro' ? t('sidebar.billing') : t('sidebar.upgradeBtn')}
-          </a>
+        <Link 
+          href="/billing"
+          className="block w-full text-center py-1.5 rounded-lg bg-background border border-border-light hover:border-primary/20 hover:text-text-primary transition-all text-[9px] font-bold uppercase tracking-wider mt-1 focus:outline-none cursor-pointer"
+        >
+          {subscription === 'pro' ? t('sidebar.billing') : t('sidebar.upgradeBtn')}
         </Link>
       </div>
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Waveform from './Waveform';
-import { Activity, ShieldCheck, Cpu, ArrowRight, Zap } from 'lucide-react';
+import { Activity, ShieldCheck, Cpu } from 'lucide-react';
 import { Button } from './ui/Button';
 import Card from './ui/Card';
 import logo from '../assets/logo.png';
@@ -13,18 +13,29 @@ export default function LandingPage({ onEnterApp }) {
   const [statusText, setStatusText] = useState('');
   const [activeFaq, setActiveFaq] = useState(null);
 
+  // Mouse-tracking cursor coordinates for ambient neon spotlight
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      const { clientX, clientY } = e;
+      document.documentElement.style.setProperty('--mouse-x', `${clientX}px`);
+      document.documentElement.style.setProperty('--mouse-y', `${clientY}px`);
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
   useEffect(() => {
     if (heroState === 'chaotic') {
       setStatusText(t('landing.stateChaotic'));
     } else {
       setStatusText(t('landing.stateResolved'));
     }
-  }, [heroState, language]);
+  }, [heroState, language, t]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setHeroState('calm');
-    }, 2000);
+    }, 2200);
     return () => clearTimeout(timer);
   }, []);
 
@@ -57,28 +68,86 @@ export default function LandingPage({ onEnterApp }) {
     }
   ];
 
+  // Motion Variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.08,
+        delayChildren: 0.1
+      }
+    }
+  };
+
+  const wordVariants = {
+    hidden: { opacity: 0, y: 25 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: 'spring',
+        damping: 22,
+        stiffness: 90
+      }
+    }
+  };
+
+  const featureContainerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.12,
+        delayChildren: 0.05
+      }
+    }
+  };
+
+  const fadeInUpVariants = {
+    hidden: { opacity: 0, y: 35 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: 'spring',
+        damping: 25,
+        stiffness: 70
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background text-text-muted font-sans selection:bg-accent-warm/25 overflow-x-hidden relative transition-colors duration-300">
       
-      {/* Decorative atmospheric mesh background (Afterlife Style) */}
+      {/* Interactive mouse spotlight glow & decorative mesh background (Afterlife Style) */}
       <div className="fixed inset-0 z-0 pointer-events-none" aria-hidden="true">
+        {/* Dynamic radial mouse-following spotlight */}
+        <div 
+          className="absolute inset-0 opacity-[0.16] dark:opacity-[0.24] mix-blend-screen transition-opacity duration-700"
+          style={{
+            background: `radial-gradient(650px circle at var(--mouse-x, 50vw) var(--mouse-y, 40vh), rgba(46, 196, 182, 0.2), rgba(232, 147, 91, 0.05), transparent 70%)`
+          }}
+        />
+        
+        {/* Ambient drift meshes */}
         <motion.div 
           animate={{
-            x: [0, 50, -30, 0],
-            y: [0, -40, 30, 0],
-            scale: [1, 1.1, 0.9, 1],
+            x: [0, 40, -25, 0],
+            y: [0, -35, 25, 0],
+            scale: [1, 1.08, 0.92, 1],
           }}
           transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -top-[10%] -left-[10%] w-[55vw] h-[55vw] rounded-full blur-[140px] opacity-[0.10] bg-[#8CA596]"
+          className="absolute -top-[10%] -left-[10%] w-[55vw] h-[55vw] rounded-full blur-[140px] opacity-[0.08] bg-[#8CA596]"
         />
         <motion.div 
           animate={{
-            x: [0, -40, 50, 0],
-            y: [0, 30, -40, 0],
-            scale: [1, 0.95, 1.05, 1],
+            x: [0, -35, 40, 0],
+            y: [0, 25, -35, 0],
+            scale: [1, 0.94, 1.06, 1],
           }}
           transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[25%] -right-[15%] w-[50vw] h-[50vw] rounded-full blur-[160px] opacity-[0.12] bg-[#E29A76]"
+          className="absolute top-[25%] -right-[15%] w-[50vw] h-[50vw] rounded-full blur-[160px] opacity-[0.10] bg-[#E29A76]"
         />
       </div>
 
@@ -89,10 +158,10 @@ export default function LandingPage({ onEnterApp }) {
           <span className="font-serif text-xl sm:text-2xl font-semibold tracking-tight text-text-primary">Halcyon</span>
         </div>
 
-        <nav className="hidden md:flex items-center gap-8 text-xs font-semibold uppercase tracking-wider text-text-muted">
-          <a href="#features" className="hover:text-primary transition-colors">{t('nav.architecture')}</a>
-          <a href="#before-after" className="hover:text-primary transition-colors">{t('nav.beforeAfter')}</a>
-          <a href="#faq" className="hover:text-primary transition-colors">{t('nav.faq')}</a>
+        <nav className="hidden md:flex items-center gap-8 text-xs font-semibold uppercase tracking-wider text-text-muted font-mono">
+          <a href="#features" className="hover:text-primary transition-all duration-200">{t('nav.architecture')}</a>
+          <a href="#before-after" className="hover:text-primary transition-all duration-200">{t('nav.beforeAfter')}</a>
+          <a href="#faq" className="hover:text-primary transition-all duration-200">{t('nav.faq')}</a>
         </nav>
 
         <div className="flex items-center gap-3">
@@ -124,18 +193,44 @@ export default function LandingPage({ onEnterApp }) {
       {/* Hero Section */}
       <main className="relative z-10 pt-32 sm:pt-40 pb-20 px-4 sm:px-6 max-w-5xl mx-auto flex flex-col items-center text-center">
         
-        {/* Dynamic Title */}
-        <h1 className="text-4xl sm:text-6xl md:text-8xl font-serif text-text-primary tracking-wide mb-6 sm:mb-8 leading-tight max-w-4xl">
-          {t('landing.titlePrefix')} <br className="hidden sm:block" />
-          <span className="italic font-normal text-primary">{t('landing.titleSuffix')}</span>
-        </h1>
+        {/* Dynamic Title with Word-by-Word Stagger Reveal */}
+        <motion.h1 
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="text-4xl sm:text-6xl md:text-8xl font-serif text-text-primary tracking-wide mb-6 sm:mb-8 leading-tight max-w-4xl"
+        >
+          {t('landing.titlePrefix').split(' ').map((word, idx) => (
+            <motion.span key={idx} variants={wordVariants} className="inline-block mr-3 sm:mr-4">
+              {word}
+            </motion.span>
+          ))}
+          <br className="hidden sm:block" />
+          <motion.span 
+            variants={wordVariants}
+            className="italic font-normal text-primary inline-block"
+          >
+            {t('landing.titleSuffix')}
+          </motion.span>
+        </motion.h1>
         
-        <p className="text-base sm:text-lg md:text-xl text-text-muted max-w-2xl font-light mb-12 sm:mb-16 leading-relaxed">
+        {/* Subtitle Reveal */}
+        <motion.p 
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.8, ease: "easeOut" }}
+          className="text-base sm:text-lg md:text-xl text-text-muted max-w-2xl font-light mb-12 sm:mb-16 leading-relaxed"
+        >
           {t('landing.subtitle')}
-        </p>
+        </motion.p>
 
         {/* Premium Waveform Console Interface */}
-        <div className="w-full max-w-4xl bg-surface border border-border-light rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-antigravity mb-16 sm:mb-24 relative overflow-hidden group">
+        <motion.div 
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7, duration: 1.0, type: "spring", damping: 25 }}
+          className="w-full max-w-4xl bg-surface border border-border-light rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-antigravity mb-16 sm:mb-24 relative overflow-hidden group"
+        >
           <div className="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-primary via-accent-warm to-secondary" />
           
           {/* Console Header Bar */}
@@ -177,21 +272,31 @@ export default function LandingPage({ onEnterApp }) {
               </AnimatePresence>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Comparative Section */}
-        <section id="before-after" className="w-full mb-20 sm:mb-32 text-left scroll-mt-24">
-          <h2 className="text-3xl sm:text-4xl font-serif text-text-primary mb-4 tracking-wide text-center">
+        <motion.section 
+          id="before-after" 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-120px" }}
+          variants={featureContainerVariants}
+          className="w-full mb-20 sm:mb-32 text-left scroll-mt-24"
+        >
+          <motion.h2 variants={fadeInUpVariants} className="text-3xl sm:text-4xl font-serif text-text-primary mb-4 tracking-wide text-center">
             {t('landing.howItWorksTitle')}
-          </h2>
-          <p className="text-center text-text-muted font-light mb-16 max-w-xl mx-auto">
+          </motion.h2>
+          <motion.p variants={fadeInUpVariants} className="text-center text-text-muted font-light mb-16 max-w-xl mx-auto">
             {t('landing.howItWorksSub')}
-          </p>
+          </motion.p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
             
             {/* Before: Raw Terminal logs */}
-            <div className="bg-[#0D0F11] border border-border-light/20 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-antigravity relative overflow-hidden flex flex-col h-full">
+            <motion.div 
+              variants={fadeInUpVariants}
+              className="bg-[#0D0F11] border border-border-light/20 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-antigravity relative overflow-hidden flex flex-col h-full"
+            >
               <div className="absolute top-0 left-0 w-full h-[3px] bg-red-400/80" />
               <div className="flex items-center justify-between border-b border-border-light/10 pb-4 mb-6">
                 <span className="font-mono text-xs text-slate-400 font-medium">{t('landing.terminalTitle')}</span>
@@ -203,57 +308,78 @@ export default function LandingPage({ onEnterApp }) {
                 Process 89412 killed by OOM-killer<br/>
                 <span className="text-slate-500 italic mt-4 block">{t('landing.waitingEscalation')}</span>
               </pre>
-            </div>
+            </motion.div>
 
             {/* After: Halcyon Resolution */}
-            <Card className="border border-accent-warm/20 relative overflow-hidden flex flex-col h-full animateHover" animateHover={true}>
-              <div className="absolute top-0 left-0 w-full h-[3px] bg-accent-warm" />
-              <div className="flex items-center justify-between border-b border-border-light pb-4 mb-6">
-                <span className="font-mono text-xs text-text-primary font-bold">{t('landing.halcyonRetrieval')}</span>
-                <span className="font-mono text-xs text-accent-warm font-bold uppercase tracking-wider">{t('landing.autoResolved')}</span>
-              </div>
-              
-              <div className="space-y-6 flex-1">
-                <div className="bg-background border border-border-light p-4 rounded-2xl flex items-center gap-3">
-                  <div className="w-2 h-2 rounded-full bg-accent-warm animate-ping" />
-                  <span className="font-mono text-sm text-text-primary font-bold">{t('landing.memoryMatch')}</span>
+            <motion.div variants={fadeInUpVariants} className="h-full">
+              <Card className="border border-accent-warm/20 relative overflow-hidden flex flex-col h-full animateHover" animateHover={true}>
+                <div className="absolute top-0 left-0 w-full h-[3px] bg-accent-warm" />
+                <div className="flex items-center justify-between border-b border-border-light pb-4 mb-6">
+                  <span className="font-mono text-xs text-text-primary font-bold">{t('landing.halcyonRetrieval')}</span>
+                  <span className="font-mono text-xs text-accent-warm font-bold uppercase tracking-wider">{t('landing.autoResolved')}</span>
                 </div>
-                <p className="text-sm font-mono text-text-primary leading-relaxed bg-accent-warm/5 border border-accent-warm/15 p-4 rounded-2xl">
-                  <strong>Suggested Fix:</strong> {t('landing.suggestedFix')}
-                </p>
-                <div className="text-xs font-mono font-bold text-accent-warm">{t('landing.downtimeSaved')}</div>
-              </div>
-            </Card>
+                
+                <div className="space-y-6 flex-1">
+                  <div className="bg-background border border-border-light p-4 rounded-2xl flex items-center gap-3">
+                    <div className="w-2 h-2 rounded-full bg-accent-warm animate-ping" />
+                    <span className="font-mono text-sm text-text-primary font-bold">{t('landing.memoryMatch')}</span>
+                  </div>
+                  <p className="text-sm font-mono text-text-primary leading-relaxed bg-accent-warm/5 border border-accent-warm/15 p-4 rounded-2xl">
+                    <strong>Suggested Fix:</strong> {t('landing.suggestedFix')}
+                  </p>
+                  <div className="text-xs font-mono font-bold text-accent-warm">{t('landing.downtimeSaved')}</div>
+                </div>
+              </Card>
+            </motion.div>
           </div>
-        </section>
+        </motion.section>
 
         {/* Feature Cards Grid */}
-        <section id="features" className="w-full mb-20 sm:mb-32 scroll-mt-24">
-          <h2 className="text-3xl sm:text-4xl font-serif text-text-primary mb-8 sm:mb-12 tracking-wide">
+        <motion.section 
+          id="features" 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-120px" }}
+          variants={featureContainerVariants}
+          className="w-full mb-20 sm:mb-32 scroll-mt-24"
+        >
+          <motion.h2 variants={fadeInUpVariants} className="text-3xl sm:text-4xl font-serif text-text-primary mb-8 sm:mb-12 tracking-wide">
             {t('landing.archTitle')}
-          </h2>
+          </motion.h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {features.map((f, i) => (
-              <Card key={i} className="flex flex-col text-left animateHover" animateHover={true}>
-                <div className="w-10 h-10 rounded-2xl bg-background border border-border-light flex items-center justify-center mb-6 shadow-sm">
-                  {f.icon}
-                </div>
-                <h3 className="font-serif text-2xl text-text-primary mb-3 tracking-wide">{f.title}</h3>
-                <p className="text-sm text-text-muted font-light leading-relaxed">{f.desc}</p>
-              </Card>
+              <motion.div key={i} variants={fadeInUpVariants} className="h-full">
+                <Card className="flex flex-col text-left h-full animateHover" animateHover={true}>
+                  <div className="w-10 h-10 rounded-2xl bg-background border border-border-light flex items-center justify-center mb-6 shadow-sm">
+                    {f.icon}
+                  </div>
+                  <h3 className="font-serif text-2xl text-text-primary mb-3 tracking-wide">{f.title}</h3>
+                  <p className="text-sm text-text-muted font-light leading-relaxed">{f.desc}</p>
+                </Card>
+              </motion.div>
             ))}
           </div>
-        </section>
+        </motion.section>
 
         {/* FAQ Accordion */}
-        <section id="faq" className="w-full max-w-3xl mb-16 scroll-mt-24 text-left">
-          <h2 className="text-3xl sm:text-4xl font-serif text-text-primary mb-8 sm:mb-12 tracking-wide text-center">{t('landing.faqTitle')}</h2>
+        <motion.section 
+          id="faq" 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-120px" }}
+          variants={featureContainerVariants}
+          className="w-full max-w-3xl mb-16 scroll-mt-24 text-left"
+        >
+          <motion.h2 variants={fadeInUpVariants} className="text-3xl sm:text-4xl font-serif text-text-primary mb-8 sm:mb-12 tracking-wide text-center">
+            {t('landing.faqTitle')}
+          </motion.h2>
           <div className="space-y-4">
             {faqs.map((faq, index) => {
               const isOpen = activeFaq === index;
               return (
-                <div 
+                <motion.div 
                   key={index} 
+                  variants={fadeInUpVariants}
                   className="bg-surface rounded-2xl border border-border-light shadow-antigravity overflow-hidden transition-all duration-300"
                 >
                   <button 
@@ -278,11 +404,11 @@ export default function LandingPage({ onEnterApp }) {
                       </motion.div>
                     )}
                   </AnimatePresence>
-                </div>
+                </motion.div>
               );
             })}
           </div>
-        </section>
+        </motion.section>
 
       </main>
 

@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, Fragment } from 'react';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -284,7 +284,7 @@ export default function AuditView() {
               {tableDecisions.map((log) => {
                 const isExpanded = expandedId === log.id;
                 return (
-                  <>
+                  <Fragment key={log.id}>
                     {/* Main Row */}
                     <tr 
                       key={log.id} 
@@ -413,7 +413,7 @@ export default function AuditView() {
                         </tr>
                       )}
                     </AnimatePresence>
-                  </>
+                  </Fragment>
                 );
               })}
               {tableDecisions.length === 0 && (

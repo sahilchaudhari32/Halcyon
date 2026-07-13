@@ -19,38 +19,38 @@ export const FloatingDock = () => {
           const [isActive] = useRoute(item.path);
 
           return (
-            <Link key={item.path} href={item.path}>
-              <a
-                className="relative flex flex-col items-center justify-center p-2 rounded-full cursor-pointer transition-colors focus:outline-none focus-ring"
-                aria-label={item.label}
+            <Link 
+              key={item.path} 
+              href={item.path}
+              className="relative flex flex-col items-center justify-center p-2 rounded-full cursor-pointer transition-colors focus:outline-none focus-ring"
+              aria-label={item.label}
+            >
+              <motion.div
+                whileHover={{ scale: 1.15 }}
+                whileTap={{ scale: 0.95 }}
+                className={`transition-colors duration-200 ${
+                  isActive ? 'text-accent-warm' : 'text-text-muted hover:text-text-primary'
+                }`}
               >
-                <motion.div
-                  whileHover={{ scale: 1.15 }}
-                  whileTap={{ scale: 0.95 }}
-                  className={`transition-colors duration-200 ${
-                    isActive ? 'text-accent-warm' : 'text-text-muted hover:text-text-primary'
-                  }`}
-                >
-                  <Icon className="w-5 h-5" />
-                </motion.div>
+                <Icon className="w-5 h-5" />
+              </motion.div>
 
-                {isActive && (
-                  <>
-                    {/* Liquid Glass capsule sliding backdrop */}
-                    <motion.div
-                      layoutId="activeBackdrop"
-                      className="absolute inset-0 bg-accent-warm/8 border border-accent-warm/15 rounded-full -z-10 shadow-[inset_0_1px_0_rgba(255,255,255,0.4)]"
-                      transition={{ type: 'spring', stiffness: 220, damping: 25 }}
-                    />
-                    {/* Sliding dot indicator */}
-                    <motion.div
-                      layoutId="activeDot"
-                      className="absolute -bottom-1.5 w-1 h-1 rounded-full bg-accent-warm"
-                      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                    />
-                  </>
-                )}
-              </a>
+              {isActive && (
+                <>
+                  {/* Liquid Glass capsule sliding backdrop */}
+                  <motion.div
+                    layoutId="activeBackdrop"
+                    className="absolute inset-0 bg-accent-warm/8 border border-accent-warm/15 rounded-full -z-10 shadow-[inset_0_1px_0_rgba(255,255,255,0.4)]"
+                    transition={{ type: 'spring', stiffness: 220, damping: 25 }}
+                  />
+                  {/* Sliding dot indicator */}
+                  <motion.div
+                    layoutId="activeDot"
+                    className="absolute -bottom-1.5 w-1 h-1 rounded-full bg-accent-warm"
+                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                  />
+                </>
+              )}
             </Link>
           );
         })}
