@@ -57,6 +57,14 @@ class Settings(BaseSettings):
     github_lookback_minutes: int = Field(default=60, alias="GITHUB_LOOKBACK_MINUTES")
     github_encryption_key: Optional[str] = Field(default=None, alias="GITHUB_ENCRYPTION_KEY")
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        # Convert standard postgres:// or postgresql:// to postgresql+asyncpg:// for SQLAlchemy
+        if self.database_url.startswith("postgres://"):
+            self.database_url = self.database_url.replace("postgres://", "postgresql+asyncpg://", 1)
+        elif self.database_url.startswith("postgresql://"):
+            self.database_url = self.database_url.replace("postgresql://", "postgresql+asyncpg://", 1)
+
     @property
     def max_upload_size_bytes(self) -> int:
         return self.max_upload_size_mb * 1024 * 1024

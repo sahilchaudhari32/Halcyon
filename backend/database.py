@@ -20,10 +20,13 @@ from config import settings
 
 # ── Engine & Session ──────────────────────────────────────────────────────────
 
+is_sqlite = settings.database_url.startswith("sqlite")
+connect_args = {"check_same_thread": False} if is_sqlite else {}
+
 engine = create_async_engine(
     settings.database_url,
     echo=settings.debug,
-    connect_args={"check_same_thread": False},
+    connect_args=connect_args,
 )
 
 AsyncSessionLocal = async_sessionmaker(
