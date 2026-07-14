@@ -25,7 +25,7 @@ async function fetcher(endpoint, options = {}) {
     headers,
   });
   if (!res.ok) {
-    if (res.status === 401) {
+    if (res.status === 401 && endpoint !== '/auth/login') {
       localStorage.clear();
       window.location.reload();
     }
