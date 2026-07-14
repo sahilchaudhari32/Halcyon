@@ -1,4 +1,4 @@
-const BASE_URL = 'http://127.0.0.1:8000/api';
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000/api';
 
 async function fetcher(endpoint, options = {}) {
   const headers = {
@@ -25,6 +25,10 @@ async function fetcher(endpoint, options = {}) {
     headers,
   });
   if (!res.ok) {
+    if (res.status === 401) {
+      localStorage.clear();
+      window.location.reload();
+    }
     throw new Error(`API Error: ${res.statusText}`);
   }
   return res.json();
