@@ -133,6 +133,20 @@ export default function Dashboard({ setGlobalState }) {
     reader.readAsText(file);
   };
 
+  const handleResetDb = async () => {
+    if (!window.confirm("Are you sure you want to clear all incidents and reset the database?")) return;
+    try {
+      setLoading(true);
+      await api.resetDatabase();
+      await fetchIncidents();
+      await fetchStats();
+    } catch (err) {
+      console.error("Failed to reset database:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="max-w-5xl mx-auto py-2 sm:py-4">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 mb-8 sm:mb-10 border-b border-border-light pb-6">
@@ -140,14 +154,23 @@ export default function Dashboard({ setGlobalState }) {
           <h1 className="text-3xl sm:text-4xl font-serif text-text-primary tracking-wide mb-2">{t('dashboard.feedTitle')}</h1>
           <p className="text-text-muted font-light text-sm">{t('dashboard.feedSub')}</p>
         </div>
-        <Button
-          onClick={() => setShowSimModal(true)}
-          disabled={simulating}
-          variant="primary"
-          className="w-full sm:w-auto font-mono text-xs uppercase tracking-wider font-bold"
-        >
-          {simulating ? t('dashboard.runningAnalysis') : t('dashboard.simulateBtn')}
-        </Button>
+        <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+          <Button
+            onClick={handleResetDb}
+            variant="secondary"
+            className="w-full sm:w-auto font-mono text-xs uppercase tracking-wider font-bold border border-border-light hover:bg-surface/50 text-text-muted hover:text-text-primary"
+          >
+            Reset Database
+          </Button>
+          <Button
+            onClick={() => setShowSimModal(true)}
+            disabled={simulating}
+            variant="primary"
+            className="w-full sm:w-auto font-mono text-xs uppercase tracking-wider font-bold"
+          >
+            {simulating ? t('dashboard.runningAnalysis') : t('dashboard.simulateBtn')}
+          </Button>
+        </div>
       </div>
 
       {/* NOC Telemetry Grid */}

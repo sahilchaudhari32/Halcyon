@@ -1218,3 +1218,29 @@ async def update_github(
         status=conn.status,
         connected_at=conn.connected_at
     )
+
+
+# ── Database Management ───────────────────────────────────────────────────────
+
+@router.post(
+    "/database/reset",
+    summary="Reset the database (clear all incidents)",
+)
+async def reset_database(
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Clear all incidents, tags, similar refs, and decision logs from the database.
+    """
+    from sqlalchemy import delete
+    from database import DecisionLog, SimilarIncidentRef, IncidentTag, Incident
+
+    await db.execute(delete(DecisionLog))
+    await db.execute(delete(SimilarIncidentRef))
+    await db.execute(delete(IncidentTag))
+    await db.execute(delete(Incident))
+    await db.commit()
+
+    return {"success": True, "message": "Database reset successfully. All incidents cleared."}
+

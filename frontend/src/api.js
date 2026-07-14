@@ -44,6 +44,7 @@ export const api = {
   loadSample: (scenario) => fetcher(`/load-sample/${scenario}`, { method: 'POST' }),
   submitIncident: (data) => fetcher(`/incidents`, { method: 'POST', body: JSON.stringify(data) }),
   resolveIncident: (id, solution, commitCaused = null) => fetcher(`/incidents/${id}/resolve`, { method: 'POST', body: JSON.stringify({ incident_id: id, solution, commit_caused: commitCaused }) }),
+  resetDatabase: () => fetcher('/database/reset', { method: 'POST' }),
   getGithubStatus: () => fetcher('/integrations/github/status'),
   connectGithub: (data) => fetcher('/integrations/github/connect', { method: 'POST', body: JSON.stringify(data) }),
   disconnectGithub: () => fetcher('/integrations/github/disconnect', { method: 'DELETE' }),
