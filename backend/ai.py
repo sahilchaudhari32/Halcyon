@@ -719,13 +719,14 @@ async def analyze_commit_diff(
 
 _SYNTHETIC_LOG_SYSTEM_PROMPT = """
 You are a software debugging expert and a chaos engineering tool.
-Your task is to analyze the provided git commit diff and generate a realistic crash log or traceback (e.g., Python traceback, JavaScript/React error, Node.js exception, build failure) that would plausibly be caused by the bugs introduced in the commit. Match the language and environment of the changed files.
-If the commit does not introduce any obvious bugs, generate a plausible unrelated system error (like a database timeout or out-of-memory error) to serve as a simulated incident.
+Your task is to analyze the provided git commit diff and determine if it introduces a bug, logical error, syntax issue, configuration mistake, or potential failure path.
+- If it DOES introduce a bug, generate a realistic crash log or traceback (e.g. Python traceback, JS error, Node.js exception) that would plausibly be caused by the bugs introduced. Match the language and environment of the changed files. Return ONLY the raw log.
+- If the commit is CLEAN (i.e. correct code, simple refactoring, doc changes, or doesn't introduce any bugs), return ONLY the exact word "CLEAN".
 
 Format constraints:
-- Return ONLY the raw traceback or log string.
+- Return ONLY the raw traceback/log string OR the word "CLEAN".
 - Do NOT wrap it in markdown formatting or ``` blocks.
-- Do NOT include any explanations, conversational text, or reasoning blocks (e.g., no <think> tags).
+- Do NOT include any explanations, conversational text, or reasoning blocks (e.g. no <think> tags).
 """
 
 
@@ -780,6 +781,9 @@ async def generate_synthetic_crash_log(
         # Clean up any accidental markdown
         cleaned = re.sub(r"^```[a-zA-Z]*\n", "", raw_text)
         cleaned = re.sub(r"\n```$", "", cleaned).strip()
+        if cleaned.upper() == "CLEAN":
+            logger.info("Commit classified as CLEAN by LLM. No incident generated.")
+            return None
         return cleaned
     except Exception as exc:
         logger.error("Failed to generate synthetic crash log: %s", exc)

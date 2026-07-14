@@ -41,8 +41,14 @@ async def generate_crash_log_from_diff(diff_content: str, commit_message: str, c
                 "NameError: name 'load_dotenv' is not defined"
             )
 
-    # General mock tracebacks based on message
+    # Only generate mock tracebacks if the commit message suggests a bug, fix, or database issue
     msg_lower = commit_message.lower()
+    has_bug_keyword = any(kw in msg_lower for kw in ["bug", "fix", "error", "fail", "break", "issue", "crash", "db", "database", "mongo", "timeout", "null", "none"])
+
+    if not has_bug_keyword:
+        logger.info(f"Commit '{commit_message}' classified as clean. No incident generated.")
+        return None
+
     if "db" in msg_lower or "database" in msg_lower or "mongo" in msg_lower:
         return (
             "2026-07-13 15:48:12 [ERROR] Database connection failed\n"
@@ -56,7 +62,7 @@ async def generate_crash_log_from_diff(diff_content: str, commit_message: str, c
             "TypeError: 'NoneType' object is not callable"
         )
     
-    # Standard Python traceback as fallback
+    # Standard Python traceback as fallback for other bug keywords
     file_name = changed_files[0] if changed_files else "app.py"
     return (
         f"Traceback (most recent call last):\n"
