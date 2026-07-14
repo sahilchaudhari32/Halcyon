@@ -3,6 +3,7 @@ Halcyon Backend — FastAPI Application Entry Point
 Run with: uvicorn app:app --reload
 """
 import logging
+import asyncio
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
@@ -38,8 +39,19 @@ async def lifespan(app: FastAPI):
         logger.info("✅ Seeded %d demo incidents and audit logs.", seeded)
     await init_memory()
     logger.info("✅ Memory system initialized.")
+    
+    # Start background GitHub commit monitor loop
+    from github_monitor import github_polling_loop
+    polling_task = asyncio.create_task(github_polling_loop())
+    
     yield
+    
     logger.info("🛑 Halcyon backend shutting down.")
+    polling_task.cancel()
+    try:
+        await polling_task
+    except asyncio.CancelledError:
+        pass
 
 
 # ── App Factory ───────────────────────────────────────────────────────────────
@@ -113,7 +125,3 @@ if __name__ == "__main__":
         reload=settings.debug,
         log_level="debug" if settings.debug else "info",
     )
-
-
-
-# run on : http://127.0.0.1:8000/

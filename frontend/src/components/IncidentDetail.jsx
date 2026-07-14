@@ -327,10 +327,8 @@ export default function IncidentDetail({ id }) {
                   <p className="text-text-muted mb-2.5 leading-relaxed">
                     Connect GitHub to see code correlation for incidents
                   </p>
-                  <Link href="/settings">
-                    <a className="text-accent-warm hover:underline font-bold transition-colors">
-                      Configure GitHub Integration &rarr;
-                    </a>
+                  <Link href="/settings" className="text-accent-warm hover:underline font-bold transition-colors">
+                    Configure GitHub Integration &rarr;
                   </Link>
                 </div>
               ) : null}

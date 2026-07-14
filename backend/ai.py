@@ -156,6 +156,15 @@ def _parse_response(raw: str) -> AIAnalysisResult:
         raise ValueError(f"AI returned invalid JSON: {e}") from e
 
     # Normalize
+    for field_name in ["root_cause", "summary", "fix_suggestion"]:
+        val = data.get(field_name)
+        if isinstance(val, list):
+            data[field_name] = "\n".join(str(item) for item in val)
+        elif isinstance(val, dict):
+            data[field_name] = "\n".join(f"{k.capitalize()}: {v}" for k, v in val.items())
+        elif val is not None and not isinstance(val, str):
+            data[field_name] = str(val)
+
     data["severity"] = (data.get("severity") or "MEDIUM").upper()
     data.setdefault("affected_components", [])
     data.setdefault("confidence_score", 0.5)

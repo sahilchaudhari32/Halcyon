@@ -8,12 +8,16 @@ async function fetcher(endpoint, options = {}) {
 
   const localRepo = localStorage.getItem('x-github-repo');
   const localToken = localStorage.getItem('x-github-token');
+  const authToken = localStorage.getItem('auth-token');
 
   if (localRepo) {
     headers['X-GitHub-Repo'] = localRepo;
   }
   if (localToken) {
     headers['X-GitHub-Token'] = localToken;
+  }
+  if (authToken) {
+    headers['Authorization'] = `Bearer ${authToken}`;
   }
 
   const res = await fetch(`${BASE_URL}${endpoint}`, {
@@ -40,4 +44,7 @@ export const api = {
   connectGithub: (data) => fetcher('/integrations/github/connect', { method: 'POST', body: JSON.stringify(data) }),
   disconnectGithub: () => fetcher('/integrations/github/disconnect', { method: 'DELETE' }),
   updateGithub: (data) => fetcher('/integrations/github', { method: 'PATCH', body: JSON.stringify(data) }),
+  login: (username, password) => fetcher('/auth/login', { method: 'POST', body: JSON.stringify({ username, password }) }),
+  signup: (username, password) => fetcher('/auth/signup', { method: 'POST', body: JSON.stringify({ username, password }) }),
+  getMe: () => fetcher('/auth/me'),
 };

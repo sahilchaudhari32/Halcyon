@@ -63,9 +63,9 @@ async def init_memory() -> None:
         return
         
     # Seed the database from local incidents on startup
-    _seed_hindsight_from_json(client)
+    await _seed_hindsight_from_json(client)
 
-def _seed_hindsight_from_json(client):
+async def _seed_hindsight_from_json(client):
     """Seed Hindsight memory with past incidents from the JSON dataset."""
     try:
         from data.loader import load_incidents
@@ -75,6 +75,7 @@ def _seed_hindsight_from_json(client):
             return
             
         logger.info(f"Seeding Hindsight with {len(incidents)} incidents...")
+        items = []
         for inc in incidents:
             # We construct a rich document for the memory content
             content = f"INCIDENT: {inc.get('alert_title', '')}\nLOGS:\n" + "\n".join(inc.get('raw_logs', []))
@@ -82,23 +83,27 @@ def _seed_hindsight_from_json(client):
                 "root_cause": inc.get("root_cause", ""),
                 "resolution": inc.get("resolution", ""),
                 "service": inc.get("service", ""),
-                "tags": inc.get("tags", []),
-                "sensitive": inc.get("sensitive", False)
+                "sensitive": str(inc.get("sensitive", False))
             }
-            # Add to hindsight
-            client.retain(
-                bank_id=settings.hindsight_bank_id,
-                content=content,
-                metadata=metadata
-            )
+            items.append({
+                "content": content,
+                "metadata": metadata,
+                "tags": inc.get("tags", [])
+            })
+            
+        await client.aretain_batch(
+            bank_id=settings.hindsight_bank_id,
+            items=items
+        )
         logger.info("✅ Hindsight memory seeded successfully.")
     except Exception as e:
         logger.error(f"Failed to seed Hindsight from JSON: {e}")
 
 
+
 # ── Recall: Search Past Incidents ─────────────────────────────────────────────
 
-def recall_similar(log_content: str) -> List[Dict[str, Any]]:
+async def recall_similar(log_content: str) -> List[Dict[str, Any]]:
     """
     Search Hindsight memory for past incidents similar to the given log content.
 
@@ -122,7 +127,7 @@ def recall_similar(log_content: str) -> List[Dict[str, Any]]:
     query = _build_recall_query(log_content)
 
     try:
-        results = client.recall(
+        results = await client.arecall(
             bank_id=settings.hindsight_bank_id,
             query=query,
         )
@@ -165,7 +170,7 @@ def recall_similar(log_content: str) -> List[Dict[str, Any]]:
 
 # ── Retain: Store Resolved Incident ───────────────────────────────────────────
 
-def retain_resolution(
+async def retain_resolution(
     incident_id: int,
     title: str,
     root_cause: str,
@@ -202,15 +207,15 @@ def retain_resolution(
         "root_cause": root_cause,
         "resolution": solution,
         "service": affected_components[0] if affected_components else "unknown",
-        "tags": tags or [],
-        "sensitive": False  # New incidents from the UI are marked not sensitive by default for demo
+        "sensitive": "False"  # New incidents from the UI are marked not sensitive by default for demo
     }
 
     try:
-        client.retain(
+        await client.aretain(
             bank_id=settings.hindsight_bank_id,
             content=memory_content,
-            metadata=metadata
+            metadata=metadata,
+            tags=tags
         )
         logger.info(
             "✅ Hindsight retain: stored resolution for incident #%d (%s)",
@@ -296,7 +301,7 @@ def is_memory_available() -> bool:
     return _get_client() is not None
 
 
-def retain_code_correlation(
+async def retain_code_correlation(
     incident_id: int,
     title: str,
     root_cause: str,
@@ -327,7 +332,7 @@ def retain_code_correlation(
 
     metadata = {
         "type": "code_correlation",
-        "incident_id": incident_id,
+        "incident_id": str(incident_id),
         "commit_sha": commit_sha,
         "commit_message": commit_message,
         "plausibility": plausibility,
@@ -336,7 +341,7 @@ def retain_code_correlation(
     }
 
     try:
-        client.retain(
+        await client.aretain(
             bank_id=settings.hindsight_bank_id,
             content=memory_content,
             metadata=metadata

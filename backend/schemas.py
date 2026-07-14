@@ -228,3 +228,23 @@ class GitHubStatusResponse(BaseModel):
     repo_name: Optional[str] = None
     status: Optional[str] = None  # connected / invalid / disconnected
     connected_at: Optional[datetime] = None
+
+
+# ── User Authentication ───────────────────────────────────────────────────────
+
+class UserAuthRequest(BaseModel):
+    username: str = Field(..., min_length=2, max_length=100)
+    password: str = Field(..., min_length=6, max_length=100)
+
+
+class UserAuthResponse(BaseModel):
+    username: str
+    token: str
+    workspace_id: int
+
+
+class UserMeResponse(BaseModel):
+    id: int
+    username: str
+    workspace_id: int
+

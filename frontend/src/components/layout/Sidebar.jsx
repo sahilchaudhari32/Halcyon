@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useRoute } from 'wouter';
 import { motion } from 'framer-motion';
-import { Activity, Cpu, FileText, Shield, Settings } from 'lucide-react';
+import { Activity, Cpu, FileText, Shield, Settings, LogOut } from 'lucide-react';
 import logo from '../../assets/logo.png';
 import { useApp } from '../../context/AppContext';
 
@@ -23,7 +23,7 @@ export const Sidebar = () => {
           <img src={logo} alt="Halcyon Logo" className="w-8 h-8 rounded-lg object-cover border border-border-light/40" />
           <div>
             <span className="font-serif text-xl font-bold tracking-tight text-text-primary">Halcyon</span>
-            <div className="text-[9px] font-mono font-bold tracking-widest text-primary/80 uppercase">NOC CONTROL PANEL</div>
+            <span className="block text-[8px] font-mono text-text-muted uppercase tracking-widest -mt-0.5">NOC Intelligence</span>
           </div>
         </div>
 
@@ -89,11 +89,25 @@ export const Sidebar = () => {
 
       {/* Sidebar Footer */}
       <div className="p-4 border-t border-border-light bg-background/20 font-mono text-[10px] space-y-3">
-        <div className="flex items-center gap-2 text-text-muted">
-          <Shield className="w-3.5 h-3.5 text-accent-warm" />
-          <span className="font-bold">{t('sidebar.complianceEngine')}</span>
+        <div className="flex items-center justify-between text-text-muted">
+          <div className="flex items-center gap-1.5">
+            <Shield className="w-3.5 h-3.5 text-accent-warm" />
+            <span className="font-bold">{t('sidebar.complianceEngine')}</span>
+          </div>
           <span className="text-accent-warm font-bold">{t('sidebar.online')}</span>
         </div>
+        
+        <button
+          onClick={() => {
+            localStorage.clear();
+            window.location.reload();
+          }}
+          className="flex w-full items-center gap-2 px-3 py-2 rounded-lg border border-border-light/40 hover:border-red-500/20 text-text-muted hover:text-red-400 font-bold transition-all uppercase tracking-wider cursor-pointer text-[9px]"
+        >
+          <LogOut className="w-3.5 h-3.5" />
+          <span>Log Out</span>
+        </button>
+
         <div className="text-text-muted/50 text-[9px] tracking-wider leading-relaxed">
           {t('sidebar.sandboxNode')}<br/>
           {t('sidebar.apiVersion')}

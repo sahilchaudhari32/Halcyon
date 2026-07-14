@@ -9,16 +9,21 @@ from datetime import datetime, timezone, timedelta
 from typing import Optional
 
 from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile, status, Header
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy import select, func, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from ai import analyze_log, RoutingMetadata, analyze_commit_diff
 from config import settings
-from database import DecisionLog, Incident, IncidentTag, SimilarIncidentRef, get_db, GitHubConnection, Workspace
+from database import (
+    DecisionLog, Incident, IncidentTag, SimilarIncidentRef, get_db, 
+    GitHubConnection, Workspace, User, UserSession
+)
 from github import GitHubClient, GitHubAuthError
 from crypto import encrypt_token, decrypt_token
 from memory import is_memory_available, recall_similar, retain_resolution, retain_code_correlation
+from auth import hash_password, verify_password, generate_session_token
 from schemas import (
     AIAnalysisResult,
     IncidentSubmitRequest,
@@ -38,6 +43,9 @@ from schemas import (
     GitHubConnectRequest,
     GitHubUpdateRequest,
     GitHubStatusResponse,
+    UserAuthRequest,
+    UserAuthResponse,
+    UserMeResponse,
 )
 from utils import (
     find_similar_incidents,
@@ -49,6 +57,120 @@ from utils import (
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api", tags=["halcyon"])
+
+security = HTTPBearer(auto_error=False)
+
+async def get_current_user(
+    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security),
+    db: AsyncSession = Depends(get_db)
+) -> User:
+    """Dependency to retrieve the currently logged in user via Bearer token."""
+    if not credentials:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Missing authentication credentials."
+        )
+    token = credentials.credentials
+    # Query database for session
+    stmt = select(UserSession).options(selectinload(UserSession.user)).filter(UserSession.token == token)
+    res = await db.execute(stmt)
+    session_obj = res.scalar_one_or_none()
+    if not session_obj:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid or expired session token."
+        )
+    return session_obj.user
+
+
+# ── Authentication Routes ──────────────────────────────────────────────────────
+
+@router.post(
+    "/auth/signup",
+    response_model=UserAuthResponse,
+    status_code=status.HTTP_201_CREATED,
+    summary="Create a new user account & workspace",
+)
+async def signup(body: UserAuthRequest, db: AsyncSession = Depends(get_db)):
+    # Check if username is already taken
+    stmt = select(User).filter(User.username == body.username)
+    res = await db.execute(stmt)
+    existing_user = res.scalar_one_or_none()
+    if existing_user:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Username already registered."
+        )
+        
+    # Create personal workspace for the user
+    new_workspace = Workspace(name=f"{body.username}'s Workspace")
+    db.add(new_workspace)
+    await db.flush()  # Generate workspace id
+    
+    # Create user
+    new_user = User(
+        username=body.username,
+        password_hash=hash_password(body.password),
+        workspace_id=new_workspace.id
+    )
+    db.add(new_user)
+    await db.flush()  # Generate user id
+    
+    # Generate session token
+    token = generate_session_token()
+    new_session = UserSession(token=token, user_id=new_user.id)
+    db.add(new_session)
+    await db.flush()
+    
+    return UserAuthResponse(
+        username=new_user.username,
+        token=token,
+        workspace_id=new_workspace.id
+    )
+
+
+@router.post(
+    "/auth/login",
+    response_model=UserAuthResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Login to an existing account",
+)
+async def login(body: UserAuthRequest, db: AsyncSession = Depends(get_db)):
+    # Find user
+    stmt = select(User).filter(User.username == body.username)
+    res = await db.execute(stmt)
+    user = res.scalar_one_or_none()
+    if not user or not verify_password(body.password, user.password_hash):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect username or password."
+        )
+        
+    # Generate session token
+    token = generate_session_token()
+    new_session = UserSession(token=token, user_id=user.id)
+    db.add(new_session)
+    await db.flush()
+    
+    return UserAuthResponse(
+        username=user.username,
+        token=token,
+        workspace_id=user.workspace_id
+    )
+
+
+@router.get(
+    "/auth/me",
+    response_model=UserMeResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Get current user details",
+)
+async def get_me(current_user: User = Depends(get_current_user)):
+    return UserMeResponse(
+        id=current_user.id,
+        username=current_user.username,
+        workspace_id=current_user.workspace_id
+    )
 
 
 # ── Health ────────────────────────────────────────────────────────────────────
@@ -125,6 +247,7 @@ async def create_incident(
     db: AsyncSession = Depends(get_db),
     x_github_token: Optional[str] = Header(default=None),
     x_github_repo: Optional[str] = Header(default=None),
+    current_user: User = Depends(get_current_user),
 ):
     """
     Halcyon's core intelligence endpoint:
@@ -139,7 +262,7 @@ async def create_incident(
     routing_meta = None
 
     # ── Step 1: Consult Hindsight Memory ──────────────────────────────────
-    memory_matches = recall_similar(body.log_content)
+    memory_matches = await recall_similar(body.log_content)
     memory_info.consulted = True
     memory_info.source = "hindsight" if is_memory_available() else "disabled"
 
@@ -175,7 +298,7 @@ async def create_incident(
     commit_decision_logs = []
 
     # Retrieve stored connection from database
-    stmt = select(GitHubConnection).filter(GitHubConnection.workspace_id == 1)
+    stmt = select(GitHubConnection).filter(GitHubConnection.workspace_id == current_user.workspace_id)
     res = await db.execute(stmt)
     connection = res.scalar_one_or_none()
 
@@ -307,7 +430,8 @@ async def create_incident(
         summary=analysis.summary,
         affected_components=analysis.affected_components,
         confidence_score=analysis.confidence_score,
-        suspected_commit=suspected_commit.model_dump(mode="json") if suspected_commit else None
+        suspected_commit=suspected_commit.model_dump(mode="json") if suspected_commit else None,
+        workspace_id=current_user.workspace_id
     )
     db.add(incident)
     await db.flush()
@@ -370,6 +494,7 @@ async def get_history(
     is_solved: Optional[bool] = Query(default=None),
     search: Optional[str] = Query(default=None, description="Search in title/summary"),
     db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     """
     Paginated list of all incidents.
@@ -378,7 +503,7 @@ async def get_history(
     query = select(Incident).options(
         selectinload(Incident.similar_refs),
         selectinload(Incident.tags),
-    )
+    ).where(Incident.workspace_id == current_user.workspace_id)
 
     if severity:
         query = query.where(Incident.severity == severity.upper())
@@ -415,8 +540,12 @@ async def get_history(
     response_model=IncidentResponse,
     summary="Get a single incident by ID",
 )
-async def get_incident(incident_id: int, db: AsyncSession = Depends(get_db)):
-    incident = await _get_incident_or_404(incident_id, db)
+async def get_incident(
+    incident_id: int, 
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    incident = await _get_incident_or_404(incident_id, db, current_user.workspace_id)
     return _build_incident_response(incident)
 
 
@@ -431,8 +560,9 @@ async def update_incident(
     incident_id: int,
     body: UpdateIncidentRequest,
     db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
-    incident = await _get_incident_or_404(incident_id, db)
+    incident = await _get_incident_or_404(incident_id, db, current_user.workspace_id)
 
     if body.title is not None:
         incident.title = body.title
@@ -465,12 +595,17 @@ async def update_incident(
     response_model=IncidentResponse,
     summary="Mark an incident as solved and write resolution to memory",
 )
-async def resolve_incident(id: int, body: MarkSolvedRequest, db: AsyncSession = Depends(get_db)):
+async def resolve_incident(
+    id: int, 
+    body: MarkSolvedRequest, 
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
     """
     Mark an incident as solved and record the solution.
     Also writes the resolution to Hindsight memory so Halcyon learns from it.
     """
-    incident = await _get_incident_or_404(id, db)
+    incident = await _get_incident_or_404(id, db, current_user.workspace_id)
 
     if incident.is_solved:
         raise HTTPException(
@@ -484,7 +619,7 @@ async def resolve_incident(id: int, body: MarkSolvedRequest, db: AsyncSession = 
     await db.flush()
 
     # ── Write resolution to Hindsight memory ─────────────────────────────
-    memory_stored = retain_resolution(
+    memory_stored = await retain_resolution(
         incident_id=incident.id,
         title=incident.title,
         root_cause=incident.root_cause or "",
@@ -514,7 +649,7 @@ async def resolve_incident(id: int, body: MarkSolvedRequest, db: AsyncSession = 
         plausibility = sc.get("plausibility", "UNKNOWN")
         reasoning = sc.get("reasoning", "")
 
-        corr_stored = retain_code_correlation(
+        corr_stored = await retain_code_correlation(
             incident_id=incident.id,
             title=incident.title,
             root_cause=incident.root_cause or "",
@@ -550,8 +685,12 @@ async def resolve_incident(id: int, body: MarkSolvedRequest, db: AsyncSession = 
     response_model=MessageResponse,
     summary="Delete an incident permanently",
 )
-async def delete_incident(incident_id: int, db: AsyncSession = Depends(get_db)):
-    incident = await _get_incident_or_404(incident_id, db)
+async def delete_incident(
+    incident_id: int, 
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    incident = await _get_incident_or_404(incident_id, db, current_user.workspace_id)
     await db.delete(incident)
     return MessageResponse(message=f"Incident #{incident_id} deleted successfully.")
 
@@ -563,12 +702,16 @@ async def delete_incident(incident_id: int, db: AsyncSession = Depends(get_db)):
     response_model=IncidentSubmitResponse,
     summary="Re-run AI analysis on an existing incident",
 )
-async def reanalyze_incident(incident_id: int, db: AsyncSession = Depends(get_db)):
+async def reanalyze_incident(
+    incident_id: int, 
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
     """
     Re-trigger AI analysis for an existing incident and update results.
     Uses the full memory + cascadeflow pipeline.
     """
-    incident = await _get_incident_or_404(incident_id, db)
+    incident = await _get_incident_or_404(incident_id, db, current_user.workspace_id)
 
     try:
         analysis, routing_meta = await analyze_log(incident.log_content)
@@ -614,35 +757,67 @@ async def reanalyze_incident(incident_id: int, db: AsyncSession = Depends(get_db
 # ── Stats ─────────────────────────────────────────────────────────────────────
 
 @router.get("/dashboard/stats", tags=["analytics"], summary="Dashboard statistics")
-async def get_stats(db: AsyncSession = Depends(get_db)):
+async def get_stats(
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
     """Returns aggregate stats: total, solved, by-severity counts, cost savings."""
-    total = (await db.execute(select(func.count()).select_from(Incident))).scalar_one()
+    total = (await db.execute(
+        select(func.count()).select_from(Incident).where(Incident.workspace_id == current_user.workspace_id)
+    )).scalar_one()
+    
     solved = (
         await db.execute(
-            select(func.count()).select_from(Incident).where(Incident.is_solved == True)
+            select(func.count())
+            .select_from(Incident)
+            .where(Incident.is_solved == True)
+            .where(Incident.workspace_id == current_user.workspace_id)
         )
     ).scalar_one()
 
     severity_rows = await db.execute(
-        select(Incident.severity, func.count()).group_by(Incident.severity)
+        select(Incident.severity, func.count())
+        .where(Incident.workspace_id == current_user.workspace_id)
+        .group_by(Incident.severity)
     )
     by_severity = {row[0] or "UNKNOWN": row[1] for row in severity_rows}
 
     # Decision audit stats
     total_decisions = (
-        await db.execute(select(func.count()).select_from(DecisionLog))
-    ).scalar_one()
-    total_cost = (
-        await db.execute(select(func.sum(DecisionLog.cost)))
-    ).scalar_one() or 0.0
-    memory_hits = (
         await db.execute(
-            select(func.count()).select_from(DecisionLog).where(DecisionLog.memory_hit == True)
+            select(func.count())
+            .select_from(DecisionLog)
+            .join(Incident, DecisionLog.incident_id == Incident.id)
+            .where(Incident.workspace_id == current_user.workspace_id)
         )
     ).scalar_one()
+    
+    total_cost = (
+        await db.execute(
+            select(func.sum(DecisionLog.cost))
+            .select_from(DecisionLog)
+            .join(Incident, DecisionLog.incident_id == Incident.id)
+            .where(Incident.workspace_id == current_user.workspace_id)
+        )
+    ).scalar_one() or 0.0
+    
+    memory_hits = (
+        await db.execute(
+            select(func.count())
+            .select_from(DecisionLog)
+            .join(Incident, DecisionLog.incident_id == Incident.id)
+            .where(DecisionLog.memory_hit == True)
+            .where(Incident.workspace_id == current_user.workspace_id)
+        )
+    ).scalar_one()
+    
     escalations = (
         await db.execute(
-            select(func.count()).select_from(DecisionLog).where(DecisionLog.escalated == True)
+            select(func.count())
+            .select_from(DecisionLog)
+            .join(Incident, DecisionLog.incident_id == Incident.id)
+            .where(DecisionLog.escalated == True)
+            .where(Incident.workspace_id == current_user.workspace_id)
         )
     ).scalar_one()
 
@@ -678,9 +853,10 @@ async def get_decisions(
     escalated: Optional[bool] = Query(default=None),
     memory_hit: Optional[bool] = Query(default=None),
     db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     """Paginated decision audit trail with filters."""
-    query = select(DecisionLog)
+    query = select(DecisionLog).join(Incident, DecisionLog.incident_id == Incident.id).where(Incident.workspace_id == current_user.workspace_id)
 
     if incident_id is not None:
         query = query.where(DecisionLog.incident_id == incident_id)
@@ -714,9 +890,13 @@ async def get_decisions(
     summary="Get decisions for a specific incident",
 )
 async def get_incident_decisions(
-    incident_id: int, db: AsyncSession = Depends(get_db)
+    incident_id: int, 
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
 ):
     """All decision records linked to a specific incident."""
+    # Ensure ownership check on the incident itself
+    await _get_incident_or_404(incident_id, db, current_user.workspace_id)
     result = await db.execute(
         select(DecisionLog)
         .where(DecisionLog.incident_id == incident_id)
@@ -731,7 +911,7 @@ SAMPLE_LOGS_DIR = os.path.join(os.path.dirname(__file__), "sample_logs")
 
 
 @router.get("/samples", tags=["demo"], summary="List available sample log scenarios")
-async def list_samples():
+async def list_samples(current_user: User = Depends(get_current_user)):
     """List all available sample log files for demo purposes."""
     if not os.path.isdir(SAMPLE_LOGS_DIR):
         return {"scenarios": [], "message": "No sample_logs/ directory found."}
@@ -753,7 +933,7 @@ async def list_samples():
     tags=["demo"],
     summary="Load and analyze a sample log scenario",
 )
-async def load_sample(scenario: str, db: AsyncSession = Depends(get_db)):
+async def load_sample(scenario: str, db: AsyncSession = Depends(get_db), current_user: User = Depends(get_current_user)):
     """
     Load a bundled sample log file and run the full Halcyon analysis pipeline.
     Useful for hackathon demos.
@@ -777,16 +957,17 @@ async def load_sample(scenario: str, db: AsyncSession = Depends(get_db)):
 
     # Run through the same analysis pipeline
     body = IncidentSubmitRequest(alert_title=scenario, log_content=log_content)
-    return await create_incident(body, db)
+    return await create_incident(body, db, current_user=current_user)
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
-async def _get_incident_or_404(incident_id: int, db: AsyncSession) -> Incident:
+async def _get_incident_or_404(incident_id: int, db: AsyncSession, workspace_id: int) -> Incident:
     result = await db.execute(
         select(Incident)
         .options(selectinload(Incident.similar_refs), selectinload(Incident.tags))
         .where(Incident.id == incident_id)
+        .where(Incident.workspace_id == workspace_id)
     )
     incident = result.scalar_one_or_none()
     if not incident:
@@ -896,7 +1077,11 @@ async def _save_decision_log(
     status_code=status.HTTP_200_OK,
     summary="Connect a GitHub repository for telemetry correlation",
 )
-async def connect_github(body: GitHubConnectRequest, db: AsyncSession = Depends(get_db)):
+async def connect_github(
+    body: GitHubConnectRequest, 
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
     # 1. Validate the token & repo by making a lightweight verify call
     client = GitHubClient(token=body.token, repo=f"{body.repo_owner}/{body.repo_name}")
     is_valid = await client.verify_connection()
@@ -906,8 +1091,8 @@ async def connect_github(body: GitHubConnectRequest, db: AsyncSession = Depends(
             detail="Failed to connect. Verify your repository path (owner/repo) and that your personal access token has valid read access."
         )
 
-    # 2. Save encrypted credentials per workspace (Workspace ID = 1)
-    stmt = select(GitHubConnection).filter(GitHubConnection.workspace_id == 1)
+    # 2. Save encrypted credentials per workspace
+    stmt = select(GitHubConnection).filter(GitHubConnection.workspace_id == current_user.workspace_id)
     res = await db.execute(stmt)
     conn = res.scalar_one_or_none()
 
@@ -918,14 +1103,16 @@ async def connect_github(body: GitHubConnectRequest, db: AsyncSession = Depends(
         conn.repo_name = body.repo_name
         conn.status = "connected"
         conn.connected_at = datetime.now(timezone.utc)
+        conn.connected_by = current_user.username
     else:
         conn = GitHubConnection(
-            workspace_id=1,
+            workspace_id=current_user.workspace_id,
             github_token=encrypted_token,
             repo_owner=body.repo_owner,
             repo_name=body.repo_name,
             status="connected",
-            connected_at=datetime.now(timezone.utc)
+            connected_at=datetime.now(timezone.utc),
+            connected_by=current_user.username
         )
         db.add(conn)
     await db.flush()
@@ -944,8 +1131,11 @@ async def connect_github(body: GitHubConnectRequest, db: AsyncSession = Depends(
     response_model=GitHubStatusResponse,
     summary="Get the workspace's GitHub integration status",
 )
-async def get_github_status(db: AsyncSession = Depends(get_db)):
-    stmt = select(GitHubConnection).filter(GitHubConnection.workspace_id == 1)
+async def get_github_status(
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    stmt = select(GitHubConnection).filter(GitHubConnection.workspace_id == current_user.workspace_id)
     res = await db.execute(stmt)
     conn = res.scalar_one_or_none()
 
@@ -966,8 +1156,11 @@ async def get_github_status(db: AsyncSession = Depends(get_db)):
     response_model=MessageResponse,
     summary="Disconnect the GitHub integration",
 )
-async def disconnect_github(db: AsyncSession = Depends(get_db)):
-    stmt = delete(GitHubConnection).filter(GitHubConnection.workspace_id == 1)
+async def disconnect_github(
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    stmt = delete(GitHubConnection).filter(GitHubConnection.workspace_id == current_user.workspace_id)
     await db.execute(stmt)
     await db.flush()
     return MessageResponse(message="GitHub repository disconnected successfully.", success=True)
@@ -978,8 +1171,12 @@ async def disconnect_github(db: AsyncSession = Depends(get_db)):
     response_model=GitHubStatusResponse,
     summary="Update or rotate GitHub integration credentials",
 )
-async def update_github(body: GitHubUpdateRequest, db: AsyncSession = Depends(get_db)):
-    stmt = select(GitHubConnection).filter(GitHubConnection.workspace_id == 1)
+async def update_github(
+    body: GitHubUpdateRequest, 
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    stmt = select(GitHubConnection).filter(GitHubConnection.workspace_id == current_user.workspace_id)
     res = await db.execute(stmt)
     conn = res.scalar_one_or_none()
 
@@ -1011,6 +1208,7 @@ async def update_github(body: GitHubUpdateRequest, db: AsyncSession = Depends(ge
         conn.repo_name = body.repo_name
 
     conn.status = "connected"
+    conn.connected_by = current_user.username
     await db.flush()
 
     return GitHubStatusResponse(

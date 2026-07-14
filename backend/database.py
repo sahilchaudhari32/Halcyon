@@ -51,6 +51,7 @@ class Incident(Base):
     __tablename__ = "incidents"
 
     id: int = Column(Integer, primary_key=True, index=True)
+    workspace_id: int = Column(Integer, ForeignKey("workspaces.id", ondelete="CASCADE"), nullable=False, default=1)
     title: str = Column(String(255), nullable=False, default="Untitled Incident")
     log_filename: Optional[str] = Column(String(255), nullable=True)
     log_content: str = Column(Text, nullable=False)
@@ -208,6 +209,46 @@ class Workspace(Base):
     )
 
 
+class User(Base):
+    """
+    User model for authentication.
+    """
+    __tablename__ = "users"
+
+    id: int = Column(Integer, primary_key=True, index=True)
+    username: str = Column(String(100), unique=True, nullable=False, index=True)
+    password_hash: str = Column(String(255), nullable=False)
+    workspace_id: int = Column(
+        Integer, ForeignKey("workspaces.id", ondelete="CASCADE"), nullable=False
+    )
+    created_at: datetime = Column(
+        DateTime(timezone=True),
+        default=lambda: datetime.now(timezone.utc),
+        nullable=False,
+    )
+
+    workspace = relationship("Workspace")
+
+
+class UserSession(Base):
+    """
+    Stores active user sessions/tokens.
+    """
+    __tablename__ = "user_sessions"
+
+    token: str = Column(String(255), primary_key=True, index=True)
+    user_id: int = Column(
+        Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+    )
+    created_at: datetime = Column(
+        DateTime(timezone=True),
+        default=lambda: datetime.now(timezone.utc),
+        nullable=False,
+    )
+
+    user = relationship("User")
+
+
 class GitHubConnection(Base):
     """
     Stores encrypted GitHub credentials per-workspace.
@@ -259,8 +300,12 @@ async def init_db() -> None:
         except Exception:
             # Column already exists or database not initialized yet
             pass
+        try:
+            await conn.execute(text("ALTER TABLE incidents ADD COLUMN workspace_id INTEGER DEFAULT 1"))
+        except Exception:
+            pass
 
-    # Ensure default workspace exists
+    # Ensure default workspace and default admin user exist
     async with AsyncSessionLocal() as session:
         try:
             from sqlalchemy import select
@@ -270,8 +315,26 @@ async def init_db() -> None:
             if not workspace:
                 workspace = Workspace(id=1, name="Default Workspace")
                 session.add(workspace)
-                await session.commit()
+                await session.flush()
                 logger.info("Created default workspace (ID=1) successfully.")
+            
+            # Seed default admin user (admin / admin123)
+            from auth import hash_password
+            stmt = select(User).filter(User.username == "admin")
+            res = await session.execute(stmt)
+            admin_user = res.scalar_one_or_none()
+            if not admin_user:
+                admin_user = User(
+                    username="admin",
+                    password_hash=hash_password("admin123"),
+                    workspace_id=1
+                )
+                session.add(admin_user)
+                await session.commit()
+                logger.info("Created default admin user (admin / admin123) successfully.")
+            else:
+                await session.commit()
         except Exception as e:
-            logger.error(f"Failed to create default workspace: {e}")
+            logger.error(f"Failed to initialize default workspace or user: {e}")
             await session.rollback()
+

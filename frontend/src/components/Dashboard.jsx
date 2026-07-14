@@ -57,6 +57,13 @@ export default function Dashboard({ setGlobalState }) {
     fetchIncidents();
     fetchStats();
     fetchSamples();
+
+    const interval = setInterval(() => {
+      fetchIncidents();
+      fetchStats();
+    }, 8000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const handleSimulate = async (scenarioName) => {
