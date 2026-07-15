@@ -13,7 +13,7 @@ export const FloatingDock = () => {
 
   return (
     <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 md:hidden">
-      <div className="flex items-center gap-6 px-6 py-3 rounded-full bg-surface/80 backdrop-blur-2xl border border-white/60 dark:border-white/10 shadow-antigravity">
+      <div className="flex items-center gap-6 px-6 py-3 rounded-full bg-surface/80 backdrop-blur-2xl border border-white/60 dark:border-white/10 shadow-md">
         {navItems.map((item) => {
           const Icon = item.icon;
           const [isActive] = useRoute(item.path);

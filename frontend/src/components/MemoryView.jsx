@@ -21,13 +21,13 @@ export default function MemoryView() {
   }, []);
 
   if (loading) {
-    return <div className="animate-pulse h-64 bg-surface rounded-3xl max-w-4xl mx-auto mt-8 border border-border-light shadow-antigravity"></div>;
+    return <div className="animate-pulse h-64 bg-surface rounded-3xl max-w-4xl mx-auto mt-8 border border-border-light shadow-md"></div>;
   }
 
   return (
     <div className="max-w-4xl mx-auto py-2 sm:py-4">
       <div className="mb-8 sm:mb-12 border-b border-border-light pb-6">
-        <h1 className="text-3xl sm:text-4xl font-serif text-text-primary tracking-wide mb-2">Institutional Memory</h1>
+        <h1 className="text-3xl sm:text-4xl font-sans text-text-primary tracking-wide mb-2">Knowledge Base</h1>
         <p className="text-text-muted font-light text-sm">A map of past incident resolutions actively used by the agent.</p>
       </div>
 
@@ -42,10 +42,10 @@ export default function MemoryView() {
               {/* Node connecting dot */}
               <div className="absolute -left-[33px] md:-left-[51px] top-6 w-5 h-5 bg-background border-[4px] border-accent-warm rounded-full shadow-sm group-hover:scale-110 transition-transform" />
               
-              <Card className="border-accent-warm/10 p-4 sm:p-6" animateHover={true}>
+              <Card className="border-accent-warm/10 p-4 sm:p-6" animateHover={false}>
                 <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-5">
                   <div>
-                    <h3 className="font-serif text-xl sm:text-2xl text-text-primary tracking-wide mb-1">{mem.title}</h3>
+                    <h3 className="font-sans text-xl sm:text-2xl text-text-primary tracking-wide mb-1">{mem.title}</h3>
                     <p className="text-xs font-mono text-text-muted font-semibold">
                       ID: INC-{mem.id.toString().padStart(4, '0')} • Stored {new Date(mem.created_at).toLocaleDateString()}
                     </p>

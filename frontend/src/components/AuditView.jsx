@@ -83,7 +83,7 @@ export default function AuditView() {
   };
 
   if (loading) {
-    return <div className="animate-pulse h-96 bg-surface rounded-3xl max-w-5xl mx-auto mt-8 border border-border-light shadow-antigravity"></div>;
+    return <div className="animate-pulse h-96 bg-surface rounded-3xl max-w-5xl mx-auto mt-8 border border-border-light shadow-md"></div>;
   }
 
   // Reverse decisions for chronological table list (newest first)
@@ -93,7 +93,7 @@ export default function AuditView() {
     <div className="max-w-5xl mx-auto py-2 sm:py-4">
       {/* Page Header */}
       <div className="mb-8 border-b border-border-light pb-6">
-        <h1 className="text-3xl sm:text-4xl font-serif text-text-primary tracking-wide mb-2 flex items-center gap-3">
+        <h1 className="text-3xl sm:text-4xl font-sans text-text-primary tracking-wide mb-2 flex items-center gap-3">
           <Activity className="w-8 h-8 text-primary animate-pulse" />
           <span>Audit & Cost Trail</span>
         </h1>
@@ -106,52 +106,48 @@ export default function AuditView() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
         
         {/* Cumulative cost */}
-        <Card className="flex flex-col p-5 relative overflow-hidden" animateHover={true}>
-          <div className="absolute top-0 left-0 w-full h-[3px] bg-red-400/50" />
+        <Card className="flex flex-col p-5 relative overflow-hidden" animateHover={false}>
           <div className="flex justify-between items-start mb-4">
             <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-text-muted">API Cost Incurred</span>
             <DollarSign className="w-4 h-4 text-primary" />
           </div>
-          <h2 className="text-3xl font-serif text-text-primary font-bold tracking-tight mb-1.5">
+          <h2 className="text-3xl font-sans text-text-primary font-bold tracking-tight mb-1.5">
             ${stats?.ai_decisions?.total_cost?.toFixed(5) || '0.00000'}
           </h2>
           <span className="text-[10px] font-mono text-text-muted uppercase">Cumulative Groq Fees</span>
         </Card>
 
         {/* Cost saved */}
-        <Card className="flex flex-col p-5 relative overflow-hidden" animateHover={true}>
-          <div className="absolute top-0 left-0 w-full h-[3px] bg-accent-warm" />
+        <Card className="flex flex-col p-5 relative overflow-hidden" animateHover={false}>
           <div className="flex justify-between items-start mb-4">
             <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-text-muted">Estimated Savings</span>
             <TrendingUp className="w-4 h-4 text-accent-warm animate-bounce" />
           </div>
-          <h2 className="text-3xl font-serif text-accent-warm font-bold tracking-tight mb-1.5">
+          <h2 className="text-3xl font-sans text-accent-warm font-bold tracking-tight mb-1.5">
             +${estimatedSavingsDollars.toFixed(3)}
           </h2>
           <span className="text-[10px] font-mono text-text-muted uppercase">Bypassed LLM Calls</span>
         </Card>
 
         {/* Downtime Bypassed */}
-        <Card className="flex flex-col p-5 relative overflow-hidden" animateHover={true}>
-          <div className="absolute top-0 left-0 w-full h-[3px] bg-[#2EC4B6]" />
+        <Card className="flex flex-col p-5 relative overflow-hidden" animateHover={false}>
           <div className="flex justify-between items-start mb-4">
             <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-text-muted">MTTR Saved</span>
             <Clock className="w-4 h-4 text-[#2EC4B6]" />
           </div>
-          <h2 className="text-3xl font-serif text-text-primary font-bold tracking-tight mb-1.5">
+          <h2 className="text-3xl font-sans text-text-primary font-bold tracking-tight mb-1.5">
             {downtimeSavedText}
           </h2>
           <span className="text-[10px] font-mono text-text-muted uppercase">On-Call Time Bypassed</span>
         </Card>
 
         {/* Hit Rate */}
-        <Card className="flex flex-col p-5 relative overflow-hidden" animateHover={true}>
-          <div className="absolute top-0 left-0 w-full h-[3px] bg-secondary" />
+        <Card className="flex flex-col p-5 relative overflow-hidden" animateHover={false}>
           <div className="flex justify-between items-start mb-4">
             <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-text-muted">Memory Hit Rate</span>
             <Cpu className="w-4 h-4 text-secondary" />
           </div>
-          <h2 className="text-3xl font-serif text-text-primary font-bold tracking-tight mb-1.5">
+          <h2 className="text-3xl font-sans text-text-primary font-bold tracking-tight mb-1.5">
             {stats?.ai_decisions?.memory_hit_rate || '0.0'}%
           </h2>
           <span className="text-[10px] font-mono text-text-muted uppercase">Fast Path Resolution</span>
@@ -163,7 +159,7 @@ export default function AuditView() {
         {/* Trend Area Chart */}
         <Card className="lg:col-span-2 flex flex-col p-6" animateHover={false}>
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
-            <h3 className="font-serif text-2xl text-text-primary tracking-wide">
+            <h3 className="font-sans text-2xl text-text-primary tracking-wide">
               {chartMetric === 'cost' ? 'Inference Cost Trend' : 'Resolution Latency Trend'}
             </h3>
             {/* Chart Tab Toggles */}
@@ -224,8 +220,8 @@ export default function AuditView() {
         </Card>
 
         {/* Resolution Path Pie Chart */}
-        <Card className="flex flex-col p-6 animateHover" animateHover={true}>
-          <h3 className="font-serif text-2xl text-text-primary tracking-wide mb-4">Routing Share</h3>
+        <Card className="flex flex-col p-6 animateHover" animateHover={false}>
+          <h3 className="font-sans text-2xl text-text-primary tracking-wide mb-4">Routing Share</h3>
           <div className="flex-1 flex items-center justify-center min-h-[200px]">
             {pieData.length > 0 ? (
               <ResponsiveContainer width="100%" height="100%">
@@ -259,10 +255,10 @@ export default function AuditView() {
       </div>
 
       {/* Interactive Expandable Table */}
-      <Card className="overflow-hidden p-0 shadow-antigravity" animateHover={false}>
+      <Card className="overflow-hidden p-0 shadow-md" animateHover={false}>
         <div className="p-6 border-b border-border-light bg-background/20 flex justify-between items-center">
           <div>
-            <h3 className="font-serif text-2xl text-text-primary tracking-wide">Decision Audit Trail</h3>
+            <h3 className="font-sans text-2xl text-text-primary tracking-wide">Action Log</h3>
             <p className="text-xs text-text-muted mt-1 font-mono uppercase">Telemetry logs mapped per incident cycle</p>
           </div>
           <Server className="w-5 h-5 text-text-muted" />

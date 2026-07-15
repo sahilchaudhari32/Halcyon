@@ -123,7 +123,7 @@ export default function AppShell({ children, systemState }) {
           {/* Mobile Title / Logo */}
           <div className="flex items-center gap-2.5 md:hidden">
             <img src={logo} alt="Halcyon Logo" className="w-7 h-7 rounded-lg object-cover border border-border-light/40" />
-            <span className="font-serif text-lg font-bold tracking-tight text-text-primary">Halcyon</span>
+            <span className="font-sans text-lg font-bold tracking-tight text-text-primary">Halcyon</span>
           </div>
 
           <div className="flex items-center gap-3 md:gap-6">
@@ -186,7 +186,7 @@ export default function AppShell({ children, systemState }) {
       {/* GitHub Integration Modal */}
       {showGithubModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="bg-surface border border-border-light rounded-3xl p-6 w-full max-w-md shadow-antigravity space-y-6 relative font-mono text-xs">
+          <div className="bg-surface border border-border-light rounded-3xl p-6 w-full max-w-md shadow-md space-y-6 relative font-mono text-xs">
             <button
               onClick={() => setShowGithubModal(false)}
               className="absolute top-4 right-4 text-text-muted hover:text-text-primary text-xl font-bold cursor-pointer focus:outline-none"
@@ -196,7 +196,7 @@ export default function AppShell({ children, systemState }) {
             </button>
             
             <div className="space-y-1">
-              <h3 className="font-serif text-lg text-text-primary font-bold flex items-center gap-2">
+              <h3 className="font-sans text-lg text-text-primary font-bold flex items-center gap-2">
                 <GithubIcon className="text-primary" style={{ width: '1.25rem', height: '1.25rem' }} />
                 Connect GitHub Repository
               </h3>

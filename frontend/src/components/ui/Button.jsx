@@ -13,7 +13,7 @@ export const Button = ({
 
   const variants = {
     primary:
-      'bg-gradient-to-r from-[#8CA596] to-[#7A9384] hover:from-[#7A9384] hover:to-[#7A9384] text-white shadow-antigravity hover:shadow-antigravity-hover active:scale-[0.98]',
+      'bg-gradient-to-r from-[#8CA596] to-[#7A9384] hover:from-[#7A9384] hover:to-[#7A9384] text-white shadow-md hover:shadow-md-hover active:scale-[0.98]',
     secondary:
       'bg-accent-warm/5 hover:bg-accent-warm/10 text-accent-warm border border-accent-warm/10 hover:border-accent-warm/20 active:scale-[0.98]',
     outline:

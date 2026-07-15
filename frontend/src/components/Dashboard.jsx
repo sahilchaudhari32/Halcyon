@@ -151,7 +151,7 @@ export default function Dashboard({ setGlobalState }) {
     <div className="max-w-5xl mx-auto py-2 sm:py-4">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 mb-8 sm:mb-10 border-b border-border-light pb-6">
         <div>
-          <h1 className="text-3xl sm:text-4xl font-serif text-text-primary tracking-wide mb-2">{t('dashboard.feedTitle')}</h1>
+          <h1 className="text-3xl sm:text-4xl font-sans text-text-primary tracking-wide mb-2">{t('dashboard.feedTitle')}</h1>
           <p className="text-text-muted font-light text-sm">{t('dashboard.feedSub')}</p>
         </div>
         <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
@@ -236,9 +236,9 @@ export default function Dashboard({ setGlobalState }) {
 
       {showSimModal && (
         <div className="fixed inset-0 bg-[#0A0E1A]/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
-          <Card className="w-full max-w-lg border-none shadow-antigravity relative overflow-hidden bg-surface animate-in fade-in zoom-in-95 duration-200" animateHover={false}>
+          <Card className="w-full max-w-lg border-none shadow-md relative overflow-hidden bg-surface animate-in fade-in zoom-in-95 duration-200" animateHover={false}>
              <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary to-accent-warm" />
-             <h3 className="font-serif text-3xl font-medium tracking-wide mb-3 text-text-primary">{t('dashboard.simModalTitle')}</h3>
+             <h3 className="font-sans text-3xl font-medium tracking-wide mb-3 text-text-primary">{t('dashboard.simModalTitle')}</h3>
              <p className="text-sm text-text-muted font-light mb-6 leading-relaxed">{t('dashboard.simModalSub')}</p>
              <div className="space-y-3 max-h-56 overflow-y-auto pr-1">
                 {samples.map(s => (
@@ -315,7 +315,7 @@ export default function Dashboard({ setGlobalState }) {
         ) : (
           incidents.map((inc) => (
             <Link key={inc.id} href={`/incident/${inc.id}`} className="block group">
-              <Card className={`flex flex-col sm:flex-row sm:items-center sm:justify-between cursor-pointer border hover:border-accent-warm/50 transition-all p-4 sm:p-6 gap-4 sm:gap-6 ${inc.is_solved ? 'border-border-light hover:shadow-neon-accent' : 'border-primary/30 hover:shadow-neon-primary'}`} animateHover={true}>
+              <Card className={`flex flex-col sm:flex-row sm:items-center sm:justify-between cursor-pointer border hover:border-accent-warm/50 transition-all p-4 sm:p-6 gap-4 sm:gap-6 ${inc.is_solved ? 'border-border-light hover:border-border-strong' : 'border-primary/30 hover:border-border-strong'}`} animateHover={false}>
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8 w-full sm:flex-1 sm:min-w-0">
                   {/* Saturated and larger medium size waveform per card */}
                   <div className="flex items-center justify-center bg-background border border-border-light/60 p-2.5 rounded-2xl w-full sm:w-44 h-16 shadow-inner relative overflow-hidden flex-shrink-0">
@@ -323,7 +323,7 @@ export default function Dashboard({ setGlobalState }) {
                     <Waveform state={inc.is_solved ? 'calm' : 'chaotic'} size="medium" />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <h3 className="font-serif text-xl sm:text-2xl text-text-primary mb-1.5 tracking-wide truncate">{inc.title}</h3>
+                    <h3 className="font-sans text-xl sm:text-2xl text-text-primary mb-1.5 tracking-wide truncate">{inc.title}</h3>
                     <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs font-mono text-text-muted font-medium">
                       <span>ID: INC-{(inc.id).toString().padStart(4, '0')}</span>
                       <span>•</span>

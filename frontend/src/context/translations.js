@@ -30,7 +30,7 @@ export const translations = {
       fasterResolution: "Faster Resolution",
       cheaperInference: "Cheaper Inference",
       complianceRisks: "Zero Compliance Risks",
-      instMemory: "Institutional Memory",
+      instMemory: "Knowledge Base",
       builtForHackathon: "Built for the Hackathon.",
       faqTitle: "Frequently Answered",
       faq1Q: "How does the memory recall mechanism work?",
@@ -40,7 +40,7 @@ export const translations = {
     },
     dashboard: {
       feedTitle: "Incident Feed",
-      feedSub: "Real-time NOC operational telemetry and cognitive crash analysis.",
+      feedSub: "Real-time NOC operational telemetry and automated crash analysis.",
       simulateBtn: "Simulate Scenario",
       uploadBtn: "Upload Custom Log",
       searchPlaceholder: "Search incidents by title, service, error...",
@@ -55,7 +55,7 @@ export const translations = {
       solved: "Solved",
       active: "Active",
       simModalTitle: "Simulate NOC Outage Scenario",
-      simModalSub: "Inject a mock log to see cascadeflow routing and hindsight memory recall in action.",
+      simModalSub: "Inject a mock log to see automated routing and hindsight memory recall in action.",
       close: "Close",
       runningAnalysis: "Ingesting log & running routing analysis...",
       sensitiveToggle: "Mask sensitive data (PII Proxy)"

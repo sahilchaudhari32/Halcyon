@@ -79,7 +79,7 @@ export default function BillingView() {
         >
           <ArrowLeft className="w-3.5 h-3.5 mr-1" /> {t('nav.backToFeed')}
         </button>
-        <h1 className="text-3xl sm:text-4xl font-serif text-text-primary tracking-wide mb-2 flex items-center gap-3">
+        <h1 className="text-3xl sm:text-4xl font-sans text-text-primary tracking-wide mb-2 flex items-center gap-3">
           {t('billing.title')}
           {subscription === 'pro' && (
             <span className="text-xs font-mono font-bold tracking-widest bg-accent-warm/15 text-accent-warm border border-accent-warm/25 px-2.5 py-1 rounded-full uppercase">
@@ -105,8 +105,8 @@ export default function BillingView() {
               <div>
                 <div className="flex justify-between items-start mb-6">
                   <div>
-                    <h3 className="font-serif text-2xl text-text-primary mb-1">{t('sidebar.freeTier')}</h3>
-                    <div className="text-3xl font-serif font-bold text-text-primary">$0</div>
+                    <h3 className="font-sans text-2xl text-text-primary mb-1">{t('sidebar.freeTier')}</h3>
+                    <div className="text-3xl font-sans font-bold text-text-primary">$0</div>
                   </div>
                   {subscription === 'free' && (
                     <span className="text-[10px] font-mono font-bold tracking-widest bg-primary/10 text-primary border border-primary/20 px-2 py-0.5 rounded-full uppercase">
@@ -168,12 +168,12 @@ export default function BillingView() {
               <div>
                 <div className="flex justify-between items-start mb-6">
                   <div>
-                    <h3 className="font-serif text-2xl text-text-primary mb-1 flex items-center gap-2">
+                    <h3 className="font-sans text-2xl text-text-primary mb-1 flex items-center gap-2">
                       {t('sidebar.proTier')}
                       <Sparkles className="w-4 h-4 text-accent-warm animate-pulse" />
                     </h3>
                     <div className="flex items-baseline gap-1.5">
-                      <span className="text-3xl font-serif font-bold text-text-primary">$49</span>
+                      <span className="text-3xl font-sans font-bold text-text-primary">$49</span>
                       <span className="text-xs font-mono text-text-muted">{t('billing.pricingMonthly')}</span>
                     </div>
                   </div>
@@ -225,7 +225,7 @@ export default function BillingView() {
             <Card className="p-6 relative overflow-hidden" animateHover={false}>
               <div className="absolute top-0 left-0 w-full h-[3px] bg-accent-warm" />
               
-              <h3 className="font-serif text-xl sm:text-2xl text-text-primary mb-6 flex items-center gap-2 border-b border-border-light pb-4">
+              <h3 className="font-sans text-xl sm:text-2xl text-text-primary mb-6 flex items-center gap-2 border-b border-border-light pb-4">
                 <CreditCard className="w-5 h-5 text-accent-warm" />
                 {t('billing.checkoutTitle')}
               </h3>
@@ -367,7 +367,7 @@ export default function BillingView() {
                     >
                       <Sparkles className="w-8 h-8" />
                     </motion.div>
-                    <h4 className="font-serif text-xl text-slate-100 font-bold mb-2">Upgrade Successful!</h4>
+                    <h4 className="font-sans text-xl text-slate-100 font-bold mb-2">Upgrade Successful!</h4>
                     <p className="text-xs text-slate-400 font-mono">{t('billing.successMsg')}</p>
                   </motion.div>
                 )}

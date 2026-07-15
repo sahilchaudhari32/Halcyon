@@ -22,7 +22,7 @@ export const Sidebar = () => {
         <div className="h-20 px-6 border-b border-border-light flex items-center gap-3">
           <img src={logo} alt="Halcyon Logo" className="w-8 h-8 rounded-lg object-cover border border-border-light/40" />
           <div>
-            <span className="font-serif text-xl font-bold tracking-tight text-text-primary">Halcyon</span>
+            <span className="font-sans text-xl font-bold tracking-tight text-text-primary">Halcyon</span>
             <span className="block text-[8px] font-mono text-text-muted uppercase tracking-widest -mt-0.5">NOC Intelligence</span>
           </div>
         </div>

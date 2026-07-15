@@ -67,7 +67,7 @@ export default function AuthForm({ onAuthSuccess }) {
         transition={{ type: 'spring', damping: 25, stiffness: 80 }}
         className="w-full max-w-md z-10"
       >
-        <Card className="relative overflow-hidden border border-border-light/60 p-6 sm:p-8 shadow-antigravity" animateHover={false}>
+        <Card className="relative overflow-hidden border border-border-light/60 p-6 sm:p-8 shadow-md" animateHover={false}>
           {/* Top accent line */}
           <div className="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-primary via-accent-warm to-secondary" />
 
@@ -76,7 +76,7 @@ export default function AuthForm({ onAuthSuccess }) {
             <div className="w-12 h-12 bg-background border border-border-light rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
               <Shield className="w-6 h-6 text-accent-warm" />
             </div>
-            <h2 className="font-serif text-3xl text-text-primary tracking-wide mb-1.5">
+            <h2 className="font-sans text-3xl text-text-primary tracking-wide mb-1.5">
               {isLogin ? 'Welcome Back' : 'Create Account'}
             </h2>
             <p className="text-xs text-text-muted font-mono tracking-wide uppercase">

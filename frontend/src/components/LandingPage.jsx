@@ -156,9 +156,9 @@ export default function LandingPage({ onEnterApp }) {
         <div className="flex items-center gap-3 group cursor-pointer">
           <div className="relative">
             <div className="absolute inset-0 bg-accent-warm/40 blur-md rounded-full group-hover:bg-accent-warm/60 transition-colors duration-500" />
-            <img src={logo} alt="Halcyon Logo" className="relative w-8 h-8 rounded-lg object-cover border border-border-light/40 shadow-antigravity" />
+            <img src={logo} alt="Halcyon Logo" className="relative w-8 h-8 rounded-lg object-cover border border-border-light/40 shadow-md" />
           </div>
-          <span className="font-serif text-xl sm:text-2xl font-semibold tracking-tight text-text-primary group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-text-primary group-hover:to-accent-warm transition-all duration-300">Halcyon</span>
+          <span className="font-sans text-xl sm:text-2xl font-semibold tracking-tight text-text-primary group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-text-primary group-hover:to-accent-warm transition-all duration-300">Halcyon</span>
         </div>
 
         <nav className="hidden md:flex items-center gap-8 text-xs font-semibold uppercase tracking-wider text-text-muted font-mono">
@@ -201,7 +201,7 @@ export default function LandingPage({ onEnterApp }) {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="text-4xl sm:text-6xl md:text-8xl font-serif text-transparent bg-clip-text bg-gradient-to-br from-text-primary via-text-primary to-text-muted tracking-wide mb-6 sm:mb-8 leading-tight max-w-4xl"
+          className="text-4xl sm:text-6xl md:text-8xl font-sans text-transparent bg-clip-text bg-gradient-to-br from-text-primary via-text-primary to-text-muted tracking-wide mb-6 sm:mb-8 leading-tight max-w-4xl"
         >
           {t('landing.titlePrefix').split(' ').map((word, idx) => (
             <motion.span key={idx} variants={wordVariants} className="inline-block mr-3 sm:mr-4">
@@ -232,7 +232,7 @@ export default function LandingPage({ onEnterApp }) {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7, duration: 1.0, type: "spring", damping: 25 }}
-          className="w-full max-w-4xl bg-surface border border-border-light rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-antigravity mb-16 sm:mb-24 relative overflow-hidden group"
+          className="w-full max-w-4xl bg-surface border border-border-light rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-md mb-16 sm:mb-24 relative overflow-hidden group"
         >
           <div className="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-primary via-accent-warm to-secondary" />
           
@@ -286,7 +286,7 @@ export default function LandingPage({ onEnterApp }) {
           variants={featureContainerVariants}
           className="w-full mb-20 sm:mb-32 text-left scroll-mt-24"
         >
-          <motion.h2 variants={fadeInUpVariants} className="text-3xl sm:text-4xl font-serif text-text-primary mb-4 tracking-wide text-center">
+          <motion.h2 variants={fadeInUpVariants} className="text-3xl sm:text-4xl font-sans text-text-primary mb-4 tracking-wide text-center">
             {t('landing.howItWorksTitle')}
           </motion.h2>
           <motion.p variants={fadeInUpVariants} className="text-center text-text-muted font-light mb-16 max-w-xl mx-auto">
@@ -298,7 +298,7 @@ export default function LandingPage({ onEnterApp }) {
             {/* Before: Raw Terminal logs */}
             <motion.div 
               variants={fadeInUpVariants}
-              className="bg-[#0D0F11] border border-border-light/20 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-antigravity relative overflow-hidden flex flex-col h-full"
+              className="bg-[#0D0F11] border border-border-light/20 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-md relative overflow-hidden flex flex-col h-full"
             >
               <div className="absolute top-0 left-0 w-full h-[3px] bg-red-400/80" />
               <div className="flex items-center justify-between border-b border-border-light/10 pb-4 mb-6">
@@ -315,7 +315,7 @@ export default function LandingPage({ onEnterApp }) {
 
             {/* After: Halcyon Resolution */}
             <motion.div variants={fadeInUpVariants} className="h-full">
-              <Card className="border border-accent-warm/20 relative overflow-hidden flex flex-col h-full animateHover" animateHover={true}>
+              <Card className="border border-accent-warm/20 relative overflow-hidden flex flex-col h-full animateHover" animateHover={false}>
                 <div className="absolute top-0 left-0 w-full h-[3px] bg-accent-warm" />
                 <div className="flex items-center justify-between border-b border-border-light pb-4 mb-6">
                   <span className="font-mono text-xs text-text-primary font-bold">{t('landing.halcyonRetrieval')}</span>
@@ -346,17 +346,17 @@ export default function LandingPage({ onEnterApp }) {
           variants={featureContainerVariants}
           className="w-full mb-20 sm:mb-32 scroll-mt-24"
         >
-          <motion.h2 variants={fadeInUpVariants} className="text-3xl sm:text-4xl font-serif text-text-primary mb-8 sm:mb-12 tracking-wide">
+          <motion.h2 variants={fadeInUpVariants} className="text-3xl sm:text-4xl font-sans text-text-primary mb-8 sm:mb-12 tracking-wide">
             {t('landing.archTitle')}
           </motion.h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {features.map((f, i) => (
               <motion.div key={i} variants={fadeInUpVariants} className="h-full">
-                <Card className="flex flex-col text-left h-full animateHover" animateHover={true}>
+                <Card className="flex flex-col text-left h-full animateHover" animateHover={false}>
                   <div className="w-10 h-10 rounded-2xl bg-background border border-border-light flex items-center justify-center mb-6 shadow-sm">
                     {f.icon}
                   </div>
-                  <h3 className="font-serif text-2xl text-text-primary mb-3 tracking-wide">{f.title}</h3>
+                  <h3 className="font-sans text-2xl text-text-primary mb-3 tracking-wide">{f.title}</h3>
                   <p className="text-sm text-text-muted font-light leading-relaxed">{f.desc}</p>
                 </Card>
               </motion.div>
@@ -373,7 +373,7 @@ export default function LandingPage({ onEnterApp }) {
           variants={featureContainerVariants}
           className="w-full max-w-3xl mb-16 scroll-mt-24 text-left"
         >
-          <motion.h2 variants={fadeInUpVariants} className="text-3xl sm:text-4xl font-serif text-text-primary mb-8 sm:mb-12 tracking-wide text-center">
+          <motion.h2 variants={fadeInUpVariants} className="text-3xl sm:text-4xl font-sans text-text-primary mb-8 sm:mb-12 tracking-wide text-center">
             {t('landing.faqTitle')}
           </motion.h2>
           <div className="space-y-4">
@@ -383,11 +383,11 @@ export default function LandingPage({ onEnterApp }) {
                 <motion.div 
                   key={index} 
                   variants={fadeInUpVariants}
-                  className="bg-surface rounded-2xl border border-border-light shadow-antigravity overflow-hidden transition-all duration-300"
+                  className="bg-surface rounded-2xl border border-border-light shadow-md overflow-hidden transition-all duration-300"
                 >
                   <button 
                     onClick={() => setActiveFaq(isOpen ? null : index)}
-                    className="w-full p-5 sm:p-6 flex justify-between items-center text-left font-serif text-lg sm:text-xl font-medium text-text-primary focus:outline-none"
+                    className="w-full p-5 sm:p-6 flex justify-between items-center text-left font-sans text-lg sm:text-xl font-medium text-text-primary focus:outline-none"
                   >
                     <span>{faq.q}</span>
                     <span className="text-text-muted text-sm font-semibold">{isOpen ? '−' : '+'}</span>
@@ -419,19 +419,19 @@ export default function LandingPage({ onEnterApp }) {
       <footer className="border-t border-border-light bg-surface/50 py-12 sm:py-16 relative z-10 text-center">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 grid grid-cols-2 md:grid-cols-4 gap-8 mb-12 md:divide-x divide-border-light">
           <div>
-            <div className="text-4xl font-serif text-text-primary mb-1">98%</div>
+            <div className="text-4xl font-sans text-text-primary mb-1">98%</div>
             <div className="text-xs font-mono text-text-muted uppercase tracking-wider font-semibold">{t('landing.fasterResolution')}</div>
           </div>
           <div>
-            <div className="text-4xl font-serif text-text-primary mb-1">100x</div>
+            <div className="text-4xl font-sans text-text-primary mb-1">100x</div>
             <div className="text-xs font-mono text-text-muted uppercase tracking-wider font-semibold">{t('landing.cheaperInference')}</div>
           </div>
           <div>
-            <div className="text-4xl font-serif text-text-primary mb-1">Zero</div>
+            <div className="text-4xl font-sans text-text-primary mb-1">Zero</div>
             <div className="text-xs font-mono text-text-muted uppercase tracking-wider font-semibold">{t('landing.complianceRisks')}</div>
           </div>
           <div>
-            <div className="text-4xl font-serif text-accent-warm mb-1">Infinite</div>
+            <div className="text-4xl font-sans text-accent-warm mb-1">Infinite</div>
             <div className="text-xs font-mono text-text-muted uppercase tracking-wider font-semibold">{t('landing.instMemory')}</div>
           </div>
         </div>

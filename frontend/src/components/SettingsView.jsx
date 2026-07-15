@@ -135,7 +135,7 @@ export default function SettingsView() {
           <div className="h-9 w-48 bg-surface rounded-xl shimmer-bg mb-2"></div>
           <div className="h-4 w-80 bg-surface rounded-xl shimmer-bg"></div>
         </div>
-        <div className="animate-pulse h-64 bg-surface rounded-3xl border border-border-light shadow-antigravity shimmer-bg"></div>
+        <div className="animate-pulse h-64 bg-surface rounded-3xl border border-border-light shadow-md shimmer-bg"></div>
       </div>
     );
   }
@@ -144,7 +144,7 @@ export default function SettingsView() {
     <div className="max-w-4xl mx-auto py-2 sm:py-4">
       {/* Page Header */}
       <div className="mb-8 border-b border-border-light pb-6">
-        <h1 className="text-3xl sm:text-4xl font-serif text-text-primary tracking-wide mb-2">Integrations</h1>
+        <h1 className="text-3xl sm:text-4xl font-sans text-text-primary tracking-wide mb-2">Integrations</h1>
         <p className="text-text-muted font-light text-sm">Configure workspace connections and telemetry correlation pipelines.</p>
       </div>
 
@@ -181,7 +181,7 @@ export default function SettingsView() {
                 <GithubIcon className="w-8 h-8 text-text-primary" />
               </div>
               <div>
-                <h3 className="font-serif text-xl sm:text-2xl text-text-primary font-bold mb-1">GitHub Integration</h3>
+                <h3 className="font-sans text-xl sm:text-2xl text-text-primary font-bold mb-1">GitHub Integration</h3>
                 <p className="text-xs text-text-muted font-mono leading-relaxed">
                   Correlate incoming telemetry crash logs with recent repository deployments.
                 </p>

@@ -81,7 +81,7 @@ export default function GithubOnboarding({ onConnectionSuccess }) {
         transition={{ type: 'spring', damping: 25, stiffness: 85 }}
         className="w-full max-w-lg z-10"
       >
-        <Card className="relative overflow-hidden border border-border-light/60 p-6 sm:p-8 shadow-antigravity" animateHover={false}>
+        <Card className="relative overflow-hidden border border-border-light/60 p-6 sm:p-8 shadow-md" animateHover={false}>
           {/* Top accent strip */}
           <div className="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-accent-warm via-[#2EC4B6] to-secondary" />
 
@@ -101,7 +101,7 @@ export default function GithubOnboarding({ onConnectionSuccess }) {
                 >
                   <CheckCircle2 className="w-8 h-8 text-accent-warm" />
                 </motion.div>
-                <h3 className="font-serif text-2xl text-text-primary font-bold mb-2">Verification Successful</h3>
+                <h3 className="font-sans text-2xl text-text-primary font-bold mb-2">Verification Successful</h3>
                 <p className="text-xs font-mono text-text-muted max-w-xs leading-relaxed uppercase tracking-wider">
                   Telemetry pipeline synchronized. Opening dashboard feed...
                 </p>
@@ -111,7 +111,7 @@ export default function GithubOnboarding({ onConnectionSuccess }) {
 
           {/* Header */}
           <div className="text-center mb-8">
-            <h2 className="font-serif text-3xl text-text-primary tracking-wide mb-2">Connect GitHub</h2>
+            <h2 className="font-sans text-3xl text-text-primary tracking-wide mb-2">Connect GitHub</h2>
             <p className="text-xs text-text-muted font-mono leading-relaxed max-w-sm mx-auto uppercase tracking-wide">
               Configure telemetry pipelines to correlate system crash logs with recent source code changes.
             </p>

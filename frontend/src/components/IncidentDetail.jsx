@@ -80,7 +80,7 @@ export default function IncidentDetail({ id }) {
   };
 
   if (loading) {
-    return <div className="animate-pulse h-64 bg-surface rounded-3xl max-w-5xl mx-auto mt-8 border border-border-light shadow-antigravity"></div>;
+    return <div className="animate-pulse h-64 bg-surface rounded-3xl max-w-5xl mx-auto mt-8 border border-border-light shadow-md"></div>;
   }
   
   if (!incident) {
@@ -101,7 +101,7 @@ export default function IncidentDetail({ id }) {
         </Link>
         <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mt-2">
           <div>
-            <h1 className="text-3xl sm:text-4xl font-serif text-text-primary tracking-wide mb-2">{incident.title}</h1>
+            <h1 className="text-3xl sm:text-4xl font-sans text-text-primary tracking-wide mb-2">{incident.title}</h1>
             <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs font-mono text-text-muted font-medium">
               <span>ID: INC-{id.toString().padStart(4, '0')}</span>
               <span>•</span>
@@ -143,7 +143,7 @@ export default function IncidentDetail({ id }) {
             <Card className="flex flex-col border border-accent-warm/25 relative overflow-hidden" animateHover={false}>
               <div className="absolute top-0 left-0 w-full h-[3px] bg-accent-warm" />
               <div className="flex justify-between items-center border-b border-border-light pb-4 mb-6">
-                <h3 className="font-serif text-xl text-text-primary font-bold">WITH HALCYON</h3>
+                <h3 className="font-sans text-xl text-text-primary font-bold">WITH HALCYON</h3>
                 <span className="text-[10px] font-mono font-bold tracking-widest bg-accent-warm/15 text-accent-warm border border-accent-warm/25 px-2.5 py-0.5 rounded-full uppercase">OPTIMIZED</span>
               </div>
               <div className="space-y-6 flex-1">
@@ -184,7 +184,7 @@ export default function IncidentDetail({ id }) {
             <Card className="flex flex-col border border-border-light relative overflow-hidden" animateHover={false}>
               <div className="absolute top-0 left-0 w-full h-[3px] bg-red-400/80" />
               <div className="flex justify-between items-center border-b border-border-light pb-4 mb-6">
-                <h3 className="font-serif text-xl text-text-primary font-bold">WITHOUT HALCYON (BASELINE)</h3>
+                <h3 className="font-sans text-xl text-text-primary font-bold">WITHOUT HALCYON (BASELINE)</h3>
                 <span className="text-[10px] font-mono font-bold tracking-widest bg-red-500/10 text-red-400 border border-red-500/20 px-2.5 py-0.5 rounded-full uppercase">UNOPTIMIZED</span>
               </div>
               <div className="space-y-6 flex-1">
@@ -226,7 +226,7 @@ export default function IncidentDetail({ id }) {
             </Card>
           </div>
           <div className="bg-gradient-to-r from-accent-warm/15 via-[#2EC4B6]/10 to-transparent border border-border-light p-5 rounded-3xl shadow-sm text-center">
-            <h4 className="font-serif text-base text-text-primary font-bold mb-1">Telemetry Comparison Summary</h4>
+            <h4 className="font-sans text-base text-text-primary font-bold mb-1">Telemetry Comparison Summary</h4>
             <p className="text-xs font-mono text-text-muted leading-relaxed">
               With Halcyon Cognitive Memory:{" "}
               <span className="text-[#2EC4B6] font-bold">
@@ -246,7 +246,7 @@ export default function IncidentDetail({ id }) {
               )}
             </p>
           </div>
-          <div className="bg-[#0D0F11] border border-border-light/20 rounded-3xl p-6 shadow-antigravity flex flex-col relative overflow-hidden max-h-96">
+          <div className="bg-[#0D0F11] border border-border-light/20 rounded-3xl p-6 shadow-md flex flex-col relative overflow-hidden max-h-96">
             <div className="flex items-center gap-2 mb-4 text-text-muted/50 border-b border-border-light/10 pb-4">
               <div className="w-2.5 h-2.5 rounded-full bg-primary/80" />
               <div className="w-2.5 h-2.5 rounded-full bg-accent-warm/80" />
@@ -260,7 +260,7 @@ export default function IncidentDetail({ id }) {
         </div>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
-          <div className="bg-[#0D0F11] border border-border-light/20 rounded-3xl p-6 shadow-antigravity flex flex-col h-full relative overflow-hidden">
+          <div className="bg-[#0D0F11] border border-border-light/20 rounded-3xl p-6 shadow-md flex flex-col h-full relative overflow-hidden">
             <div className="flex items-center gap-2 mb-4 text-text-muted/50 border-b border-border-light/10 pb-4">
               <div className="w-2.5 h-2.5 rounded-full bg-primary/80" />
               <div className="w-2.5 h-2.5 rounded-full bg-accent-warm/80" />
@@ -272,7 +272,7 @@ export default function IncidentDetail({ id }) {
             </pre>
           </div>
           <Card className="flex flex-col" animateHover={false}>
-            <h3 className="font-serif text-2xl sm:text-3xl text-text-primary border-b border-border-light pb-4 mb-6">Agent Reasoning</h3>
+            <h3 className="font-sans text-2xl sm:text-3xl text-text-primary border-b border-border-light pb-4 mb-6">Root Cause Analysis</h3>
             <div className="space-y-8 flex-1">
               {incident.suspected_commit ? (
                 <div className="bg-background/40 border border-border-light rounded-2xl p-4 shadow-sm space-y-3 font-mono">
@@ -346,7 +346,7 @@ export default function IncidentDetail({ id }) {
                 <p className="text-xs uppercase tracking-widest text-text-muted font-mono font-bold mb-3">Path Taken</p>
                 <div className="bg-background border border-border-light rounded-2xl p-4 flex justify-between items-center shadow-sm">
                   <span className="font-semibold text-sm text-text-primary">
-                    {primaryAudit.model_tier === 'fast-path' ? 'Hindsight Memory (Fast Path)' : 'Cascadeflow (Escalated)'}
+                    {primaryAudit.model_tier === 'fast-path' ? 'Hindsight Memory (Fast Path)' : 'Automated Pipeline (Escalated)'}
                   </span>
                   <span className="font-mono text-xs text-text-muted bg-surface px-2 py-1 rounded-full border border-border-light">{primaryAudit.model_used}</span>
                 </div>
