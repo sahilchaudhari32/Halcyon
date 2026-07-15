@@ -44,3 +44,10 @@ models/
 outputs/
 unsloth_compiled_cache/
 ft_venv/
+
+# ── Root Configs & Junk ──────────────────────────────────────
+vercel.json
+.vercelignore
+render.yaml
+deploy_render.py
+banner.svg
