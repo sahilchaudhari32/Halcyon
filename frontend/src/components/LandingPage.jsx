@@ -158,7 +158,7 @@ export default function LandingPage({ onEnterApp }) {
             <div className="absolute inset-0 bg-surface blur-md rounded-sm group-hover:bg-surface transition-colors duration-500" />
             <img src={logo} alt="Halcyon Logo" className="relative w-8 h-8 rounded-lg object-cover border border-border-light/40 shadow-none" />
           </div>
-          <span className="font-sans text-xl sm:text-2xl font-semibold tracking-tight text-text-primary group-hover:text-transparent group-hover:bg-clip-text group-hover: group-hover:from-text-primary group-hover:to-accent-warm transition-all duration-300">Halcyon</span>
+          <span className="font-sans text-xl sm:text-2xl font-semibold tracking-tight text-text-primary group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-text-primary group-hover:to-accent-warm transition-all duration-300">Halcyon</span>
         </div>
 
         <nav className="hidden md:flex items-center gap-8 text-xs font-semibold uppercase tracking-wider text-text-muted font-mono">
@@ -201,7 +201,7 @@ export default function LandingPage({ onEnterApp }) {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="text-4xl sm:text-6xl md:text-8xl font-sans text-transparent bg-clip-text  from-text-primary via-text-primary to-text-muted tracking-wide mb-6 sm:mb-8 leading-tight max-w-4xl"
+          className="text-4xl sm:text-6xl md:text-8xl font-sans text-transparent bg-clip-text bg-gradient-to-r from-text-primary via-text-primary to-text-muted tracking-wide mb-6 sm:mb-8 leading-tight max-w-4xl"
         >
           {t('landing.titlePrefix').split(' ').map((word, idx) => (
             <motion.span key={idx} variants={wordVariants} className="inline-block mr-3 sm:mr-4">
@@ -211,7 +211,7 @@ export default function LandingPage({ onEnterApp }) {
           <br className="hidden sm:block" />
           <motion.span 
             variants={wordVariants}
-            className="italic font-normal text-transparent bg-clip-text  from-primary to-accent-warm inline-block drop-shadow-none"
+            className="italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent-warm inline-block drop-shadow-none"
           >
             {t('landing.titleSuffix')}
           </motion.span>

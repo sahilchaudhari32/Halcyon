@@ -13,12 +13,12 @@ export const Button = ({
 
   const variants = {
     primary:
-      ' from-[#8CA596] to-[#7A9384] hover:from-[#7A9384] hover:to-[#7A9384] text-white shadow-none hover:bg-border-light/10 active:scale-[0.98]',
+      'bg-text-primary text-surface hover:opacity-90 shadow-none active:scale-[0.98]',
     secondary:
-      'bg-surface hover:bg-surface text-accent-warm border border-border-light hover:border-border-light active:scale-[0.98]',
+      'bg-surface text-text-primary border border-border-light hover:bg-border-light/50 active:scale-[0.98]',
     outline:
-      'bg-white dark:bg-surface border border-border-light hover:border-border-light text-text-primary hover:text-primary active:scale-[0.98]',
-    text: 'text-text-muted hover:text-text-primary hover:bg-background/50 px-3.5 py-2',
+      'bg-transparent border border-border-light hover:bg-border-light/50 text-text-primary active:scale-[0.98]',
+    text: 'text-text-muted hover:text-text-primary hover:bg-border-light/30 px-3.5 py-2',
   };
 
   return (
