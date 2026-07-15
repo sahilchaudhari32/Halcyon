@@ -118,7 +118,7 @@ export default function LandingPage({ onEnterApp }) {
   };
 
   return (
-    <div className="min-h-screen bg-background text-text-muted font-sans selection:bg-accent-warm/25 overflow-x-hidden relative transition-colors duration-300">
+    <div className="min-h-screen bg-background text-text-muted font-sans selection:bg-surface overflow-x-hidden relative transition-colors duration-300">
       
       {/* Interactive mouse spotlight glow & decorative mesh background (Afterlife Style) */}
       <div className="fixed inset-0 z-0 pointer-events-none" aria-hidden="true">
@@ -152,13 +152,13 @@ export default function LandingPage({ onEnterApp }) {
       </div>
 
       {/* Top Navigation */}
-      <header className="fixed top-0 left-0 right-0 h-20 bg-background/60 backdrop-blur-xl z-40 border-b border-border-light/20 px-4 sm:px-6 lg:px-12 flex items-center justify-between shadow-sm">
+      <header className="fixed top-0 left-0 right-0 h-20 bg-background/60 backdrop-blur-xl z-40 border-b border-border-light/20 px-4 sm:px-6 lg:px-12 flex items-center justify-between shadow-none">
         <div className="flex items-center gap-3 group cursor-pointer">
           <div className="relative">
-            <div className="absolute inset-0 bg-accent-warm/40 blur-md rounded-full group-hover:bg-accent-warm/60 transition-colors duration-500" />
-            <img src={logo} alt="Halcyon Logo" className="relative w-8 h-8 rounded-lg object-cover border border-border-light/40 shadow-md" />
+            <div className="absolute inset-0 bg-surface blur-md rounded-full group-hover:bg-surface transition-colors duration-500" />
+            <img src={logo} alt="Halcyon Logo" className="relative w-8 h-8 rounded-lg object-cover border border-border-light/40 shadow-none" />
           </div>
-          <span className="font-sans text-xl sm:text-2xl font-semibold tracking-tight text-text-primary group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-text-primary group-hover:to-accent-warm transition-all duration-300">Halcyon</span>
+          <span className="font-sans text-xl sm:text-2xl font-semibold tracking-tight text-text-primary group-hover:text-transparent group-hover:bg-clip-text group-hover: group-hover:from-text-primary group-hover:to-accent-warm transition-all duration-300">Halcyon</span>
         </div>
 
         <nav className="hidden md:flex items-center gap-8 text-xs font-semibold uppercase tracking-wider text-text-muted font-mono">
@@ -173,7 +173,7 @@ export default function LandingPage({ onEnterApp }) {
             <select
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
-              className="appearance-none bg-surface border border-border-light hover:border-primary/20 px-3.5 py-2 pr-8 rounded-xl font-mono text-[10px] font-bold text-text-muted hover:text-text-primary focus:outline-none focus:ring-1 focus:ring-primary/20 transition-all cursor-pointer shadow-sm"
+              className="appearance-none bg-surface border border-border-light hover:border-primary/20 px-3.5 py-2 pr-8 rounded-md font-mono text-[10px] font-bold text-text-muted hover:text-text-primary focus:outline-none focus:ring-1 focus:ring-primary/20 transition-all cursor-pointer shadow-none"
               aria-label="Select language"
             >
               <option value="en">EN</option>
@@ -201,7 +201,7 @@ export default function LandingPage({ onEnterApp }) {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="text-4xl sm:text-6xl md:text-8xl font-sans text-transparent bg-clip-text bg-gradient-to-br from-text-primary via-text-primary to-text-muted tracking-wide mb-6 sm:mb-8 leading-tight max-w-4xl"
+          className="text-4xl sm:text-6xl md:text-8xl font-sans text-transparent bg-clip-text  from-text-primary via-text-primary to-text-muted tracking-wide mb-6 sm:mb-8 leading-tight max-w-4xl"
         >
           {t('landing.titlePrefix').split(' ').map((word, idx) => (
             <motion.span key={idx} variants={wordVariants} className="inline-block mr-3 sm:mr-4">
@@ -211,7 +211,7 @@ export default function LandingPage({ onEnterApp }) {
           <br className="hidden sm:block" />
           <motion.span 
             variants={wordVariants}
-            className="italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent-warm inline-block drop-shadow-sm"
+            className="italic font-normal text-transparent bg-clip-text  from-primary to-accent-warm inline-block drop-shadow-none"
           >
             {t('landing.titleSuffix')}
           </motion.span>
@@ -232,9 +232,9 @@ export default function LandingPage({ onEnterApp }) {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7, duration: 1.0, type: "spring", damping: 25 }}
-          className="w-full max-w-4xl bg-surface border border-border-light rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-md mb-16 sm:mb-24 relative overflow-hidden group"
+          className="w-full max-w-4xl bg-surface border border-border-light rounded-md sm:rounded-md p-4 sm:p-6 shadow-none mb-16 sm:mb-24 relative overflow-hidden group"
         >
-          <div className="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-primary via-accent-warm to-secondary" />
+          <div className="absolute top-0 left-0 w-full h-[3px]  from-primary via-accent-warm to-secondary" />
           
           {/* Console Header Bar */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-xs font-mono border-b border-border-light pb-4 mb-6">
@@ -249,7 +249,7 @@ export default function LandingPage({ onEnterApp }) {
           </div>
 
           {/* Canvas Wrapper */}
-          <div className="h-48 flex items-center justify-center bg-background/50 rounded-2xl border border-border-light/80 p-4 relative overflow-hidden">
+          <div className="h-48 flex items-center justify-center bg-background/50 rounded-md border border-border-light/80 p-4 relative overflow-hidden">
             <Waveform state={heroState} size="large" />
 
             {/* Overlay Grid lines for diagnostic scanner look */}
@@ -264,10 +264,10 @@ export default function LandingPage({ onEnterApp }) {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -5 }}
                   transition={{ duration: 0.3 }}
-                  className={`px-3 py-1.5 rounded-full text-[10px] font-mono font-bold tracking-widest border shadow-sm ${
+                  className={`px-3 py-1.5 rounded-full text-[10px] font-mono font-bold tracking-widest border shadow-none ${
                     heroState === 'chaotic' 
-                      ? 'bg-primary/10 border-primary/20 text-primary' 
-                      : 'bg-accent-warm/10 border-accent-warm/20 text-accent-warm'
+                      ? 'bg-surface border-primary/20 text-primary' 
+                      : 'bg-surface border-accent-warm/20 text-accent-warm'
                   }`}
                 >
                   {statusText}
@@ -298,7 +298,7 @@ export default function LandingPage({ onEnterApp }) {
             {/* Before: Raw Terminal logs */}
             <motion.div 
               variants={fadeInUpVariants}
-              className="bg-[#0D0F11] border border-border-light/20 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-md relative overflow-hidden flex flex-col h-full"
+              className="bg-[#0D0F11] border border-border-light/20 rounded-md sm:rounded-md p-5 sm:p-8 shadow-none relative overflow-hidden flex flex-col h-full"
             >
               <div className="absolute top-0 left-0 w-full h-[3px] bg-red-400/80" />
               <div className="flex items-center justify-between border-b border-border-light/10 pb-4 mb-6">
@@ -323,11 +323,11 @@ export default function LandingPage({ onEnterApp }) {
                 </div>
                 
                 <div className="space-y-6 flex-1">
-                  <div className="bg-background border border-border-light p-4 rounded-2xl flex items-center gap-3">
+                  <div className="bg-background border border-border-light p-4 rounded-md flex items-center gap-3">
                     <div className="w-2 h-2 rounded-full bg-accent-warm animate-ping" />
                     <span className="font-mono text-sm text-text-primary font-bold">{t('landing.memoryMatch')}</span>
                   </div>
-                  <p className="text-sm font-mono text-text-primary leading-relaxed bg-accent-warm/5 border border-accent-warm/15 p-4 rounded-2xl">
+                  <p className="text-sm font-mono text-text-primary leading-relaxed bg-surface border border-accent-warm/15 p-4 rounded-md">
                     <strong>Suggested Fix:</strong> {t('landing.suggestedFix')}
                   </p>
                   <div className="text-xs font-mono font-bold text-accent-warm">{t('landing.downtimeSaved')}</div>
@@ -353,7 +353,7 @@ export default function LandingPage({ onEnterApp }) {
             {features.map((f, i) => (
               <motion.div key={i} variants={fadeInUpVariants} className="h-full">
                 <Card className="flex flex-col text-left h-full animateHover" animateHover={false}>
-                  <div className="w-10 h-10 rounded-2xl bg-background border border-border-light flex items-center justify-center mb-6 shadow-sm">
+                  <div className="w-10 h-10 rounded-md bg-background border border-border-light flex items-center justify-center mb-6 shadow-none">
                     {f.icon}
                   </div>
                   <h3 className="font-sans text-2xl text-text-primary mb-3 tracking-wide">{f.title}</h3>
@@ -383,7 +383,7 @@ export default function LandingPage({ onEnterApp }) {
                 <motion.div 
                   key={index} 
                   variants={fadeInUpVariants}
-                  className="bg-surface rounded-2xl border border-border-light shadow-md overflow-hidden transition-all duration-300"
+                  className="bg-surface rounded-md border border-border-light shadow-none overflow-hidden transition-all duration-300"
                 >
                   <button 
                     onClick={() => setActiveFaq(isOpen ? null : index)}

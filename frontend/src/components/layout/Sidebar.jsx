@@ -37,9 +37,9 @@ export const Sidebar = () => {
               <Link 
                 key={item.path} 
                 href={item.path}
-                className={`relative flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer text-xs font-mono font-semibold tracking-wide transition-all group focus:outline-none focus:ring-1 focus:ring-primary/20 ${
+                className={`relative flex items-center gap-3 px-4 py-3 rounded-md cursor-pointer text-xs font-mono font-semibold tracking-wide transition-all group focus:outline-none focus:ring-1 focus:ring-primary/20 ${
                   isActive 
-                    ? 'bg-accent-warm/10 border-l-2 border-accent-warm text-accent-warm shadow-sm' 
+                    ? 'bg-surface border-l-2 border-accent-warm text-accent-warm shadow-none' 
                     : 'text-text-muted hover:text-text-primary hover:bg-background/50 border-l-2 border-transparent'
                 }`}
                 aria-label={item.label}
@@ -61,13 +61,13 @@ export const Sidebar = () => {
       </div>
 
       {/* Sidebar Subscription Tier Widget */}
-      <div className="mx-4 p-3 rounded-xl border border-border-light bg-surface/50 font-mono text-[10px] space-y-2 mb-2">
+      <div className="mx-4 p-3 rounded-md border border-border-light bg-surface/50 font-mono text-[10px] space-y-2 mb-2">
         <div className="flex justify-between items-center">
           <span className="text-text-muted font-bold uppercase tracking-wider">{t('sidebar.subscription')}:</span>
           <span className={`font-bold tracking-widest px-1.5 py-0.5 rounded text-[8px] border uppercase ${
             subscription === 'pro' 
-              ? 'bg-accent-warm/15 text-accent-warm border-accent-warm/30' 
-              : 'bg-primary/10 text-primary border-primary/20'
+              ? 'bg-surface text-accent-warm border-accent-warm/30' 
+              : 'bg-surface text-primary border-primary/20'
           }`}>
             {subscription === 'pro' ? t('sidebar.proTier') : t('sidebar.freeTier')}
           </span>

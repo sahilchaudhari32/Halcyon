@@ -21,7 +21,7 @@ export default function MemoryView() {
   }, []);
 
   if (loading) {
-    return <div className="animate-pulse h-64 bg-surface rounded-3xl max-w-4xl mx-auto mt-8 border border-border-light shadow-md"></div>;
+    return <div className="animate-pulse h-64 bg-surface rounded-md max-w-4xl mx-auto mt-8 border border-border-light shadow-none"></div>;
   }
 
   return (
@@ -40,7 +40,7 @@ export default function MemoryView() {
           {memories.map((mem) => (
             <div key={mem.id} className="relative group">
               {/* Node connecting dot */}
-              <div className="absolute -left-[33px] md:-left-[51px] top-6 w-5 h-5 bg-background border-[4px] border-accent-warm rounded-full shadow-sm group-hover:scale-110 transition-transform" />
+              <div className="absolute -left-[33px] md:-left-[51px] top-6 w-5 h-5 bg-background border-[4px] border-accent-warm rounded-full shadow-none group-hover:scale-110 transition-transform" />
               
               <Card className="border-accent-warm/10 p-4 sm:p-6" animateHover={false}>
                 <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-5">
@@ -50,12 +50,12 @@ export default function MemoryView() {
                       ID: INC-{mem.id.toString().padStart(4, '0')} • Stored {new Date(mem.created_at).toLocaleDateString()}
                     </p>
                   </div>
-                  <span className="bg-accent-warm/10 border border-accent-warm/20 text-accent-warm px-3.5 py-1.5 rounded-full text-xs font-mono font-bold uppercase tracking-wider shadow-sm self-start sm:self-auto">
+                  <span className="bg-surface border border-accent-warm/20 text-accent-warm px-3.5 py-1.5 rounded-full text-xs font-mono font-bold uppercase tracking-wider shadow-none self-start sm:self-auto">
                     Stored Memory
                   </span>
                 </div>
                 
-                <div className="bg-background/80 p-5 rounded-2xl border border-border-light font-mono text-sm text-text-primary mb-6 leading-relaxed shadow-sm">
+                <div className="bg-background/80 p-5 rounded-md border border-border-light font-mono text-sm text-text-primary mb-6 leading-relaxed shadow-none">
                   {mem.solution || mem.fix_suggestion}
                 </div>
                 
@@ -65,7 +65,7 @@ export default function MemoryView() {
                     <p className="text-xs uppercase tracking-widest text-text-muted font-mono font-bold mb-3">Used to solve:</p>
                     <div className="flex gap-3 flex-wrap">
                       {mem.similar_incidents.map((sim, idx) => (
-                        <span key={idx} className="px-3 py-1.5 bg-background border border-border-light rounded-xl text-xs font-mono font-semibold text-text-primary shadow-sm hover:border-accent-warm/40 transition-colors cursor-default">
+                        <span key={idx} className="px-3 py-1.5 bg-background border border-border-light rounded-md text-xs font-mono font-semibold text-text-primary shadow-none hover:border-accent-warm/40 transition-colors cursor-default">
                           INC-{sim.similar_to_id.toString().padStart(4, '0')} <span className="text-accent-warm ml-1">({Math.round(sim.similarity_score * 100)}%)</span>
                         </span>
                       ))}

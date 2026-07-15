@@ -80,7 +80,7 @@ export default function IncidentDetail({ id }) {
   };
 
   if (loading) {
-    return <div className="animate-pulse h-64 bg-surface rounded-3xl max-w-5xl mx-auto mt-8 border border-border-light shadow-md"></div>;
+    return <div className="animate-pulse h-64 bg-surface rounded-md max-w-5xl mx-auto mt-8 border border-border-light shadow-none"></div>;
   }
   
   if (!incident) {
@@ -110,12 +110,12 @@ export default function IncidentDetail({ id }) {
           </div>
           <div className="self-start sm:self-auto flex items-center gap-4">
             {/* Toggle switch for comparison */}
-            <div className="flex items-center bg-surface border border-border-light p-1 rounded-xl gap-1 shrink-0 shadow-sm font-mono text-[10px]">
+            <div className="flex items-center bg-surface border border-border-light p-1 rounded-md gap-1 shrink-0 shadow-none font-mono text-[10px]">
               <button
                 onClick={() => setCompareMode(false)}
                 className={`px-3 py-1.5 rounded-lg font-bold tracking-wider transition-all cursor-pointer ${
                   !compareMode 
-                    ? 'bg-accent-warm text-white shadow-sm' 
+                    ? 'bg-accent-warm text-white shadow-none' 
                     : 'text-text-muted hover:text-text-primary'
                 }`}
               >
@@ -125,7 +125,7 @@ export default function IncidentDetail({ id }) {
                 onClick={() => setCompareMode(true)}
                 className={`px-3 py-1.5 rounded-lg font-bold tracking-wider transition-all cursor-pointer ${
                   compareMode 
-                    ? 'bg-primary/95 text-white shadow-sm' 
+                    ? 'bg-surface text-white shadow-none' 
                     : 'text-text-muted hover:text-text-primary'
                 }`}
               >
@@ -144,26 +144,26 @@ export default function IncidentDetail({ id }) {
               <div className="absolute top-0 left-0 w-full h-[3px] bg-accent-warm" />
               <div className="flex justify-between items-center border-b border-border-light pb-4 mb-6">
                 <h3 className="font-sans text-xl text-text-primary font-bold">WITH HALCYON</h3>
-                <span className="text-[10px] font-mono font-bold tracking-widest bg-accent-warm/15 text-accent-warm border border-accent-warm/25 px-2.5 py-0.5 rounded-full uppercase">OPTIMIZED</span>
+                <span className="text-[10px] font-mono font-bold tracking-widest bg-surface text-accent-warm border border-accent-warm/25 px-2.5 py-0.5 rounded-full uppercase">OPTIMIZED</span>
               </div>
               <div className="space-y-6 flex-1">
-                <div className="bg-background border border-border-light rounded-2xl p-4 flex flex-col items-center justify-center shadow-inner relative overflow-hidden h-28">
+                <div className="bg-background border border-border-light rounded-md p-4 flex flex-col items-center justify-center shadow-inner relative overflow-hidden h-28">
                   <div className="absolute top-2 left-3 font-mono text-[9px] text-text-muted uppercase">Telemetry Oscilloscope</div>
                   <Waveform state="calm" size="medium" />
                   <div className="mt-2 text-[10px] font-mono text-accent-warm font-bold uppercase tracking-wider">System State: CALM / STABLE</div>
                 </div>
                 <div className="space-y-1.5">
                   <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-text-muted">Resolution Path</span>
-                  <div className="bg-background border border-border-light rounded-xl p-3 text-xs font-mono text-text-primary font-semibold">
+                  <div className="bg-background border border-border-light rounded-md p-3 text-xs font-mono text-text-primary font-semibold">
                     {isMemoryMatch ? 'Hindsight Memory Cache (Fast Path)' : `cascadeflow: ${primaryAudit.model_tier || 'Drafter Model'}`}
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-background border border-border-light rounded-xl p-3.5">
+                  <div className="bg-background border border-border-light rounded-md p-3.5">
                     <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-text-muted block mb-1">API Cost</span>
                     <span className="font-mono text-sm font-bold text-text-primary">${(primaryAudit.cost || 0).toFixed(6)}</span>
                   </div>
-                  <div className="bg-background border border-border-light rounded-xl p-3.5">
+                  <div className="bg-background border border-border-light rounded-md p-3.5">
                     <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-text-muted block mb-1">API Latency</span>
                     <span className="font-mono text-sm font-bold text-text-primary">{(primaryAudit.latency_ms || 30).toFixed(0)} ms</span>
                   </div>
@@ -188,25 +188,25 @@ export default function IncidentDetail({ id }) {
                 <span className="text-[10px] font-mono font-bold tracking-widest bg-red-500/10 text-red-400 border border-red-500/20 px-2.5 py-0.5 rounded-full uppercase">UNOPTIMIZED</span>
               </div>
               <div className="space-y-6 flex-1">
-                <div className="bg-background border border-border-light rounded-2xl p-4 flex flex-col items-center justify-center shadow-inner relative overflow-hidden h-28">
+                <div className="bg-background border border-border-light rounded-md p-4 flex flex-col items-center justify-center shadow-inner relative overflow-hidden h-28">
                   <div className="absolute top-2 left-3 font-mono text-[9px] text-text-muted uppercase">Telemetry Oscilloscope</div>
                   <Waveform state="chaotic" size="medium" color="#EF4444" />
                   <div className="mt-2 text-[10px] font-mono text-red-400 font-bold uppercase tracking-wider">System State: UNSTABLE / CHAOTIC</div>
                 </div>
                 <div className="space-y-1.5">
                   <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-text-muted">Resolution Path</span>
-                  <div className="bg-background border border-border-light rounded-xl p-3 text-xs font-mono text-text-primary font-semibold">
+                  <div className="bg-background border border-border-light rounded-md p-3 text-xs font-mono text-text-primary font-semibold">
                     Full manual diagnostic reasoning required (No cache)
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-background border border-border-light rounded-xl p-3.5">
+                  <div className="bg-background border border-border-light rounded-md p-3.5">
                     <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-text-muted block mb-1">API Cost</span>
                     <span className="font-mono text-sm font-bold text-text-primary">
                       ${(isMemoryMatch ? 0.045000 : Math.max(primaryAudit.cost || 0.00005, 0.00059)).toFixed(6)}
                     </span>
                   </div>
-                  <div className="bg-background border border-border-light rounded-xl p-3.5">
+                  <div className="bg-background border border-border-light rounded-md p-3.5">
                     <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-text-muted block mb-1">API Latency</span>
                     <span className="font-mono text-sm font-bold text-text-primary">
                       {(isMemoryMatch ? 3120 : Math.max(primaryAudit.latency_ms || 1200, 2850)).toFixed(0)} ms
@@ -215,7 +215,7 @@ export default function IncidentDetail({ id }) {
                 </div>
                 <div className="space-y-1.5">
                   <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-text-muted">Resolution Trust</span>
-                  <div className="p-4 bg-background/55 border border-border-light rounded-2xl">
+                  <div className="p-4 bg-background/55 border border-border-light rounded-md">
                     <div className="font-mono text-[10px] text-text-muted font-bold uppercase mb-1">No precedent referenced</div>
                     <p className="font-sans text-[11px] leading-relaxed text-text-muted">
                       Cannot verify recovery path confidence due to disabled hindsight index.
@@ -225,7 +225,7 @@ export default function IncidentDetail({ id }) {
               </div>
             </Card>
           </div>
-          <div className="bg-gradient-to-r from-accent-warm/15 via-[#2EC4B6]/10 to-transparent border border-border-light p-5 rounded-3xl shadow-sm text-center">
+          <div className=" from-accent-warm/15 via-[#2EC4B6]/10 to-transparent border border-border-light p-5 rounded-md shadow-none text-center">
             <h4 className="font-sans text-base text-text-primary font-bold mb-1">Telemetry Comparison Summary</h4>
             <p className="text-xs font-mono text-text-muted leading-relaxed">
               With Halcyon Cognitive Memory:{" "}
@@ -246,10 +246,10 @@ export default function IncidentDetail({ id }) {
               )}
             </p>
           </div>
-          <div className="bg-[#0D0F11] border border-border-light/20 rounded-3xl p-6 shadow-md flex flex-col relative overflow-hidden max-h-96">
+          <div className="bg-[#0D0F11] border border-border-light/20 rounded-md p-6 shadow-none flex flex-col relative overflow-hidden max-h-96">
             <div className="flex items-center gap-2 mb-4 text-text-muted/50 border-b border-border-light/10 pb-4">
-              <div className="w-2.5 h-2.5 rounded-full bg-primary/80" />
-              <div className="w-2.5 h-2.5 rounded-full bg-accent-warm/80" />
+              <div className="w-2.5 h-2.5 rounded-full bg-surface" />
+              <div className="w-2.5 h-2.5 rounded-full bg-surface" />
               <div className="w-2.5 h-2.5 rounded-full bg-secondary/80" />
               <span className="font-mono text-xs ml-2 font-medium text-slate-400">{incident.log_filename || 'raw-input.log'}</span>
             </div>
@@ -260,10 +260,10 @@ export default function IncidentDetail({ id }) {
         </div>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
-          <div className="bg-[#0D0F11] border border-border-light/20 rounded-3xl p-6 shadow-md flex flex-col h-full relative overflow-hidden">
+          <div className="bg-[#0D0F11] border border-border-light/20 rounded-md p-6 shadow-none flex flex-col h-full relative overflow-hidden">
             <div className="flex items-center gap-2 mb-4 text-text-muted/50 border-b border-border-light/10 pb-4">
-              <div className="w-2.5 h-2.5 rounded-full bg-primary/80" />
-              <div className="w-2.5 h-2.5 rounded-full bg-accent-warm/80" />
+              <div className="w-2.5 h-2.5 rounded-full bg-surface" />
+              <div className="w-2.5 h-2.5 rounded-full bg-surface" />
               <div className="w-2.5 h-2.5 rounded-full bg-secondary/80" />
               <span className="font-mono text-xs ml-2 font-medium text-slate-400">{incident.log_filename || 'raw-input.log'}</span>
             </div>
@@ -275,16 +275,16 @@ export default function IncidentDetail({ id }) {
             <h3 className="font-sans text-2xl sm:text-3xl text-text-primary border-b border-border-light pb-4 mb-6">Root Cause Analysis</h3>
             <div className="space-y-8 flex-1">
               {incident.suspected_commit ? (
-                <div className="bg-background/40 border border-border-light rounded-2xl p-4 shadow-sm space-y-3 font-mono">
+                <div className="bg-background/40 border border-border-light rounded-md p-4 shadow-none space-y-3 font-mono">
                   <div className="flex justify-between items-center border-b border-border-light/50 pb-2">
                     <span className="text-[10px] uppercase tracking-widest text-text-muted font-bold">Suspected Code Change</span>
                     <span className={`text-[9px] font-bold tracking-widest px-2 py-0.5 rounded-full border uppercase ${
                       incident.suspected_commit.plausibility === 'HIGH'
-                        ? 'bg-primary/10 border-primary/20 text-primary animate-pulse'
+                        ? 'bg-surface border-primary/20 text-primary animate-pulse'
                         : incident.suspected_commit.plausibility === 'MEDIUM'
-                        ? 'bg-primary/5 border-primary/10 text-primary/80'
+                        ? 'bg-surface border-primary/10 text-primary/80'
                         : incident.suspected_commit.plausibility === 'LOW'
-                        ? 'bg-accent-warm/10 border-accent-warm/20 text-accent-warm'
+                        ? 'bg-surface border-accent-warm/20 text-accent-warm'
                         : 'bg-background border-border-light text-text-muted'
                     }`}>
                       {incident.suspected_commit.plausibility} PLAUSIBILITY
@@ -312,7 +312,7 @@ export default function IncidentDetail({ id }) {
                       • {getRelativeTimestamp(incident.created_at, incident.suspected_commit.timestamp)}
                     </div>
 
-                    <div className="bg-surface/50 border border-border-light/35 rounded-xl p-2.5 text-text-primary text-[11px] leading-relaxed break-all whitespace-pre-wrap">
+                    <div className="bg-surface/50 border border-border-light/35 rounded-md p-2.5 text-text-primary text-[11px] leading-relaxed break-all whitespace-pre-wrap">
                       {incident.suspected_commit.message}
                     </div>
 
@@ -323,7 +323,7 @@ export default function IncidentDetail({ id }) {
                   </div>
                 </div>
               ) : !hasConnection ? (
-                <div className="bg-background/25 border border-dashed border-border-light rounded-2xl p-4.5 text-center font-mono text-xs">
+                <div className="bg-background/25 border border-dashed border-border-light rounded-md p-4.5 text-center font-mono text-xs">
                   <p className="text-text-muted mb-2.5 leading-relaxed">
                     Connect GitHub to see code correlation for incidents
                   </p>
@@ -344,14 +344,14 @@ export default function IncidentDetail({ id }) {
               </div>
               <div>
                 <p className="text-xs uppercase tracking-widest text-text-muted font-mono font-bold mb-3">Path Taken</p>
-                <div className="bg-background border border-border-light rounded-2xl p-4 flex justify-between items-center shadow-sm">
+                <div className="bg-background border border-border-light rounded-md p-4 flex justify-between items-center shadow-none">
                   <span className="font-semibold text-sm text-text-primary">
                     {primaryAudit.model_tier === 'fast-path' ? 'Hindsight Memory (Fast Path)' : 'Automated Pipeline (Escalated)'}
                   </span>
                   <span className="font-mono text-xs text-text-muted bg-surface px-2 py-1 rounded-full border border-border-light">{primaryAudit.model_used}</span>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-6 bg-background/50 p-4 rounded-2xl border border-border-light/50">
+              <div className="grid grid-cols-2 gap-6 bg-background/50 p-4 rounded-md border border-border-light/50">
                 <div>
                   <p className="text-xs uppercase tracking-widest text-text-muted font-mono font-bold mb-2">Root Cause</p>
                   <p className="text-sm text-text-primary font-medium">{incident.root_cause || 'Unknown'}</p>
@@ -368,7 +368,7 @@ export default function IncidentDetail({ id }) {
                   {incident.is_solved ? 'Applied Solution' : 'Suggested Resolution'}
                 </p>
                 {incident.is_solved ? (
-                  <div className="bg-accent-warm/5 border border-accent-warm/15 p-5 rounded-2xl text-text-primary font-mono text-sm leading-relaxed shadow-sm whitespace-pre-line">
+                  <div className="bg-surface border border-accent-warm/15 p-5 rounded-md text-text-primary font-mono text-sm leading-relaxed shadow-none whitespace-pre-line">
                     {incident.solution}
                   </div>
                 ) : (
@@ -377,7 +377,7 @@ export default function IncidentDetail({ id }) {
                       value={solutionText}
                       onChange={(e) => setSolutionText(e.target.value)}
                       rows={4}
-                      className="w-full bg-background border border-border-light rounded-2xl p-4 text-text-primary font-mono text-sm leading-relaxed shadow-sm focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/40"
+                      className="w-full bg-background border border-border-light rounded-md p-4 text-text-primary font-mono text-sm leading-relaxed shadow-none focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/40"
                     />
                     {incident.suspected_commit && (
                       <label className="flex items-center gap-2.5 font-mono text-xs text-text-muted cursor-pointer select-none py-1">
@@ -402,7 +402,7 @@ export default function IncidentDetail({ id }) {
                 )}
               </div>
               {isMemoryMatch && incident.similar_incidents?.length > 0 && (
-                <div className="text-sm text-accent-warm bg-accent-warm/10 p-4 rounded-2xl border border-accent-warm/20 font-medium flex items-center gap-2">
+                <div className="text-sm text-accent-warm bg-surface p-4 rounded-md border border-accent-warm/20 font-medium flex items-center gap-2">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                   Matched past incident <strong className="ml-1">INC-{incident.similar_incidents[0].similar_to_id.toString().padStart(4, '0')}</strong>.
                 </div>

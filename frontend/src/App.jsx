@@ -55,7 +55,7 @@ function App() {
             <div className="relative">
               <button 
                 onClick={() => setShowAuthForm(false)} 
-                className="absolute top-6 left-6 z-20 font-mono text-[10px] uppercase font-bold tracking-wider px-3.5 py-2 rounded-xl bg-surface border border-border-light text-text-muted hover:text-text-primary transition-all cursor-pointer shadow-sm"
+                className="absolute top-6 left-6 z-20 font-mono text-[10px] uppercase font-bold tracking-wider px-3.5 py-2 rounded-md bg-surface border border-border-light text-text-muted hover:text-text-primary transition-all cursor-pointer shadow-none"
               >
                 &larr; Back
               </button>

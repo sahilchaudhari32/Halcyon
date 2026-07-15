@@ -82,7 +82,7 @@ export default function BillingView() {
         <h1 className="text-3xl sm:text-4xl font-sans text-text-primary tracking-wide mb-2 flex items-center gap-3">
           {t('billing.title')}
           {subscription === 'pro' && (
-            <span className="text-xs font-mono font-bold tracking-widest bg-accent-warm/15 text-accent-warm border border-accent-warm/25 px-2.5 py-1 rounded-full uppercase">
+            <span className="text-xs font-mono font-bold tracking-widest bg-surface text-accent-warm border border-accent-warm/25 px-2.5 py-1 rounded-full uppercase">
               PRO ACTIVE
             </span>
           )}
@@ -109,7 +109,7 @@ export default function BillingView() {
                     <div className="text-3xl font-sans font-bold text-text-primary">$0</div>
                   </div>
                   {subscription === 'free' && (
-                    <span className="text-[10px] font-mono font-bold tracking-widest bg-primary/10 text-primary border border-primary/20 px-2 py-0.5 rounded-full uppercase">
+                    <span className="text-[10px] font-mono font-bold tracking-widest bg-surface text-primary border border-primary/20 px-2 py-0.5 rounded-full uppercase">
                       {t('billing.currentPlan')}
                     </span>
                   )}
@@ -129,7 +129,7 @@ export default function BillingView() {
 
               <div className="mt-auto pt-6 border-t border-border-light/30">
                 {subscription === 'free' ? (
-                  <div className="w-full text-center py-2.5 rounded-xl border border-border-light/60 bg-background/50 font-mono text-xs font-bold text-text-muted uppercase">
+                  <div className="w-full text-center py-2.5 rounded-md border border-border-light/60 bg-background/50 font-mono text-xs font-bold text-text-muted uppercase">
                     {t('billing.freeButton')}
                   </div>
                 ) : (
@@ -143,7 +143,7 @@ export default function BillingView() {
                 )}
 
                 {subscription === 'free' && (
-                  <div className="mt-4 flex items-center justify-between text-[11px] font-mono bg-background border border-border-light/60 p-3 rounded-xl">
+                  <div className="mt-4 flex items-center justify-between text-[11px] font-mono bg-background border border-border-light/60 p-3 rounded-md">
                     <span className="text-text-muted">{t('billing.remainingLogs')}:</span>
                     <span className="font-bold text-primary">{maxLogs - limitCount} / {maxLogs}</span>
                   </div>
@@ -155,14 +155,14 @@ export default function BillingView() {
             <Card
               className={`flex flex-col justify-between relative overflow-hidden h-full border ${
                 subscription === 'pro'
-                  ? 'border-accent-warm shadow-halcyon-glow-amber bg-gradient-to-br from-accent-warm/[0.02] to-transparent'
+                  ? 'border-accent-warm shadow-halcyon-glow-amber  from-accent-warm/[0.02] to-transparent'
                   : 'border-border-light/70'
               }`}
               animateHover={subscription !== 'pro'}
             >
               {/* Premium Glow effect */}
               {subscription === 'pro' && (
-                <div className="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-accent-warm via-primary to-secondary" />
+                <div className="absolute top-0 left-0 w-full h-[3px]  from-accent-warm via-primary to-secondary" />
               )}
 
               <div>
@@ -178,7 +178,7 @@ export default function BillingView() {
                     </div>
                   </div>
                   {subscription === 'pro' && (
-                    <span className="text-[10px] font-mono font-bold tracking-widest bg-accent-warm/15 text-accent-warm border border-accent-warm/25 px-2 py-0.5 rounded-full uppercase">
+                    <span className="text-[10px] font-mono font-bold tracking-widest bg-surface text-accent-warm border border-accent-warm/25 px-2 py-0.5 rounded-full uppercase">
                       {t('billing.currentPlan')}
                     </span>
                   )}
@@ -198,14 +198,14 @@ export default function BillingView() {
 
               <div className="mt-auto pt-6 border-t border-border-light/30">
                 {subscription === 'pro' ? (
-                  <div className="w-full text-center py-2.5 rounded-xl border border-accent-warm/30 bg-accent-warm/5 font-mono text-xs font-bold text-accent-warm uppercase shadow-sm">
+                  <div className="w-full text-center py-2.5 rounded-md border border-accent-warm/30 bg-surface font-mono text-xs font-bold text-accent-warm uppercase shadow-none">
                     Active Subscription
                   </div>
                 ) : (
                   <Button
                     variant="primary"
                     onClick={() => setCheckoutActive(true)}
-                    className="w-full bg-accent-warm hover:bg-accent-warm/95 text-white border-none shadow-md font-mono text-xs font-bold uppercase tracking-wider transition-all duration-300 hover:scale-[1.01]"
+                    className="w-full bg-accent-warm hover:bg-surface text-white border-none shadow-none font-mono text-xs font-bold uppercase tracking-wider transition-all duration-300 hover:scale-[1.01]"
                   >
                     {t('billing.proButton')}
                   </Button>
@@ -231,7 +231,7 @@ export default function BillingView() {
               </h3>
 
               {/* Glassmorphic Credit Card Widget */}
-              <div className="relative w-full h-44 rounded-2xl bg-gradient-to-br from-[#0F172A] to-[#1E293B] border border-slate-700/60 p-5 text-white font-mono flex flex-col justify-between shadow-lg mb-8 overflow-hidden">
+              <div className="relative w-full h-44 rounded-md  from-[#0F172A] to-[#1E293B] border border-slate-700/60 p-5 text-white font-mono flex flex-col justify-between shadow-none mb-8 overflow-hidden">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(232,147,91,0.06),transparent)] pointer-events-none" />
                 
                 {/* Chip and Logo */}
@@ -277,7 +277,7 @@ export default function BillingView() {
                     placeholder="Jane Doe"
                     value={cardName}
                     onChange={(e) => setCardName(e.target.value)}
-                    className="w-full bg-background border border-border-light rounded-xl px-4 py-2.5 text-sm text-text-primary focus:outline-none focus:border-accent-warm focus:ring-1 focus:ring-accent-warm/40 font-mono"
+                    className="w-full bg-background border border-border-light rounded-md px-4 py-2.5 text-sm text-text-primary focus:outline-none focus:border-accent-warm focus:ring-1 focus:ring-accent-warm/40 font-mono"
                   />
                 </div>
 
@@ -291,7 +291,7 @@ export default function BillingView() {
                     placeholder="4111 2222 3333 4444"
                     value={cardNumber}
                     onChange={handleCardNumberChange}
-                    className="w-full bg-background border border-border-light rounded-xl px-4 py-2.5 text-sm text-text-primary focus:outline-none focus:border-accent-warm focus:ring-1 focus:ring-accent-warm/40 font-mono font-semibold"
+                    className="w-full bg-background border border-border-light rounded-md px-4 py-2.5 text-sm text-text-primary focus:outline-none focus:border-accent-warm focus:ring-1 focus:ring-accent-warm/40 font-mono font-semibold"
                   />
                 </div>
 
@@ -306,7 +306,7 @@ export default function BillingView() {
                       placeholder="MM/YY"
                       value={expiry}
                       onChange={handleExpiryChange}
-                      className="w-full bg-background border border-border-light rounded-xl px-4 py-2.5 text-sm text-text-primary focus:outline-none focus:border-accent-warm focus:ring-1 focus:ring-accent-warm/40 font-mono"
+                      className="w-full bg-background border border-border-light rounded-md px-4 py-2.5 text-sm text-text-primary focus:outline-none focus:border-accent-warm focus:ring-1 focus:ring-accent-warm/40 font-mono"
                     />
                   </div>
                   <div>
@@ -319,7 +319,7 @@ export default function BillingView() {
                       placeholder="•••"
                       value={cvc}
                       onChange={handleCvcChange}
-                      className="w-full bg-background border border-border-light rounded-xl px-4 py-2.5 text-sm text-text-primary focus:outline-none focus:border-accent-warm focus:ring-1 focus:ring-accent-warm/40 font-mono"
+                      className="w-full bg-background border border-border-light rounded-md px-4 py-2.5 text-sm text-text-primary focus:outline-none focus:border-accent-warm focus:ring-1 focus:ring-accent-warm/40 font-mono"
                     />
                   </div>
                 </div>
@@ -337,7 +337,7 @@ export default function BillingView() {
                     type="submit"
                     variant="primary"
                     disabled={loading || success}
-                    className="flex-1 bg-accent-warm text-white border-none shadow-md font-mono text-xs uppercase font-bold tracking-wider relative flex items-center justify-center min-h-[40px]"
+                    className="flex-1 bg-accent-warm text-white border-none shadow-none font-mono text-xs uppercase font-bold tracking-wider relative flex items-center justify-center min-h-[40px]"
                   >
                     {loading ? (
                       <div className="w-5 h-5 rounded-full border-[2px] border-white/30 border-t-white animate-spin" />
@@ -363,7 +363,7 @@ export default function BillingView() {
                       initial={{ scale: 0.5, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
                       transition={{ type: 'spring', stiffness: 200, damping: 15 }}
-                      className="w-16 h-16 rounded-full bg-accent-warm/15 text-accent-warm flex items-center justify-center border border-accent-warm/30 mb-4"
+                      className="w-16 h-16 rounded-full bg-surface text-accent-warm flex items-center justify-center border border-accent-warm/30 mb-4"
                     >
                       <Sparkles className="w-8 h-8" />
                     </motion.div>

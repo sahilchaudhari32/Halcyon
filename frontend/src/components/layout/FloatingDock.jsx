@@ -13,7 +13,7 @@ export const FloatingDock = () => {
 
   return (
     <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 md:hidden">
-      <div className="flex items-center gap-6 px-6 py-3 rounded-full bg-surface/80 backdrop-blur-2xl border border-white/60 dark:border-white/10 shadow-md">
+      <div className="flex items-center gap-6 px-6 py-3 rounded-full bg-surface/80 backdrop-blur-2xl border border-white/60 dark:border-white/10 shadow-none">
         {navItems.map((item) => {
           const Icon = item.icon;
           const [isActive] = useRoute(item.path);
@@ -40,7 +40,7 @@ export const FloatingDock = () => {
                   {/* Liquid Glass capsule sliding backdrop */}
                   <motion.div
                     layoutId="activeBackdrop"
-                    className="absolute inset-0 bg-accent-warm/8 border border-accent-warm/15 rounded-full -z-10 shadow-[inset_0_1px_0_rgba(255,255,255,0.4)]"
+                    className="absolute inset-0 bg-surface border border-accent-warm/15 rounded-full -z-10 shadow-[inset_0_1px_0_rgba(255,255,255,0.4)]"
                     transition={{ type: 'spring', stiffness: 220, damping: 25 }}
                   />
                   {/* Sliding dot indicator */}

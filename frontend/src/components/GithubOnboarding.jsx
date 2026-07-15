@@ -81,9 +81,9 @@ export default function GithubOnboarding({ onConnectionSuccess }) {
         transition={{ type: 'spring', damping: 25, stiffness: 85 }}
         className="w-full max-w-lg z-10"
       >
-        <Card className="relative overflow-hidden border border-border-light/60 p-6 sm:p-8 shadow-md" animateHover={false}>
+        <Card className="relative overflow-hidden border border-border-light/60 p-6 sm:p-8 shadow-none" animateHover={false}>
           {/* Top accent strip */}
-          <div className="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-accent-warm via-[#2EC4B6] to-secondary" />
+          <div className="absolute top-0 left-0 w-full h-[3px]  from-accent-warm via-[#2EC4B6] to-secondary" />
 
           {/* Success Banner */}
           <AnimatePresence>
@@ -91,13 +91,13 @@ export default function GithubOnboarding({ onConnectionSuccess }) {
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="absolute inset-0 bg-background/95 backdrop-blur-md z-30 flex flex-col items-center justify-center text-center p-6"
+                className="absolute inset-0 bg-background/95  z-30 flex flex-col items-center justify-center text-center p-6"
               >
                 <motion.div
                   initial={{ scale: 0 }}
                   animate={{ scale: 1, rotate: 360 }}
                   transition={{ type: 'spring', damping: 15 }}
-                  className="w-16 h-16 bg-accent-warm/15 rounded-full flex items-center justify-center mb-4 border border-accent-warm/25"
+                  className="w-16 h-16 bg-surface rounded-full flex items-center justify-center mb-4 border border-accent-warm/25"
                 >
                   <CheckCircle2 className="w-8 h-8 text-accent-warm" />
                 </motion.div>
@@ -118,7 +118,7 @@ export default function GithubOnboarding({ onConnectionSuccess }) {
           </div>
 
           {/* Setup Guide */}
-          <div className="bg-background/45 border border-border-light rounded-2xl p-4 text-[11px] font-mono leading-relaxed text-text-muted space-y-2 mb-6 shadow-inner">
+          <div className="bg-background/45 border border-border-light rounded-md p-4 text-[11px] font-mono leading-relaxed text-text-muted space-y-2 mb-6 shadow-inner">
             <strong className="block text-text-primary uppercase tracking-wider text-[10px]">Setup Checklist</strong>
             <p>1. Create a Classic Token at <a href="https://github.com/settings/tokens" target="_blank" rel="noopener noreferrer" className="text-accent-warm hover:underline font-bold transition-colors">github.com/settings/tokens</a>.</p>
             <p>2. Select the <strong>repo</strong> scope (gives read rights to fetch repository commits).</p>
@@ -127,7 +127,7 @@ export default function GithubOnboarding({ onConnectionSuccess }) {
 
           {/* Error Banner */}
           {error && (
-            <div className="mb-6 bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-mono p-4 rounded-2xl flex items-start gap-2.5 shadow-sm">
+            <div className="mb-6 bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-mono p-4 rounded-md flex items-start gap-2.5 shadow-none">
               <AlertTriangle className="w-4.5 h-4.5 shrink-0 mt-0.5" />
               <span>{error}</span>
             </div>
@@ -148,7 +148,7 @@ export default function GithubOnboarding({ onConnectionSuccess }) {
                     value={token}
                     onChange={(e) => setToken(e.target.value)}
                     placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
-                    className="w-full bg-background border border-border-light rounded-2xl p-4 pr-12 text-text-primary font-mono text-sm leading-relaxed shadow-sm focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/40"
+                    className="w-full bg-background border border-border-light rounded-md p-4 pr-12 text-text-primary font-mono text-sm leading-relaxed shadow-none focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/40"
                     required
                     disabled={loading || mockLoading}
                   />
@@ -174,7 +174,7 @@ export default function GithubOnboarding({ onConnectionSuccess }) {
                     value={repoOwner}
                     onChange={(e) => setRepoOwner(e.target.value)}
                     placeholder="e.g. sahilchaudhari32"
-                    className="w-full bg-background border border-border-light rounded-2xl p-4 text-text-primary font-mono text-sm leading-relaxed shadow-sm focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/40"
+                    className="w-full bg-background border border-border-light rounded-md p-4 text-text-primary font-mono text-sm leading-relaxed shadow-none focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/40"
                     required
                     disabled={loading || mockLoading}
                   />
@@ -190,7 +190,7 @@ export default function GithubOnboarding({ onConnectionSuccess }) {
                     value={repoName}
                     onChange={(e) => setRepoName(e.target.value)}
                     placeholder="e.g. Halcyon"
-                    className="w-full bg-background border border-border-light rounded-2xl p-4 text-text-primary font-mono text-sm leading-relaxed shadow-sm focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/40"
+                    className="w-full bg-background border border-border-light rounded-md p-4 text-text-primary font-mono text-sm leading-relaxed shadow-none focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/40"
                     required
                     disabled={loading || mockLoading}
                   />

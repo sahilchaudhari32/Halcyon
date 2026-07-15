@@ -112,7 +112,7 @@ export default function AppShell({ children, systemState }) {
       <div className="flex-1 flex flex-col h-screen overflow-y-auto overflow-x-hidden relative z-10">
         
         {/* Top Control Bar Header */}
-        <header className="flex items-center justify-between w-full h-20 px-4 md:px-8 border-b border-border-light bg-surface/30 backdrop-blur-md select-none sticky top-0 z-30">
+        <header className="flex items-center justify-between w-full h-20 px-4 md:px-8 border-b border-border-light bg-surface/30  select-none sticky top-0 z-30">
           {/* Desktop Title */}
           <div className="hidden md:block">
             <h2 className="text-xs font-mono font-bold tracking-widest text-text-primary uppercase">
@@ -128,7 +128,7 @@ export default function AppShell({ children, systemState }) {
 
           <div className="flex items-center gap-3 md:gap-6">
             {/* Saturated Telemetry Status Pill */}
-            <div className="flex items-center gap-2 md:gap-3 bg-surface/80 border border-border-light px-3 md:px-4 py-1.5 md:py-2 rounded-xl shadow-sm">
+            <div className="flex items-center gap-2 md:gap-3 bg-surface/80 border border-border-light px-3 md:px-4 py-1.5 md:py-2 rounded-md shadow-none">
               <span className="font-mono text-[8px] md:text-[9px] tracking-widest font-bold text-text-muted">SYSTEM:</span>
               <div className="w-12 md:w-16 h-5 overflow-hidden flex items-center justify-center border-x border-border-light/40 px-1 md:px-2 mx-0.5 md:mx-1">
                 <Waveform state={systemState} size="small" />
@@ -143,7 +143,7 @@ export default function AppShell({ children, systemState }) {
               <select
                 value={language}
                 onChange={(e) => setLanguage(e.target.value)}
-                className="appearance-none bg-surface border border-border-light hover:border-primary/20 px-3.5 py-2 pr-8 rounded-xl font-mono text-[10px] font-bold text-text-muted hover:text-text-primary focus:outline-none focus:ring-1 focus:ring-primary/20 transition-all cursor-pointer shadow-sm"
+                className="appearance-none bg-surface border border-border-light hover:border-primary/20 px-3.5 py-2 pr-8 rounded-md font-mono text-[10px] font-bold text-text-muted hover:text-text-primary focus:outline-none focus:ring-1 focus:ring-primary/20 transition-all cursor-pointer shadow-none"
                 aria-label="Select language"
               >
                 <option value="en">EN</option>
@@ -156,7 +156,7 @@ export default function AppShell({ children, systemState }) {
             {/* GitHub Settings button */}
             <button
               onClick={() => setShowGithubModal(true)}
-              className="w-9 h-9 rounded-xl bg-surface border border-border-light hover:border-primary/20 flex items-center justify-center text-text-muted hover:text-text-primary transition-all duration-200 cursor-pointer focus:outline-none focus-ring"
+              className="w-9 h-9 rounded-md bg-surface border border-border-light hover:border-primary/20 flex items-center justify-center text-text-muted hover:text-text-primary transition-all duration-200 cursor-pointer focus:outline-none focus-ring"
               aria-label="Configure GitHub Integration"
             >
               <GithubIcon className="text-primary" />
@@ -165,7 +165,7 @@ export default function AppShell({ children, systemState }) {
             {/* Config button (styled like a NOC terminal toggle) */}
             <button
               onClick={toggleTheme}
-              className="w-9 h-9 rounded-xl bg-surface border border-border-light hover:border-primary/20 flex items-center justify-center text-text-muted hover:text-text-primary transition-all duration-200 cursor-pointer focus:outline-none focus-ring"
+              className="w-9 h-9 rounded-md bg-surface border border-border-light hover:border-primary/20 flex items-center justify-center text-text-muted hover:text-text-primary transition-all duration-200 cursor-pointer focus:outline-none focus-ring"
               aria-label="Toggle system mode"
             >
               {isDark ? (
@@ -185,8 +185,8 @@ export default function AppShell({ children, systemState }) {
 
       {/* GitHub Integration Modal */}
       {showGithubModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="bg-surface border border-border-light rounded-3xl p-6 w-full max-w-md shadow-md space-y-6 relative font-mono text-xs">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60  p-4">
+          <div className="bg-surface border border-border-light rounded-md p-6 w-full max-w-md shadow-none space-y-6 relative font-mono text-xs">
             <button
               onClick={() => setShowGithubModal(false)}
               className="absolute top-4 right-4 text-text-muted hover:text-text-primary text-xl font-bold cursor-pointer focus:outline-none"
@@ -211,7 +211,7 @@ export default function AppShell({ children, systemState }) {
                   placeholder="e.g. sahilchaudhari32/Halcyon"
                   value={githubRepo}
                   onChange={(e) => setGithubRepo(e.target.value)}
-                  className="w-full bg-background border border-border-light rounded-xl px-4 py-2.5 text-xs text-text-primary focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/40"
+                  className="w-full bg-background border border-border-light rounded-md px-4 py-2.5 text-xs text-text-primary focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/40"
                 />
               </div>
 
@@ -222,7 +222,7 @@ export default function AppShell({ children, systemState }) {
                   placeholder="ghp_xxxxxxxxxxxx"
                   value={githubToken}
                   onChange={(e) => setGithubToken(e.target.value)}
-                  className="w-full bg-background border border-border-light rounded-xl px-4 py-2.5 text-xs text-text-primary focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/40"
+                  className="w-full bg-background border border-border-light rounded-md px-4 py-2.5 text-xs text-text-primary focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/40"
                 />
               </div>
             </div>
@@ -237,13 +237,13 @@ export default function AppShell({ children, systemState }) {
                   setShowGithubModal(false);
                   window.location.reload();
                 }}
-                className="flex-1 py-2 px-4 rounded-xl border border-border-light hover:border-red-400 hover:text-red-400 text-[10px] font-bold uppercase tracking-wider transition-colors cursor-pointer focus:outline-none"
+                className="flex-1 py-2 px-4 rounded-md border border-border-light hover:border-red-400 hover:text-red-400 text-[10px] font-bold uppercase tracking-wider transition-colors cursor-pointer focus:outline-none"
               >
                 Disconnect
               </button>
               <button
                 onClick={saveGithubConfig}
-                className="flex-1 py-2 px-4 rounded-xl bg-primary text-white hover:bg-primary/90 text-[10px] font-bold uppercase tracking-wider transition-colors cursor-pointer focus:outline-none"
+                className="flex-1 py-2 px-4 rounded-md bg-primary text-white hover:bg-surface text-[10px] font-bold uppercase tracking-wider transition-colors cursor-pointer focus:outline-none"
               >
                 Save & Connect
               </button>

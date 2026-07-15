@@ -171,13 +171,13 @@ export default function AuditView() {
             <div className="flex bg-background border border-border-light p-1 rounded-md text-xs font-medium">
               <button 
                 onClick={() => setChartMetric('cost')}
-                className={`px-3 py-1.5 rounded-sm transition-all cursor-pointer ${chartMetric === 'cost' ? 'bg-text-primary text-surface shadow-sm' : 'text-text-muted hover:text-text-primary font-medium'}`}
+                className={`px-3 py-1.5 rounded-sm transition-all cursor-pointer ${chartMetric === 'cost' ? 'bg-text-primary text-surface shadow-none' : 'text-text-muted hover:text-text-primary font-medium'}`}
               >
                 Cost
               </button>
               <button 
                 onClick={() => setChartMetric('latency')}
-                className={`px-3 py-1.5 rounded-sm transition-all cursor-pointer ${chartMetric === 'latency' ? 'bg-text-primary text-surface shadow-sm' : 'text-text-muted hover:text-text-primary font-medium'}`}
+                className={`px-3 py-1.5 rounded-sm transition-all cursor-pointer ${chartMetric === 'latency' ? 'bg-text-primary text-surface shadow-none' : 'text-text-muted hover:text-text-primary font-medium'}`}
               >
                 Latency
               </button>

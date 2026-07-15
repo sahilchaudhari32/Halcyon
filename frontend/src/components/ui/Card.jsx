@@ -9,11 +9,9 @@ export default function Card({
 }) {
   return (
     <motion.div
-      whileHover={animateHover ? { y: -3, scale: 1.005 } : undefined}
-      transition={{ duration: 0.3, ease: 'easeOut' }}
-      className={`bg-surface dark:bg-glass-gradient-dark dark:backdrop-blur-md rounded-3xl p-8 border border-border-light shadow-md transition-all duration-300 ${
-        animateHover ? 'hover:shadow-md-hover' : ''
-      } ${className}`}
+      whileHover={animateHover ? { backgroundColor: "var(--background)" } : undefined}
+      transition={{ duration: 0.15, ease: 'easeOut' }}
+      className={`bg-surface rounded-md p-6 border border-border-light shadow-none transition-colors duration-200 ${className}`}
       {...props}
     >
       {children}

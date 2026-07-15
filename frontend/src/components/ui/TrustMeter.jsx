@@ -47,7 +47,7 @@ export default function TrustMeter({ confidence = 0, matchCount = 0, state = 'es
         initial={{ opacity: 0, y: 5 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className={`flex flex-col gap-1.5 ${isDetailed ? 'p-4 bg-background/50 border border-border-light rounded-2xl' : ''}`}
+        className={`flex flex-col gap-1.5 ${isDetailed ? 'p-4 bg-background/50 border border-border-light rounded-md' : ''}`}
       >
         <div className="flex items-center gap-2 font-mono text-[10px] text-[#E8935B] font-bold">
           <ShieldAlert className="w-3.5 h-3.5" />
@@ -65,7 +65,7 @@ export default function TrustMeter({ confidence = 0, matchCount = 0, state = 'es
     : 'rgba(232, 147, 91, 0.45)';
 
   return (
-    <div className={`flex flex-col gap-2 ${isDetailed ? 'p-4 bg-background/50 border border-border-light rounded-2xl w-full' : 'max-w-xs'}`}>
+    <div className={`flex flex-col gap-2 ${isDetailed ? 'p-4 bg-background/50 border border-border-light rounded-md w-full' : 'max-w-xs'}`}>
       
       {/* Staggered Animated Segmented Bar */}
       <motion.div 

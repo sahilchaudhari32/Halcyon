@@ -132,10 +132,10 @@ export default function SettingsView() {
     return (
       <div className="max-w-4xl mx-auto py-2 sm:py-4">
         <div className="mb-8 border-b border-border-light pb-6">
-          <div className="h-9 w-48 bg-surface rounded-xl shimmer-bg mb-2"></div>
-          <div className="h-4 w-80 bg-surface rounded-xl shimmer-bg"></div>
+          <div className="h-9 w-48 bg-surface rounded-md shimmer-bg mb-2"></div>
+          <div className="h-4 w-80 bg-surface rounded-md shimmer-bg"></div>
         </div>
-        <div className="animate-pulse h-64 bg-surface rounded-3xl border border-border-light shadow-md shimmer-bg"></div>
+        <div className="animate-pulse h-64 bg-surface rounded-md border border-border-light shadow-none shimmer-bg"></div>
       </div>
     );
   }
@@ -151,14 +151,14 @@ export default function SettingsView() {
       <div className="space-y-6">
         {/* Status Messages */}
         {error && (
-          <div className="bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-mono p-4 rounded-2xl flex items-start gap-2.5 shadow-sm">
+          <div className="bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-mono p-4 rounded-md flex items-start gap-2.5 shadow-none">
             <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
             <span>{error}</span>
           </div>
         )}
 
         {successMsg && (
-          <div className="bg-accent-warm/15 border border-accent-warm/25 text-accent-warm text-xs font-mono p-4 rounded-2xl flex items-start gap-2.5 shadow-sm">
+          <div className="bg-surface border border-accent-warm/25 text-accent-warm text-xs font-mono p-4 rounded-md flex items-start gap-2.5 shadow-none">
             <CheckCircle2 className="w-4.5 h-4.5 text-accent-warm shrink-0 mt-0.5" />
             <span>{successMsg}</span>
           </div>
@@ -177,7 +177,7 @@ export default function SettingsView() {
 
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-border-light/60">
             <div className="flex items-start gap-4">
-              <div className="p-3 bg-background border border-border-light rounded-2xl">
+              <div className="p-3 bg-background border border-border-light rounded-md">
                 <GithubIcon className="w-8 h-8 text-text-primary" />
               </div>
               <div>
@@ -191,17 +191,17 @@ export default function SettingsView() {
             {/* Connection Status Badge */}
             <div className="flex items-center gap-3">
               {status.connected && status.status === 'connected' ? (
-                <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-accent-warm/15 border border-accent-warm/25 text-[10px] font-mono font-bold uppercase tracking-wider text-accent-warm shadow-sm">
+                <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-surface border border-accent-warm/25 text-[10px] font-mono font-bold uppercase tracking-wider text-accent-warm shadow-none">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent-warm animate-pulse" />
                   Connected
                 </span>
               ) : status.status === 'invalid' ? (
-                <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-primary/15 border border-primary/20 text-[10px] font-mono font-bold uppercase tracking-wider text-primary shadow-sm animate-pulse">
+                <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-surface border border-primary/20 text-[10px] font-mono font-bold uppercase tracking-wider text-primary shadow-none animate-pulse">
                   <span className="w-1.5 h-1.5 rounded-full bg-primary" />
                   Needs Renewal
                 </span>
               ) : (
-                <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-background border border-border-light text-[10px] font-mono font-bold uppercase tracking-wider text-text-muted shadow-sm">
+                <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-background border border-border-light text-[10px] font-mono font-bold uppercase tracking-wider text-text-muted shadow-none">
                   <span className="w-1.5 h-1.5 rounded-full bg-text-muted/50" />
                   Disconnected
                 </span>
@@ -211,7 +211,7 @@ export default function SettingsView() {
 
           {/* Invalid Token State Banner */}
           {status.status === 'invalid' && !showForm && (
-            <div className="my-6 bg-primary/10 border border-primary/20 text-primary text-xs font-mono p-4 rounded-2xl flex items-center justify-between gap-4 shadow-sm">
+            <div className="my-6 bg-surface border border-primary/20 text-primary text-xs font-mono p-4 rounded-md flex items-center justify-between gap-4 shadow-none">
               <div className="flex items-center gap-2.5">
                 <AlertTriangle className="w-4.5 h-4.5 shrink-0" />
                 <div>
@@ -219,7 +219,7 @@ export default function SettingsView() {
                   <span className="text-text-muted">The token has expired or is no longer authorized.</span>
                 </div>
               </div>
-              <Button onClick={handleReconnect} variant="secondary" className="bg-primary/5 hover:bg-primary/15 text-primary border-primary/10 hover:border-primary/20 shrink-0">
+              <Button onClick={handleReconnect} variant="secondary" className="bg-surface hover:bg-surface text-primary border-primary/10 hover:border-primary/20 shrink-0">
                 <RefreshCw className="w-3.5 h-3.5 animate-spin" /> Reconnect
               </Button>
             </div>
@@ -229,13 +229,13 @@ export default function SettingsView() {
           {status.connected && (
             <div className="py-6 space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="bg-background border border-border-light rounded-2xl p-4">
+                <div className="bg-background border border-border-light rounded-md p-4">
                   <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-text-muted block mb-1">Target Repository</span>
                   <span className="font-mono text-sm font-bold text-text-primary break-all">
                     {status.repo_owner}/{status.repo_name}
                   </span>
                 </div>
-                <div className="bg-background border border-border-light rounded-2xl p-4">
+                <div className="bg-background border border-border-light rounded-md p-4">
                   <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-text-muted block mb-1">Connected At</span>
                   <span className="font-mono text-sm font-bold text-text-primary">
                     {status.connected_at ? new Date(status.connected_at).toLocaleString() : 'N/A'}
@@ -259,7 +259,7 @@ export default function SettingsView() {
           {/* Connection / Edit Form */}
           {showForm && (
             <form onSubmit={handleConnect} className="mt-6 space-y-5">
-              <div className="bg-background/40 border border-border-light rounded-2xl p-4 text-xs font-mono text-text-muted space-y-2">
+              <div className="bg-background/40 border border-border-light rounded-md p-4 text-xs font-mono text-text-muted space-y-2">
                 <p className="font-semibold text-text-primary uppercase tracking-wider text-[10px]">Setup Guide</p>
                 <p>1. Generate a Personal Access Token on GitHub with <strong>repo</strong> read access.</p>
                 <p>
@@ -282,7 +282,7 @@ export default function SettingsView() {
                     value={token}
                     onChange={(e) => setToken(e.target.value)}
                     placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxx"
-                    className="w-full bg-background border border-border-light rounded-2xl p-4 text-text-primary font-mono text-sm leading-relaxed shadow-sm focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/40"
+                    className="w-full bg-background border border-border-light rounded-md p-4 text-text-primary font-mono text-sm leading-relaxed shadow-none focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/40"
                     required
                   />
                 </div>
@@ -298,7 +298,7 @@ export default function SettingsView() {
                       value={repoOwner}
                       onChange={(e) => setRepoOwner(e.target.value)}
                       placeholder="e.g. sahilchaudhari32"
-                      className="w-full bg-background border border-border-light rounded-2xl p-4 text-text-primary font-mono text-sm leading-relaxed shadow-sm focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/40"
+                      className="w-full bg-background border border-border-light rounded-md p-4 text-text-primary font-mono text-sm leading-relaxed shadow-none focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/40"
                       required
                     />
                   </div>
@@ -313,7 +313,7 @@ export default function SettingsView() {
                       value={repoName}
                       onChange={(e) => setRepoName(e.target.value)}
                       placeholder="e.g. Halcyon"
-                      className="w-full bg-background border border-border-light rounded-2xl p-4 text-text-primary font-mono text-sm leading-relaxed shadow-sm focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/40"
+                      className="w-full bg-background border border-border-light rounded-md p-4 text-text-primary font-mono text-sm leading-relaxed shadow-none focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/40"
                       required
                     />
                   </div>

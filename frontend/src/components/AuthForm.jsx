@@ -67,13 +67,13 @@ export default function AuthForm({ onAuthSuccess }) {
         transition={{ type: 'spring', damping: 25, stiffness: 80 }}
         className="w-full max-w-md z-10"
       >
-        <Card className="relative overflow-hidden border border-border-light/60 p-6 sm:p-8 shadow-md" animateHover={false}>
+        <Card className="relative overflow-hidden border border-border-light/60 p-6 sm:p-8 shadow-none" animateHover={false}>
           {/* Top accent line */}
-          <div className="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-primary via-accent-warm to-secondary" />
+          <div className="absolute top-0 left-0 w-full h-[3px]  from-primary via-accent-warm to-secondary" />
 
           {/* Logo & Header */}
           <div className="text-center mb-8">
-            <div className="w-12 h-12 bg-background border border-border-light rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
+            <div className="w-12 h-12 bg-background border border-border-light rounded-md flex items-center justify-center mx-auto mb-4 shadow-none">
               <Shield className="w-6 h-6 text-accent-warm" />
             </div>
             <h2 className="font-sans text-3xl text-text-primary tracking-wide mb-1.5">
@@ -91,7 +91,7 @@ export default function AuthForm({ onAuthSuccess }) {
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
-                className="mb-6 bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-mono p-4 rounded-2xl flex items-start gap-2.5 shadow-sm"
+                className="mb-6 bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-mono p-4 rounded-md flex items-start gap-2.5 shadow-none"
               >
                 <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
                 <span>{error}</span>
@@ -113,7 +113,7 @@ export default function AuthForm({ onAuthSuccess }) {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="e.g. sahil"
-                  className="w-full bg-background border border-border-light rounded-2xl p-4 text-text-primary font-mono text-sm leading-relaxed shadow-sm focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/40"
+                  className="w-full bg-background border border-border-light rounded-md p-4 text-text-primary font-mono text-sm leading-relaxed shadow-none focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/40"
                   required
                   disabled={loading}
                 />
@@ -129,7 +129,7 @@ export default function AuthForm({ onAuthSuccess }) {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full bg-background border border-border-light rounded-2xl p-4 text-text-primary font-mono text-sm leading-relaxed shadow-sm focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/40"
+                  className="w-full bg-background border border-border-light rounded-md p-4 text-text-primary font-mono text-sm leading-relaxed shadow-none focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/40"
                   required
                   disabled={loading}
                 />
@@ -138,7 +138,7 @@ export default function AuthForm({ onAuthSuccess }) {
 
             {/* Quick Helper Notice */}
             {!isLogin && (
-              <div className="bg-background/40 border border-border-light rounded-2xl p-3 flex items-start gap-2 text-[10px] font-mono leading-relaxed text-text-muted">
+              <div className="bg-background/40 border border-border-light rounded-md p-3 flex items-start gap-2 text-[10px] font-mono leading-relaxed text-text-muted">
                 <Info className="w-3.5 h-3.5 text-accent-warm shrink-0 mt-0.5" />
                 <span>Signing up automatically configures a new isolated, encrypted telemetry workspace.</span>
               </div>
