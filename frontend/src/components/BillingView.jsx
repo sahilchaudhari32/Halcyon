@@ -82,7 +82,7 @@ export default function BillingView() {
         <h1 className="text-3xl sm:text-4xl font-sans text-text-primary tracking-wide mb-2 flex items-center gap-3">
           {t('billing.title')}
           {subscription === 'pro' && (
-            <span className="text-xs font-mono font-bold tracking-widest bg-surface text-accent-warm border border-accent-warm/25 px-2.5 py-1 rounded-full uppercase">
+            <span className="text-xs font-mono font-bold tracking-widest bg-surface text-accent-warm border border-border-light px-2.5 py-1 rounded-sm uppercase">
               PRO ACTIVE
             </span>
           )}
@@ -109,7 +109,7 @@ export default function BillingView() {
                     <div className="text-3xl font-sans font-bold text-text-primary">$0</div>
                   </div>
                   {subscription === 'free' && (
-                    <span className="text-[10px] font-mono font-bold tracking-widest bg-surface text-primary border border-primary/20 px-2 py-0.5 rounded-full uppercase">
+                    <span className="text-[10px] font-mono font-bold tracking-widest bg-surface text-primary border border-border-light px-2 py-0.5 rounded-sm uppercase">
                       {t('billing.currentPlan')}
                     </span>
                   )}
@@ -170,7 +170,7 @@ export default function BillingView() {
                   <div>
                     <h3 className="font-sans text-2xl text-text-primary mb-1 flex items-center gap-2">
                       {t('sidebar.proTier')}
-                      <Sparkles className="w-4 h-4 text-accent-warm animate-pulse" />
+                      <Sparkles className="w-4 h-4 text-accent-warm " />
                     </h3>
                     <div className="flex items-baseline gap-1.5">
                       <span className="text-3xl font-sans font-bold text-text-primary">$49</span>
@@ -178,7 +178,7 @@ export default function BillingView() {
                     </div>
                   </div>
                   {subscription === 'pro' && (
-                    <span className="text-[10px] font-mono font-bold tracking-widest bg-surface text-accent-warm border border-accent-warm/25 px-2 py-0.5 rounded-full uppercase">
+                    <span className="text-[10px] font-mono font-bold tracking-widest bg-surface text-accent-warm border border-border-light px-2 py-0.5 rounded-sm uppercase">
                       {t('billing.currentPlan')}
                     </span>
                   )}
@@ -198,7 +198,7 @@ export default function BillingView() {
 
               <div className="mt-auto pt-6 border-t border-border-light/30">
                 {subscription === 'pro' ? (
-                  <div className="w-full text-center py-2.5 rounded-md border border-accent-warm/30 bg-surface font-mono text-xs font-bold text-accent-warm uppercase shadow-none">
+                  <div className="w-full text-center py-2.5 rounded-md border border-border-light bg-surface font-mono text-xs font-bold text-accent-warm uppercase shadow-none">
                     Active Subscription
                   </div>
                 ) : (
@@ -342,7 +342,7 @@ export default function BillingView() {
                     {loading ? (
                       <div className="w-5 h-5 rounded-full border-[2px] border-white/30 border-t-white animate-spin" />
                     ) : success ? (
-                      <CheckCircle2 className="w-5 h-5 text-white animate-pulse" />
+                      <CheckCircle2 className="w-5 h-5 text-white " />
                     ) : (
                       'Pay & Upgrade'
                     )}
@@ -363,7 +363,7 @@ export default function BillingView() {
                       initial={{ scale: 0.5, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
                       transition={{ type: 'spring', stiffness: 200, damping: 15 }}
-                      className="w-16 h-16 rounded-full bg-surface text-accent-warm flex items-center justify-center border border-accent-warm/30 mb-4"
+                      className="w-16 h-16 rounded-sm bg-surface text-accent-warm flex items-center justify-center border border-border-light mb-4"
                     >
                       <Sparkles className="w-8 h-8" />
                     </motion.div>

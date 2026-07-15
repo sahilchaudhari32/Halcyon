@@ -13,7 +13,7 @@ export const FloatingDock = () => {
 
   return (
     <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 md:hidden">
-      <div className="flex items-center gap-6 px-6 py-3 rounded-full bg-surface/80 backdrop-blur-2xl border border-white/60 dark:border-white/10 shadow-none">
+      <div className="flex items-center gap-6 px-6 py-3 rounded-sm bg-surface  border border-white/60 dark:border-white/10 shadow-none">
         {navItems.map((item) => {
           const Icon = item.icon;
           const [isActive] = useRoute(item.path);
@@ -22,7 +22,7 @@ export const FloatingDock = () => {
             <Link 
               key={item.path} 
               href={item.path}
-              className="relative flex flex-col items-center justify-center p-2 rounded-full cursor-pointer transition-colors focus:outline-none focus-ring"
+              className="relative flex flex-col items-center justify-center p-2 rounded-sm cursor-pointer transition-colors focus:outline-none focus-ring"
               aria-label={item.label}
             >
               <motion.div
@@ -40,13 +40,13 @@ export const FloatingDock = () => {
                   {/* Liquid Glass capsule sliding backdrop */}
                   <motion.div
                     layoutId="activeBackdrop"
-                    className="absolute inset-0 bg-surface border border-accent-warm/15 rounded-full -z-10 shadow-[inset_0_1px_0_rgba(255,255,255,0.4)]"
+                    className="absolute inset-0 bg-surface border border-border-light rounded-sm -z-10 shadow-[inset_0_1px_0_rgba(255,255,255,0.4)]"
                     transition={{ type: 'spring', stiffness: 220, damping: 25 }}
                   />
                   {/* Sliding dot indicator */}
                   <motion.div
                     layoutId="activeDot"
-                    className="absolute -bottom-1.5 w-1 h-1 rounded-full bg-accent-warm"
+                    className="absolute -bottom-1.5 w-1 h-1 rounded-sm bg-accent-warm"
                     transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                   />
                 </>

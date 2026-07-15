@@ -245,7 +245,7 @@ export default function Dashboard({ setGlobalState }) {
                   <button 
                     key={s.name}
                     onClick={() => handleSimulate(s.name)}
-                    className="w-full text-left p-3.5 rounded-md bg-background border border-border-light hover:border-primary/40 hover:bg-border-light/10 transition-all font-mono text-sm font-medium text-text-primary group cursor-pointer"
+                    className="w-full text-left p-3.5 rounded-md bg-background border border-border-light hover:border-border-light hover:bg-border-light/10 transition-all font-mono text-sm font-medium text-text-primary group cursor-pointer"
                   >
                     <span className="group-hover:text-primary transition-colors">{s.name}.log</span>
                   </button>
@@ -279,7 +279,7 @@ export default function Dashboard({ setGlobalState }) {
 
              {/* File Upload Button / Input */}
              <div>
-                <label className="flex flex-col items-center justify-center border border-dashed border-border-light hover:border-primary/50 rounded-md p-5 cursor-pointer hover:bg-background/20 transition-all group">
+                <label className="flex flex-col items-center justify-center border border-dashed border-border-light hover:border-border-light rounded-md p-5 cursor-pointer hover:bg-background/20 transition-all group">
                    <svg className="w-6 h-6 text-text-muted group-hover:text-primary transition-colors mb-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                    </svg>
@@ -303,7 +303,7 @@ export default function Dashboard({ setGlobalState }) {
 
       <div className="space-y-4">
         {loading ? (
-          <div className="animate-pulse space-y-4">
+          <div className=" space-y-4">
              {[1, 2, 3].map(i => (
                 <div key={i} className="h-24 bg-surface rounded-md border border-border-light" />
              ))}
@@ -315,7 +315,7 @@ export default function Dashboard({ setGlobalState }) {
         ) : (
           incidents.map((inc) => (
             <Link key={inc.id} href={`/incident/${inc.id}`} className="block group">
-              <Card className={`flex flex-col sm:flex-row sm:items-center sm:justify-between cursor-pointer border hover:border-accent-warm/50 transition-all p-4 sm:p-6 gap-4 sm:gap-6 ${inc.is_solved ? 'border-border-light hover:border-border-strong' : 'border-primary/30 hover:border-border-strong'}`} animateHover={false}>
+              <Card className={`flex flex-col sm:flex-row sm:items-center sm:justify-between cursor-pointer border hover:border-border-light transition-all p-4 sm:p-6 gap-4 sm:gap-6 ${inc.is_solved ? 'border-border-light hover:border-border-strong' : 'border-border-light hover:border-border-strong'}`} animateHover={false}>
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8 w-full sm:flex-1 sm:min-w-0">
                   {/* Saturated and larger medium size waveform per card */}
                   <div className="flex items-center justify-center bg-background border border-border-light/60 p-2.5 rounded-md w-full sm:w-44 h-16 shadow-inner relative overflow-hidden flex-shrink-0">

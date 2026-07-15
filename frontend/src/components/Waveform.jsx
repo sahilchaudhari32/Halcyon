@@ -322,13 +322,7 @@ export default function Waveform({ state = 'calm', size = 'small', color }) {
       style={{ width: size === 'large' ? '100%' : width, height, overflow: 'hidden' }} 
       className="flex items-center justify-center relative w-full"
     >
-      {/* Soft background glow (Afterlife style) */}
-      {size === 'large' && (
-        <div 
-          className="absolute inset-0 w-full h-full blur-[70px] opacity-10 rounded-full transition-colors duration-500 pointer-events-none"
-          style={{ backgroundColor: state === 'chaotic' ? DEFAULT_AMBER : DEFAULT_TEAL }}
-        />
-      )}
+
       <canvas 
         ref={canvasRef} 
         style={{ width: `${width}px`, height: `${height}px`, display: 'block', zIndex: 1 }} 

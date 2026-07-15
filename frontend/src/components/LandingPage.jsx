@@ -138,7 +138,7 @@ export default function LandingPage({ onEnterApp }) {
             scale: [1, 1.08, 0.92, 1],
           }}
           transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -top-[10%] -left-[10%] w-[55vw] h-[55vw] rounded-full blur-[140px] opacity-[0.08] bg-[#8CA596]"
+          className="absolute -top-[10%] -left-[10%] w-[55vw] h-[55vw] rounded-sm blur-[140px] opacity-[0.08] bg-[#8CA596]"
         />
         <motion.div 
           animate={{
@@ -147,15 +147,15 @@ export default function LandingPage({ onEnterApp }) {
             scale: [1, 0.94, 1.06, 1],
           }}
           transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[25%] -right-[15%] w-[50vw] h-[50vw] rounded-full blur-[160px] opacity-[0.10] bg-[#E29A76]"
+          className="absolute top-[25%] -right-[15%] w-[50vw] h-[50vw] rounded-sm blur-[160px] opacity-[0.10] bg-[#E29A76]"
         />
       </div>
 
       {/* Top Navigation */}
-      <header className="fixed top-0 left-0 right-0 h-20 bg-background/60 backdrop-blur-xl z-40 border-b border-border-light/20 px-4 sm:px-6 lg:px-12 flex items-center justify-between shadow-none">
+      <header className="fixed top-0 left-0 right-0 h-20 bg-background  z-40 border-b border-border-light/20 px-4 sm:px-6 lg:px-12 flex items-center justify-between shadow-none">
         <div className="flex items-center gap-3 group cursor-pointer">
           <div className="relative">
-            <div className="absolute inset-0 bg-surface blur-md rounded-full group-hover:bg-surface transition-colors duration-500" />
+            <div className="absolute inset-0 bg-surface blur-md rounded-sm group-hover:bg-surface transition-colors duration-500" />
             <img src={logo} alt="Halcyon Logo" className="relative w-8 h-8 rounded-lg object-cover border border-border-light/40 shadow-none" />
           </div>
           <span className="font-sans text-xl sm:text-2xl font-semibold tracking-tight text-text-primary group-hover:text-transparent group-hover:bg-clip-text group-hover: group-hover:from-text-primary group-hover:to-accent-warm transition-all duration-300">Halcyon</span>
@@ -173,7 +173,7 @@ export default function LandingPage({ onEnterApp }) {
             <select
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
-              className="appearance-none bg-surface border border-border-light hover:border-primary/20 px-3.5 py-2 pr-8 rounded-md font-mono text-[10px] font-bold text-text-muted hover:text-text-primary focus:outline-none focus:ring-1 focus:ring-primary/20 transition-all cursor-pointer shadow-none"
+              className="appearance-none bg-surface border border-border-light hover:border-border-light px-3.5 py-2 pr-8 rounded-md font-mono text-[10px] font-bold text-text-muted hover:text-text-primary focus:outline-none focus:ring-1 focus:ring-primary/20 transition-all cursor-pointer shadow-none"
               aria-label="Select language"
             >
               <option value="en">EN</option>
@@ -239,7 +239,7 @@ export default function LandingPage({ onEnterApp }) {
           {/* Console Header Bar */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-xs font-mono border-b border-border-light pb-4 mb-6">
             <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-primary animate-pulse" />
+              <span className="w-2.5 h-2.5 rounded-sm bg-primary " />
               <span className="font-semibold text-text-primary">{t('landing.coreOscilloscope')}</span>
             </div>
             <div className="flex items-center gap-4 text-text-muted self-end sm:self-auto text-[10px] sm:text-xs">
@@ -264,10 +264,10 @@ export default function LandingPage({ onEnterApp }) {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -5 }}
                   transition={{ duration: 0.3 }}
-                  className={`px-3 py-1.5 rounded-full text-[10px] font-mono font-bold tracking-widest border shadow-none ${
+                  className={`px-3 py-1.5 rounded-sm text-[10px] font-mono font-bold tracking-widest border shadow-none ${
                     heroState === 'chaotic' 
-                      ? 'bg-surface border-primary/20 text-primary' 
-                      : 'bg-surface border-accent-warm/20 text-accent-warm'
+                      ? 'bg-surface border-border-light text-primary' 
+                      : 'bg-surface border-border-light text-accent-warm'
                   }`}
                 >
                   {statusText}
@@ -315,7 +315,7 @@ export default function LandingPage({ onEnterApp }) {
 
             {/* After: Halcyon Resolution */}
             <motion.div variants={fadeInUpVariants} className="h-full">
-              <Card className="border border-accent-warm/20 relative overflow-hidden flex flex-col h-full animateHover" animateHover={false}>
+              <Card className="border border-border-light relative overflow-hidden flex flex-col h-full animateHover" animateHover={false}>
                 <div className="absolute top-0 left-0 w-full h-[3px] bg-accent-warm" />
                 <div className="flex items-center justify-between border-b border-border-light pb-4 mb-6">
                   <span className="font-mono text-xs text-text-primary font-bold">{t('landing.halcyonRetrieval')}</span>
@@ -324,10 +324,10 @@ export default function LandingPage({ onEnterApp }) {
                 
                 <div className="space-y-6 flex-1">
                   <div className="bg-background border border-border-light p-4 rounded-md flex items-center gap-3">
-                    <div className="w-2 h-2 rounded-full bg-accent-warm animate-ping" />
+                    <div className="w-2 h-2 rounded-sm bg-accent-warm " />
                     <span className="font-mono text-sm text-text-primary font-bold">{t('landing.memoryMatch')}</span>
                   </div>
-                  <p className="text-sm font-mono text-text-primary leading-relaxed bg-surface border border-accent-warm/15 p-4 rounded-md">
+                  <p className="text-sm font-mono text-text-primary leading-relaxed bg-surface border border-border-light p-4 rounded-md">
                     <strong>Suggested Fix:</strong> {t('landing.suggestedFix')}
                   </p>
                   <div className="text-xs font-mono font-bold text-accent-warm">{t('landing.downtimeSaved')}</div>

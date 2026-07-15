@@ -135,7 +135,7 @@ export default function SettingsView() {
           <div className="h-9 w-48 bg-surface rounded-md shimmer-bg mb-2"></div>
           <div className="h-4 w-80 bg-surface rounded-md shimmer-bg"></div>
         </div>
-        <div className="animate-pulse h-64 bg-surface rounded-md border border-border-light shadow-none shimmer-bg"></div>
+        <div className=" h-64 bg-surface rounded-md border border-border-light shadow-none shimmer-bg"></div>
       </div>
     );
   }
@@ -151,14 +151,14 @@ export default function SettingsView() {
       <div className="space-y-6">
         {/* Status Messages */}
         {error && (
-          <div className="bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-mono p-4 rounded-md flex items-start gap-2.5 shadow-none">
+          <div className="bg-surface border border-border-light text-red-500 text-xs font-mono p-4 rounded-md flex items-start gap-2.5 shadow-none">
             <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
             <span>{error}</span>
           </div>
         )}
 
         {successMsg && (
-          <div className="bg-surface border border-accent-warm/25 text-accent-warm text-xs font-mono p-4 rounded-md flex items-start gap-2.5 shadow-none">
+          <div className="bg-surface border border-border-light text-accent-warm text-xs font-mono p-4 rounded-md flex items-start gap-2.5 shadow-none">
             <CheckCircle2 className="w-4.5 h-4.5 text-accent-warm shrink-0 mt-0.5" />
             <span>{successMsg}</span>
           </div>
@@ -191,18 +191,18 @@ export default function SettingsView() {
             {/* Connection Status Badge */}
             <div className="flex items-center gap-3">
               {status.connected && status.status === 'connected' ? (
-                <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-surface border border-accent-warm/25 text-[10px] font-mono font-bold uppercase tracking-wider text-accent-warm shadow-none">
-                  <span className="w-1.5 h-1.5 rounded-full bg-accent-warm animate-pulse" />
+                <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-sm bg-surface border border-border-light text-[10px] font-mono font-bold uppercase tracking-wider text-accent-warm shadow-none">
+                  <span className="w-1.5 h-1.5 rounded-sm bg-accent-warm " />
                   Connected
                 </span>
               ) : status.status === 'invalid' ? (
-                <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-surface border border-primary/20 text-[10px] font-mono font-bold uppercase tracking-wider text-primary shadow-none animate-pulse">
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-sm bg-surface border border-border-light text-[10px] font-mono font-bold uppercase tracking-wider text-primary shadow-none ">
+                  <span className="w-1.5 h-1.5 rounded-sm bg-primary" />
                   Needs Renewal
                 </span>
               ) : (
-                <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-background border border-border-light text-[10px] font-mono font-bold uppercase tracking-wider text-text-muted shadow-none">
-                  <span className="w-1.5 h-1.5 rounded-full bg-text-muted/50" />
+                <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-sm bg-background border border-border-light text-[10px] font-mono font-bold uppercase tracking-wider text-text-muted shadow-none">
+                  <span className="w-1.5 h-1.5 rounded-sm bg-text-muted/50" />
                   Disconnected
                 </span>
               )}
@@ -211,7 +211,7 @@ export default function SettingsView() {
 
           {/* Invalid Token State Banner */}
           {status.status === 'invalid' && !showForm && (
-            <div className="my-6 bg-surface border border-primary/20 text-primary text-xs font-mono p-4 rounded-md flex items-center justify-between gap-4 shadow-none">
+            <div className="my-6 bg-surface border border-border-light text-primary text-xs font-mono p-4 rounded-md flex items-center justify-between gap-4 shadow-none">
               <div className="flex items-center gap-2.5">
                 <AlertTriangle className="w-4.5 h-4.5 shrink-0" />
                 <div>
@@ -219,7 +219,7 @@ export default function SettingsView() {
                   <span className="text-text-muted">The token has expired or is no longer authorized.</span>
                 </div>
               </div>
-              <Button onClick={handleReconnect} variant="secondary" className="bg-surface hover:bg-surface text-primary border-primary/10 hover:border-primary/20 shrink-0">
+              <Button onClick={handleReconnect} variant="secondary" className="bg-surface hover:bg-surface text-primary border-border-light hover:border-border-light shrink-0">
                 <RefreshCw className="w-3.5 h-3.5 animate-spin" /> Reconnect
               </Button>
             </div>
@@ -248,7 +248,7 @@ export default function SettingsView() {
                   <Button onClick={handleReconnect} variant="outline">
                     Update Connection
                   </Button>
-                  <Button onClick={handleDisconnect} variant="secondary" className="hover:bg-red-500/10 hover:text-red-500 hover:border-red-500/15" disabled={actionLoading}>
+                  <Button onClick={handleDisconnect} variant="secondary" className="hover:bg-surface hover:text-red-500 hover:border-border-light" disabled={actionLoading}>
                     <LogOut className="w-3.5 h-3.5" /> Disconnect
                   </Button>
                 </div>
@@ -282,7 +282,7 @@ export default function SettingsView() {
                     value={token}
                     onChange={(e) => setToken(e.target.value)}
                     placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxx"
-                    className="w-full bg-background border border-border-light rounded-md p-4 text-text-primary font-mono text-sm leading-relaxed shadow-none focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/40"
+                    className="w-full bg-background border border-border-light rounded-md p-4 text-text-primary font-mono text-sm leading-relaxed shadow-none focus:outline-none focus:border-border-light focus:ring-1 focus:ring-primary/40"
                     required
                   />
                 </div>
@@ -298,7 +298,7 @@ export default function SettingsView() {
                       value={repoOwner}
                       onChange={(e) => setRepoOwner(e.target.value)}
                       placeholder="e.g. sahilchaudhari32"
-                      className="w-full bg-background border border-border-light rounded-md p-4 text-text-primary font-mono text-sm leading-relaxed shadow-none focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/40"
+                      className="w-full bg-background border border-border-light rounded-md p-4 text-text-primary font-mono text-sm leading-relaxed shadow-none focus:outline-none focus:border-border-light focus:ring-1 focus:ring-primary/40"
                       required
                     />
                   </div>
@@ -313,7 +313,7 @@ export default function SettingsView() {
                       value={repoName}
                       onChange={(e) => setRepoName(e.target.value)}
                       placeholder="e.g. Halcyon"
-                      className="w-full bg-background border border-border-light rounded-md p-4 text-text-primary font-mono text-sm leading-relaxed shadow-none focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/40"
+                      className="w-full bg-background border border-border-light rounded-md p-4 text-text-primary font-mono text-sm leading-relaxed shadow-none focus:outline-none focus:border-border-light focus:ring-1 focus:ring-primary/40"
                       required
                     />
                   </div>

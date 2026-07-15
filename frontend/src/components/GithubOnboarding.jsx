@@ -71,9 +71,7 @@ export default function GithubOnboarding({ onConnectionSuccess }) {
       
       {/* Interactive neon spotlight ambient background */}
       <div className="absolute inset-0 pointer-events-none z-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] rounded-full blur-[140px] opacity-[0.14] bg-[#E29A76]" />
-        <div className="absolute top-[30%] left-[60%] w-[380px] h-[380px] rounded-full blur-[120px] opacity-[0.09] bg-[#2EC4B6]" />
-      </div>
+        </div>
 
       <motion.div
         initial={{ opacity: 0, scale: 0.96 }}
@@ -97,7 +95,7 @@ export default function GithubOnboarding({ onConnectionSuccess }) {
                   initial={{ scale: 0 }}
                   animate={{ scale: 1, rotate: 360 }}
                   transition={{ type: 'spring', damping: 15 }}
-                  className="w-16 h-16 bg-surface rounded-full flex items-center justify-center mb-4 border border-accent-warm/25"
+                  className="w-16 h-16 bg-surface rounded-sm flex items-center justify-center mb-4 border border-border-light"
                 >
                   <CheckCircle2 className="w-8 h-8 text-accent-warm" />
                 </motion.div>
@@ -127,7 +125,7 @@ export default function GithubOnboarding({ onConnectionSuccess }) {
 
           {/* Error Banner */}
           {error && (
-            <div className="mb-6 bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-mono p-4 rounded-md flex items-start gap-2.5 shadow-none">
+            <div className="mb-6 bg-surface border border-border-light text-red-500 text-xs font-mono p-4 rounded-md flex items-start gap-2.5 shadow-none">
               <AlertTriangle className="w-4.5 h-4.5 shrink-0 mt-0.5" />
               <span>{error}</span>
             </div>
@@ -148,7 +146,7 @@ export default function GithubOnboarding({ onConnectionSuccess }) {
                     value={token}
                     onChange={(e) => setToken(e.target.value)}
                     placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
-                    className="w-full bg-background border border-border-light rounded-md p-4 pr-12 text-text-primary font-mono text-sm leading-relaxed shadow-none focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/40"
+                    className="w-full bg-background border border-border-light rounded-md p-4 pr-12 text-text-primary font-mono text-sm leading-relaxed shadow-none focus:outline-none focus:border-border-light focus:ring-1 focus:ring-primary/40"
                     required
                     disabled={loading || mockLoading}
                   />
@@ -174,7 +172,7 @@ export default function GithubOnboarding({ onConnectionSuccess }) {
                     value={repoOwner}
                     onChange={(e) => setRepoOwner(e.target.value)}
                     placeholder="e.g. sahilchaudhari32"
-                    className="w-full bg-background border border-border-light rounded-md p-4 text-text-primary font-mono text-sm leading-relaxed shadow-none focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/40"
+                    className="w-full bg-background border border-border-light rounded-md p-4 text-text-primary font-mono text-sm leading-relaxed shadow-none focus:outline-none focus:border-border-light focus:ring-1 focus:ring-primary/40"
                     required
                     disabled={loading || mockLoading}
                   />
@@ -190,7 +188,7 @@ export default function GithubOnboarding({ onConnectionSuccess }) {
                     value={repoName}
                     onChange={(e) => setRepoName(e.target.value)}
                     placeholder="e.g. Halcyon"
-                    className="w-full bg-background border border-border-light rounded-md p-4 text-text-primary font-mono text-sm leading-relaxed shadow-none focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/40"
+                    className="w-full bg-background border border-border-light rounded-md p-4 text-text-primary font-mono text-sm leading-relaxed shadow-none focus:outline-none focus:border-border-light focus:ring-1 focus:ring-primary/40"
                     required
                     disabled={loading || mockLoading}
                   />

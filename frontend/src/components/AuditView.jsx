@@ -86,7 +86,7 @@ export default function AuditView() {
   };
 
   if (loading) {
-    return <div className="animate-pulse h-96 bg-surface border border-border-light rounded-lg max-w-5xl mx-auto mt-8"></div>;
+    return <div className=" h-96 bg-surface border border-border-light rounded-lg max-w-5xl mx-auto mt-8"></div>;
   }
 
   const tableDecisions = [...decisions].reverse();
@@ -250,7 +250,7 @@ export default function AuditView() {
             {pieData.map(d => (
               <div key={d.name} className="flex justify-between items-center text-sm font-medium">
                 <span className="flex items-center gap-2 text-text-primary font-medium">
-                  <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: d.color }}></div> 
+                  <div className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: d.color }}></div> 
                   {d.name}
                 </span>
                 <span className="text-text-primary font-semibold">{d.value}</span>

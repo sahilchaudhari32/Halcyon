@@ -92,7 +92,7 @@ export default function AppShell({ children, systemState }) {
             scale: [1, 1.05, 0.95, 1],
           }}
           transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -top-[10%] -left-[10%] w-[50vw] h-[50vw] rounded-full blur-[140px] opacity-[0.04] bg-[#2EC4B6]"
+          className="absolute -top-[10%] -left-[10%] w-[50vw] h-[50vw] rounded-sm blur-[140px] opacity-[0.04] bg-[#2EC4B6]"
         />
         <motion.div 
           animate={{
@@ -101,7 +101,7 @@ export default function AppShell({ children, systemState }) {
             scale: [1, 0.93, 1.07, 1],
           }}
           transition={{ duration: 32, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[20%] -right-[15%] w-[45vw] h-[45vw] rounded-full blur-[160px] opacity-[0.05] bg-[#E8935B]"
+          className="absolute top-[20%] -right-[15%] w-[45vw] h-[45vw] rounded-sm blur-[160px] opacity-[0.05] bg-[#E8935B]"
         />
       </div>
 
@@ -128,12 +128,12 @@ export default function AppShell({ children, systemState }) {
 
           <div className="flex items-center gap-3 md:gap-6">
             {/* Saturated Telemetry Status Pill */}
-            <div className="flex items-center gap-2 md:gap-3 bg-surface/80 border border-border-light px-3 md:px-4 py-1.5 md:py-2 rounded-md shadow-none">
+            <div className="flex items-center gap-2 md:gap-3 bg-surface border border-border-light px-3 md:px-4 py-1.5 md:py-2 rounded-md shadow-none">
               <span className="font-mono text-[8px] md:text-[9px] tracking-widest font-bold text-text-muted">SYSTEM:</span>
               <div className="w-12 md:w-16 h-5 overflow-hidden flex items-center justify-center border-x border-border-light/40 px-1 md:px-2 mx-0.5 md:mx-1">
                 <Waveform state={systemState} size="small" />
               </div>
-              <span className={`font-mono text-[9px] md:text-[10px] font-bold uppercase tracking-wider ${systemState === 'chaotic' ? 'text-primary animate-pulse' : 'text-accent-warm'}`}>
+              <span className={`font-mono text-[9px] md:text-[10px] font-bold uppercase tracking-wider ${systemState === 'chaotic' ? 'text-primary ' : 'text-accent-warm'}`}>
                 {systemState === 'chaotic' ? 'UNSTABLE' : 'STABLE'}
               </span>
             </div>
@@ -143,7 +143,7 @@ export default function AppShell({ children, systemState }) {
               <select
                 value={language}
                 onChange={(e) => setLanguage(e.target.value)}
-                className="appearance-none bg-surface border border-border-light hover:border-primary/20 px-3.5 py-2 pr-8 rounded-md font-mono text-[10px] font-bold text-text-muted hover:text-text-primary focus:outline-none focus:ring-1 focus:ring-primary/20 transition-all cursor-pointer shadow-none"
+                className="appearance-none bg-surface border border-border-light hover:border-border-light px-3.5 py-2 pr-8 rounded-md font-mono text-[10px] font-bold text-text-muted hover:text-text-primary focus:outline-none focus:ring-1 focus:ring-primary/20 transition-all cursor-pointer shadow-none"
                 aria-label="Select language"
               >
                 <option value="en">EN</option>
@@ -156,7 +156,7 @@ export default function AppShell({ children, systemState }) {
             {/* GitHub Settings button */}
             <button
               onClick={() => setShowGithubModal(true)}
-              className="w-9 h-9 rounded-md bg-surface border border-border-light hover:border-primary/20 flex items-center justify-center text-text-muted hover:text-text-primary transition-all duration-200 cursor-pointer focus:outline-none focus-ring"
+              className="w-9 h-9 rounded-md bg-surface border border-border-light hover:border-border-light flex items-center justify-center text-text-muted hover:text-text-primary transition-all duration-200 cursor-pointer focus:outline-none focus-ring"
               aria-label="Configure GitHub Integration"
             >
               <GithubIcon className="text-primary" />
@@ -165,7 +165,7 @@ export default function AppShell({ children, systemState }) {
             {/* Config button (styled like a NOC terminal toggle) */}
             <button
               onClick={toggleTheme}
-              className="w-9 h-9 rounded-md bg-surface border border-border-light hover:border-primary/20 flex items-center justify-center text-text-muted hover:text-text-primary transition-all duration-200 cursor-pointer focus:outline-none focus-ring"
+              className="w-9 h-9 rounded-md bg-surface border border-border-light hover:border-border-light flex items-center justify-center text-text-muted hover:text-text-primary transition-all duration-200 cursor-pointer focus:outline-none focus-ring"
               aria-label="Toggle system mode"
             >
               {isDark ? (
@@ -211,7 +211,7 @@ export default function AppShell({ children, systemState }) {
                   placeholder="e.g. sahilchaudhari32/Halcyon"
                   value={githubRepo}
                   onChange={(e) => setGithubRepo(e.target.value)}
-                  className="w-full bg-background border border-border-light rounded-md px-4 py-2.5 text-xs text-text-primary focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/40"
+                  className="w-full bg-background border border-border-light rounded-md px-4 py-2.5 text-xs text-text-primary focus:outline-none focus:border-border-light focus:ring-1 focus:ring-primary/40"
                 />
               </div>
 
@@ -222,7 +222,7 @@ export default function AppShell({ children, systemState }) {
                   placeholder="ghp_xxxxxxxxxxxx"
                   value={githubToken}
                   onChange={(e) => setGithubToken(e.target.value)}
-                  className="w-full bg-background border border-border-light rounded-md px-4 py-2.5 text-xs text-text-primary focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/40"
+                  className="w-full bg-background border border-border-light rounded-md px-4 py-2.5 text-xs text-text-primary focus:outline-none focus:border-border-light focus:ring-1 focus:ring-primary/40"
                 />
               </div>
             </div>

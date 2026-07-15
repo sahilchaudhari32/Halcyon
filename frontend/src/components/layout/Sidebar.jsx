@@ -50,7 +50,7 @@ export const Sidebar = () => {
                 {isActive && (
                   <motion.div
                     layoutId="sidebarActiveIndicator"
-                    className="absolute right-3 w-1.5 h-1.5 rounded-full bg-accent-warm"
+                    className="absolute right-3 w-1.5 h-1.5 rounded-sm bg-accent-warm"
                     transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                   />
                 )}
@@ -66,8 +66,8 @@ export const Sidebar = () => {
           <span className="text-text-muted font-bold uppercase tracking-wider">{t('sidebar.subscription')}:</span>
           <span className={`font-bold tracking-widest px-1.5 py-0.5 rounded text-[8px] border uppercase ${
             subscription === 'pro' 
-              ? 'bg-surface text-accent-warm border-accent-warm/30' 
-              : 'bg-surface text-primary border-primary/20'
+              ? 'bg-surface text-accent-warm border-border-light' 
+              : 'bg-surface text-primary border-border-light'
           }`}>
             {subscription === 'pro' ? t('sidebar.proTier') : t('sidebar.freeTier')}
           </span>
@@ -81,7 +81,7 @@ export const Sidebar = () => {
         
         <Link 
           href="/billing"
-          className="block w-full text-center py-1.5 rounded-lg bg-background border border-border-light hover:border-primary/20 hover:text-text-primary transition-all text-[9px] font-bold uppercase tracking-wider mt-1 focus:outline-none cursor-pointer"
+          className="block w-full text-center py-1.5 rounded-lg bg-background border border-border-light hover:border-border-light hover:text-text-primary transition-all text-[9px] font-bold uppercase tracking-wider mt-1 focus:outline-none cursor-pointer"
         >
           {subscription === 'pro' ? t('sidebar.billing') : t('sidebar.upgradeBtn')}
         </Link>
@@ -102,7 +102,7 @@ export const Sidebar = () => {
             localStorage.clear();
             window.location.reload();
           }}
-          className="flex w-full items-center gap-2 px-3 py-2 rounded-lg border border-border-light/40 hover:border-red-500/20 text-text-muted hover:text-red-400 font-bold transition-all uppercase tracking-wider cursor-pointer text-[9px]"
+          className="flex w-full items-center gap-2 px-3 py-2 rounded-lg border border-border-light/40 hover:border-border-light text-text-muted hover:text-red-400 font-bold transition-all uppercase tracking-wider cursor-pointer text-[9px]"
         >
           <LogOut className="w-3.5 h-3.5" />
           <span>Log Out</span>

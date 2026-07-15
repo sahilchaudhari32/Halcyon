@@ -118,7 +118,7 @@ export default function TrustMeter({ confidence = 0, matchCount = 0, state = 'es
             <Link 
               key={id} 
               href={`/incident/${id}`}
-              className="px-2 py-0.5 rounded bg-surface border border-border-light hover:border-primary/40 text-text-primary hover:text-primary transition-all cursor-pointer"
+              className="px-2 py-0.5 rounded bg-surface border border-border-light hover:border-border-light text-text-primary hover:text-primary transition-all cursor-pointer"
             >
               INC-{id.toString().padStart(4, '0')}
             </Link>
