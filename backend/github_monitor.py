@@ -24,6 +24,8 @@ async def generate_crash_log_from_diff(diff_content: str, commit_message: str, c
     # ── LLM-Based Synthetic Log Generation ──
     try:
         synthetic_log = await generate_synthetic_crash_log(diff_content, commit_message, changed_files)
+        if synthetic_log == "CLEAN":
+            return None
         if synthetic_log:
             logger.info("Successfully generated synthetic crash log using LLM.")
             return synthetic_log
