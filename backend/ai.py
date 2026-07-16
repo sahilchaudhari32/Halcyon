@@ -453,7 +453,7 @@ async def _analyze_with_ollama(log_content: str) -> tuple[AIAnalysisResult, Rout
                     "max_tokens": 1024,
                 },
                 headers=headers,
-                timeout=60.0,
+                timeout=180.0,
             )
             response.raise_for_status()
             res_data = response.json()
@@ -773,7 +773,7 @@ async def generate_synthetic_crash_log(
         if settings.ollama_token:
             headers["Authorization"] = f"Bearer {settings.ollama_token}"
         try:
-            async with httpx.AsyncClient(timeout=60.0) as client:
+            async with httpx.AsyncClient(timeout=180.0) as client:
                 response = await client.post(
                     f"{settings.ollama_url}/v1/chat/completions",
                     json={
@@ -786,7 +786,7 @@ async def generate_synthetic_crash_log(
                         "max_tokens": 2048,
                     },
                     headers=headers,
-                    timeout=60.0,
+                    timeout=180.0,
                 )
                 response.raise_for_status()
                 res_data = response.json()
