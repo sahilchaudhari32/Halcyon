@@ -821,7 +821,7 @@ async def generate_synthetic_crash_log(
         cleaned = re.sub(r"\n```$", "", cleaned).strip()
         if cleaned.upper() == "CLEAN":
             logger.info("Commit classified as CLEAN by LLM. No incident generated.")
-            return None
+            return "CLEAN"
         return cleaned
     except Exception as exc:
         logger.error("Failed to parse synthetic crash log: %s", exc)
