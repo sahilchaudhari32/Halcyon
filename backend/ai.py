@@ -102,19 +102,20 @@ _configure_cascade()
 # ── Prompt Builder ────────────────────────────────────────────────────────────
 
 _SYSTEM_PROMPT = """
-You are Halcyon AI — an expert Site Reliability Engineer (SRE) specializing in
-log analysis and incident root-cause diagnosis.
+You are Halcyon AI — an expert Site Reliability Engineer (SRE).
+Your task is to analyze the provided log content and return a JSON object explaining the crash.
 
-Analyze the provided log content and return a structured JSON response with:
-- root_cause: A precise, technical explanation of what went wrong (2-4 sentences).
-- severity: One of LOW | MEDIUM | HIGH | CRITICAL based on service impact.
-- fix_suggestion: Actionable step-by-step remediation guide. Be specific and operational.
-- Include immediate containment, verification, rollback or repair steps, and one prevention action.
-- summary: A single sentence non-technical summary of the incident.
-- affected_components: A list of service/component names mentioned in the logs.
-- confidence_score: Your confidence in the analysis (0.0 - 1.0).
-
-IMPORTANT: Return ONLY valid JSON — no markdown fences, no extra text.
+Return ONLY a raw JSON object. NO markdown formatting. NO backticks. NO ```json. NO extra text.
+The JSON must have the following keys exactly:
+{
+  "root_cause": "A precise, technical explanation of what went wrong (2-4 sentences). Mention the exact typo or code issue if visible.",
+  "severity": "CRITICAL, HIGH, MEDIUM, or LOW",
+  "fix_suggestion": "Actionable step-by-step remediation guide. Explain exactly what code to change to fix the typo or error.",
+  "summary": "A single sentence non-technical summary of the incident.",
+  "affected_components": ["component1", "component2"],
+  "confidence_score": 0.95
+}
+"""
 
 Severity guidelines:
   CRITICAL: Complete service outage, data loss, security breach
@@ -433,7 +434,9 @@ async def _analyze_with_ollama(log_content: str) -> tuple[AIAnalysisResult, Rout
     start = time.perf_counter()
 
     import httpx
-    headers = {}
+    headers = {
+        "ngrok-skip-browser-warning": "true"
+    }
     if settings.ollama_token:
         headers["Authorization"] = f"Bearer {settings.ollama_token}"
 
@@ -723,15 +726,12 @@ async def analyze_commit_diff(
 
 
 _SYNTHETIC_LOG_SYSTEM_PROMPT = """
-You are a software debugging expert and a chaos engineering tool.
-Your task is to analyze the provided git commit diff and determine if it introduces a bug, logical error, syntax issue, configuration mistake, or potential failure path.
-- If it DOES introduce a bug, generate a realistic crash log or traceback (e.g. Python traceback, JS error, Node.js exception) that would plausibly be caused by the bugs introduced. Match the language and environment of the changed files. Return ONLY the raw log.
-- If the commit is CLEAN (i.e. correct code, simple refactoring, doc changes, or doesn't introduce any bugs), return ONLY the exact word "CLEAN".
+You are a software debugging expert.
+Analyze the provided git commit diff. If it introduces a bug, syntax error, or typo, generate the EXACT raw crash log or traceback that the compiler or runtime would throw.
+If it is a typo in an import or variable, generate a NameError or ImportError traceback.
 
-Format constraints:
-- Return ONLY the raw traceback/log string OR the word "CLEAN".
-- Do NOT wrap it in markdown formatting or ``` blocks.
-- Do NOT include any explanations, conversational text, or reasoning blocks (e.g. no <think> tags).
+Return ONLY the raw traceback text. NO markdown formatting. NO backticks. NO ```python. NO conversational text.
+If the commit is totally safe and introduces no bugs, return the exact word: CLEAN
 """
 
 
@@ -768,7 +768,9 @@ async def generate_synthetic_crash_log(
 
     if settings.ollama_enabled:
         import httpx
-        headers = {}
+        headers = {
+            "ngrok-skip-browser-warning": "true"
+        }
         if settings.ollama_token:
             headers["Authorization"] = f"Bearer {settings.ollama_token}"
         try:
