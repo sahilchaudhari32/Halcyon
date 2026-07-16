@@ -760,27 +760,60 @@ async def generate_synthetic_crash_log(
     changed_files: list,
 ) -> Optional[str]:
     """
-    Generate a realistic crash log based on a commit diff using Groq.
-    Returns None if generation fails or no API key is set.
+    Generate a realistic crash log based on a commit diff using Groq or Local Ollama.
+    Returns None if generation fails or no API key/local model is available.
     """
-    if _groq_client is None:
+    prompt = _build_synthetic_log_prompt(diff_content, commit_message, changed_files)
+    raw_text = ""
+
+    if settings.ollama_enabled:
+        import httpx
+        headers = {}
+        if settings.ollama_token:
+            headers["Authorization"] = f"Bearer {settings.ollama_token}"
+        try:
+            async with httpx.AsyncClient() as client:
+                response = await client.post(
+                    f"{settings.ollama_url}/v1/chat/completions",
+                    json={
+                        "model": settings.ollama_model,
+                        "messages": [
+                            {"role": "system", "content": _SYNTHETIC_LOG_SYSTEM_PROMPT},
+                            {"role": "user", "content": prompt},
+                        ],
+                        "temperature": 0.7,
+                        "max_tokens": 2048,
+                    },
+                    headers=headers,
+                    timeout=60.0,
+                )
+                response.raise_for_status()
+                res_data = response.json()
+                raw_text = res_data["choices"][0]["message"]["content"]
+        except Exception as exc:
+            logger.error("Failed to generate synthetic crash log using Ollama: %s", exc)
+            return None
+    elif _groq_client is not None:
+        try:
+            response = await asyncio.to_thread(
+                _groq_client.chat.completions.create,
+                model=settings.draft_model, # Use the faster model for log generation
+                messages=[
+                    {"role": "system", "content": _SYNTHETIC_LOG_SYSTEM_PROMPT},
+                    {"role": "user", "content": prompt},
+                ],
+                temperature=0.7, # Slightly higher temperature for realistic variance
+                max_tokens=2048, # Increased to prevent <think> block truncation
+            )
+            raw_text = response.choices[0].message.content
+        except Exception as exc:
+            logger.error("Failed to generate synthetic crash log using Groq: %s", exc)
+            return None
+    else:
+        logger.warning("No LLM available (Ollama off, no Groq key) for diff analysis.")
         return None
 
-    prompt = _build_synthetic_log_prompt(diff_content, commit_message, changed_files)
-    
     try:
-        response = await asyncio.to_thread(
-            _groq_client.chat.completions.create,
-            model=settings.draft_model, # Use the faster model for log generation
-            messages=[
-                {"role": "system", "content": _SYNTHETIC_LOG_SYSTEM_PROMPT},
-                {"role": "user", "content": prompt},
-            ],
-            temperature=0.7, # Slightly higher temperature for realistic variance
-            max_tokens=2048, # Increased to prevent <think> block truncation
-        )
-        
-        raw_text = response.choices[0].message.content
         # Remove <think> blocks if present, even if unclosed due to truncation
         raw_text = re.sub(r"<think>.*?(?:</think>|$)", "", raw_text, flags=re.DOTALL).strip()
         # Clean up any accidental markdown
@@ -791,5 +824,5 @@ async def generate_synthetic_crash_log(
             return None
         return cleaned
     except Exception as exc:
-        logger.error("Failed to generate synthetic crash log: %s", exc)
+        logger.error("Failed to parse synthetic crash log: %s", exc)
         return None
