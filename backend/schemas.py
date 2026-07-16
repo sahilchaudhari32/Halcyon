@@ -13,6 +13,11 @@ class IncidentSubmitRequest(BaseModel):
     alert_title: str = Field(..., min_length=1, description="Title of the alert or incident")
     log_content: str = Field(..., min_length=1, description="Raw log content to analyze")
     sensitive: bool = Field(default=False, description="Flag for sensitive data requiring compliance model routing")
+    source_commit_sha: Optional[str] = Field(
+        default=None,
+        max_length=64,
+        description="SHA of the commit that triggered this incident (GitHub monitor); used for dedup",
+    )
 
 
 class AIAnalysisResult(BaseModel):

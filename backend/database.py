@@ -68,6 +68,9 @@ class Incident(Base):
     confidence_score: Optional[float] = Column(Float, nullable=True)   # 0.0 – 1.0
     suspected_commit: Optional[dict] = Column(JSON, nullable=True)
 
+    # Commit that triggered this incident (GitHub monitor) — used for dedup across restarts
+    source_commit_sha: Optional[str] = Column(String(64), nullable=True, index=True)
+
     # Status & resolution
     is_solved: bool = Column(Boolean, default=False, nullable=False)
     solution: Optional[str] = Column(Text, nullable=True)
@@ -305,6 +308,10 @@ async def init_db() -> None:
             pass
         try:
             await conn.execute(text("ALTER TABLE incidents ADD COLUMN workspace_id INTEGER DEFAULT 1"))
+        except Exception:
+            pass
+        try:
+            await conn.execute(text("ALTER TABLE incidents ADD COLUMN source_commit_sha VARCHAR(64)"))
         except Exception:
             pass
 

@@ -4,7 +4,7 @@ from datetime import datetime, timezone, timedelta
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
-from database import AsyncSessionLocal, User, GitHubConnection
+from database import AsyncSessionLocal, User, GitHubConnection, Incident
 from github import GitHubClient, GitHubAuthError
 from crypto import decrypt_token
 from routes import create_incident, IncidentSubmitRequest
@@ -114,6 +114,18 @@ async def check_connection_for_new_commits(connection: GitHubConnection, db) -> 
         if sha in PROCESSED_COMMITS[connection_id]:
             continue
 
+        # DB-backed dedup: survives server restarts (in-memory set does not).
+        # If an incident already exists for this commit SHA, skip it.
+        stmt = select(Incident.id).filter(
+            Incident.source_commit_sha == sha,
+            Incident.workspace_id == connection.workspace_id,
+        ).limit(1)
+        res = await db.execute(stmt)
+        if res.scalar_one_or_none() is not None:
+            PROCESSED_COMMITS[connection_id].add(sha)
+            logger.info(f"Commit {sha} already has an incident in DB. Skipping (restart dedup).")
+            continue
+
         # Mark as processed immediately
         PROCESSED_COMMITS[connection_id].add(sha)
         logger.info(f"Detected new commit pushed: {sha} - '{commit['message']}'")
@@ -141,7 +153,7 @@ async def check_connection_for_new_commits(connection: GitHubConnection, db) -> 
 
         # Automatically submit the incident as if it were sent by log daemon
         alert_title = f"GitHub Trigger: {commit['message'][:40]}..."
-        body = IncidentSubmitRequest(alert_title=alert_title, log_content=crash_log)
+        body = IncidentSubmitRequest(alert_title=alert_title, log_content=crash_log, source_commit_sha=sha)
         
         try:
             logger.info(f"Automatically submitting incident alert for commit {sha}...")

@@ -431,6 +431,7 @@ async def create_incident(
         affected_components=analysis.affected_components,
         confidence_score=analysis.confidence_score,
         suspected_commit=suspected_commit.model_dump(mode="json") if suspected_commit else None,
+        source_commit_sha=body.source_commit_sha,
         workspace_id=current_user.workspace_id
     )
     db.add(incident)
