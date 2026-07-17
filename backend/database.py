@@ -299,19 +299,16 @@ async def init_db() -> None:
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
-    # Fallback migration check to add suspected_commit column if it doesn't exist
-    async with engine.begin() as conn:
+    # Fallback migration check to add columns if they don't exist
+    migrations = [
+        "ALTER TABLE incidents ADD COLUMN suspected_commit JSON",
+        "ALTER TABLE incidents ADD COLUMN workspace_id INTEGER DEFAULT 1",
+        "ALTER TABLE incidents ADD COLUMN source_commit_sha VARCHAR(64)"
+    ]
+    for sql_cmd in migrations:
         try:
-            await conn.execute(text("ALTER TABLE incidents ADD COLUMN suspected_commit JSON"))
-        except Exception:
-            # Column already exists or database not initialized yet
-            pass
-        try:
-            await conn.execute(text("ALTER TABLE incidents ADD COLUMN workspace_id INTEGER DEFAULT 1"))
-        except Exception:
-            pass
-        try:
-            await conn.execute(text("ALTER TABLE incidents ADD COLUMN source_commit_sha VARCHAR(64)"))
+            async with engine.begin() as conn:
+                await conn.execute(text(sql_cmd))
         except Exception:
             pass
 
