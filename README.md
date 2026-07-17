@@ -143,6 +143,29 @@ Ensure you have Python 3.10+ and Node.js 18+ installed on your system.
 
 ---
 
+### 3. Set Up the Fine-Tuned Model (Cloud)
+To use the custom fine-tuned LLaMA model on a free Google Colab instance, follow these steps:
+1. Open the included `Halcyon_Cloud_Server.ipynb` file in Google Colab.
+2. The notebook already contains your Ngrok token. Go to **Runtime > Change runtime type** and ensure you're using a **T4 GPU**.
+3. Run all cells in the notebook. This will start Ollama in the background and expose it to the internet via Ngrok.
+4. Copy the `OLLAMA_URL` output from the final cell and add it to your `.env` file in the `backend` directory.
+
+> [!TIP]
+> **Prevent Colab from Sleeping:** Google Colab will disconnect your session if you're idle for too long. To keep your server awake:
+> 1. In your Colab tab, press `F12` to open the Developer Tools.
+> 2. Go to the **Console** tab and type `allow pasting` if prompted.
+> 3. Paste this code and press Enter:
+> ```javascript
+> function KeepClicking(){
+>    console.log("Keeping Colab Awake");
+>    document.querySelector("colab-connect-button").shadowRoot.getElementById('connect').click()
+> }
+> setInterval(KeepClicking, 60000)
+> ```
+> This will click the connect button every 60 seconds so your model stays online!
+
+---
+
 ## 🛠️ Tech Stack & Dependencies
 
 | Layer | Technologies | Purpose |
