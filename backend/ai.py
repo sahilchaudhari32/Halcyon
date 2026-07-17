@@ -307,6 +307,22 @@ def _match_known_incidents(log_content: str) -> Optional[AIAnalysisResult]:
             confidence_score=0.99,
         )
 
+    # 7. JSON Serialization Error (Datetime)
+    if "typeerror" in content_lower and "not json serializable" in content_lower and "datetime" in content_lower:
+        return AIAnalysisResult(
+            root_cause="The backend attempted to serialize a Python datetime object into JSON using the standard json.dumps() method, which does not natively support datetime objects.",
+            severity="HIGH",
+            fix_suggestion=(
+                "Use a custom JSON encoder or convert the datetime object to a string before serialization.\n"
+                "Fix: Change json.dumps(data) to json.dumps(data, default=str)\n"
+                "Alternatively, use FastAPI's jsonable_encoder() if returning from an endpoint."
+            ),
+            summary="Datetime JSON Serialization Failure (TypeError)",
+            affected_components=["api", "json-serializer"],
+            confidence_score=0.99,
+            model_used=settings.ollama_model if settings.ollama_enabled else "predefined-pattern",
+        )
+
     return None
 
 
